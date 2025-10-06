@@ -50,7 +50,7 @@ class _AppointmentHistoryPageState extends State<AppointmentHistoryPage> {
           slivers: [
             SliverToBoxAdapter(
               child: const Text(
-                'Select Child:',
+                'Select Pet:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
@@ -82,7 +82,7 @@ class _AppointmentHistoryPageState extends State<AppointmentHistoryPage> {
             ),
             SliverToBoxAdapter(child: const SizedBox(height: 16)),
 
-            // Display booking history only when a child is selected and showHistory is true
+            // Display booking history only when a pet is selected and showHistory is true
             ValueListenableBuilder(
               valueListenable: _showHistory,
               builder: (context, showHistory, _) {

@@ -6,9 +6,9 @@ import 'package:petcure_user_app/modules/payment_module/widgets/payment_containe
 import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
 
 class UPIPayment extends StatefulWidget {
-  final String bookingId;
+  final String orderId;
   final double amount;
-  const UPIPayment({super.key, required this.bookingId, required this.amount});
+  const UPIPayment({super.key, required this.orderId, required this.amount});
 
   @override
   State<UPIPayment> createState() => _UPIPaymentState();

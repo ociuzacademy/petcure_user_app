@@ -57,11 +57,7 @@ class UserProfileWidget extends StatelessWidget {
               title: 'Phone',
               value: '+91 9876543210',
             ),
-            ProfileItem(
-              icon: Icons.child_care,
-              title: 'Number of Pets',
-              value: '10',
-            ),
+            ProfileItem(icon: Icons.pets, title: 'Number of Pets', value: '10'),
             ProfileItem(
               icon: Icons.location_on,
               title: 'Address',

@@ -45,7 +45,7 @@ class CartPageHelper {
   void placeOrder() {
     Navigator.push(
       context,
-      PaymentPage.route(bookingId: "ORD-001", totalRate: totalAmount.value),
+      PaymentPage.route(orderId: "ORD-001", totalRate: totalAmount.value),
     );
   }
 }

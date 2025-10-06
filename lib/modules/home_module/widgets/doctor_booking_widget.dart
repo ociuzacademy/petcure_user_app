@@ -61,7 +61,7 @@ class _DoctorBookingWidgetState extends State<DoctorBookingWidget> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    // Initialize _selectedChild if it's null and children list is not empty
+    // Initialize _selectedChild if it's null and pets list is not empty
     if (_selectedPet.value == null && pets.isNotEmpty) {
       _selectedPet.value = pets.first;
     } else if (!pets.any((pet) => pet.petId == _selectedPet.value?.petId)) {

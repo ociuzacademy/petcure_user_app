@@ -182,83 +182,86 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                   // Clinical Appointment Specific Fields
                   if (selectedBookingOption ==
                       BookingOption.clinicalAppointment)
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Select Vaccination Date:',
-                          style: TextStyle(
-                            fontSize: screenSize.width * 0.045,
-                            fontWeight: FontWeight.bold,
+                    SizedBox(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Select Date:',
+                            style: TextStyle(
+                              fontSize: screenSize.width * 0.045,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: screenSize.height * 0.015),
-                        ValueListenableBuilder(
-                          valueListenable: _selectedDate,
-                          builder: (context, selectedDate, child) {
-                            return SelectDateWidget(
-                              value: selectedDate,
-                              onValueChange: (date) {
-                                _selectedDate.value = date;
-                              },
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime.now().add(
-                                const Duration(days: 7),
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(height: screenSize.height * 0.02),
-                        Text(
-                          'Select Reason:',
-                          style: TextStyle(
-                            fontSize: screenSize.width * 0.045,
-                            fontWeight: FontWeight.bold,
+                          SizedBox(height: screenSize.height * 0.015),
+                          ValueListenableBuilder(
+                            valueListenable: _selectedDate,
+                            builder: (context, selectedDate, child) {
+                              return SelectDateWidget(
+                                value: selectedDate,
+                                onValueChange: (date) {
+                                  _selectedDate.value = date;
+                                },
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.now().add(
+                                  const Duration(days: 7),
+                                ),
+                              );
+                            },
                           ),
-                        ),
-                        SizedBox(height: screenSize.height * 0.015),
-                        ValueListenableBuilder(
-                          valueListenable: _selectedReason,
-                          builder: (context, selectedReason, child) {
-                            return ReasonDropdown(
-                              reasons: AppHelpers.bookingReasons,
-                              selectedReason: selectedReason,
-                              onSelectingReason: (value) {
-                                _selectedReason.value = value;
-                              },
-                            );
-                          },
-                        ),
-                        SizedBox(height: screenSize.height * 0.02),
-                        Text(
-                          'Select Time Slot:',
-                          style: TextStyle(
-                            fontSize: screenSize.width * 0.045,
-                            fontWeight: FontWeight.bold,
+                          SizedBox(height: screenSize.height * 0.02),
+                          Text(
+                            'Select Reason:',
+                            style: TextStyle(
+                              fontSize: screenSize.width * 0.045,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: screenSize.height * 0.015),
-                        // Fixed: Removed Flexible and used ConstrainedBox instead
-                        ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxHeight:
-                                screenSize.height * 0.4, // Limit the height
-                          ),
-                          child: ValueListenableBuilder(
-                            valueListenable: _selectedTimeSlot,
-                            builder: (context, selectedTimeSlot, child) {
-                              return SlotsGrid(
-                                doctor: widget.doctor,
-                                selectedSlot: selectedTimeSlot,
-                                onSelectingSlot: (slot) {
-                                  _selectedTimeSlot.value = slot;
+                          SizedBox(height: screenSize.height * 0.015),
+                          ValueListenableBuilder(
+                            valueListenable: _selectedReason,
+                            builder: (context, selectedReason, child) {
+                              return ReasonDropdown(
+                                reasons: AppHelpers.bookingReasons,
+                                selectedReason: selectedReason,
+                                onSelectingReason: (value) {
+                                  _selectedReason.value = value;
                                 },
                               );
                             },
                           ),
-                        ),
-                        SizedBox(height: screenSize.height * 0.02),
-                      ],
+                          SizedBox(height: screenSize.height * 0.02),
+                          Text(
+                            'Select Time Slot:',
+                            style: TextStyle(
+                              fontSize: screenSize.width * 0.045,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: screenSize.height * 0.015),
+                          // Fixed: Removed Flexible and used ConstrainedBox instead
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxHeight:
+                                  screenSize.height * 0.4, // Limit the height
+                            ),
+                            child: ValueListenableBuilder(
+                              valueListenable: _selectedTimeSlot,
+                              builder: (context, selectedTimeSlot, child) {
+                                return SlotsGrid(
+                                  doctor: widget.doctor,
+                                  selectedSlot: selectedTimeSlot,
+                                  onSelectingSlot: (slot) {
+                                    _selectedTimeSlot.value = slot;
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(height: screenSize.height * 0.02),
+                        ],
+                      ),
                     ),
 
                   // Symptoms Field (common to both booking options)

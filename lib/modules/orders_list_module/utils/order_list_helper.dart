@@ -12,6 +12,8 @@ class OrderListHelper {
         return Colors.blue;
       case OrderDeliveryStatus.orderDelivered:
         return Colors.green;
+      default:
+        return Colors.red;
     }
   }
 
@@ -24,6 +26,8 @@ class OrderListHelper {
         return 'On The Way';
       case OrderDeliveryStatus.orderDelivered:
         return 'Delivered';
+      default:
+        return 'Order Cancelled';
     }
   }
 
@@ -36,6 +40,8 @@ class OrderListHelper {
         return Icons.local_shipping;
       case OrderDeliveryStatus.orderDelivered:
         return Icons.check_circle;
+      default:
+        return Icons.cancel;
     }
   }
 
@@ -121,6 +127,8 @@ class OrderListHelper {
         return 0.66;
       case OrderDeliveryStatus.orderDelivered:
         return 1.0;
+      default:
+        return 0;
     }
   }
 

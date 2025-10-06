@@ -5,6 +5,7 @@ import 'package:petcure_user_app/core/helpers/app_helpers.dart';
 
 import 'package:petcure_user_app/core/models/pet.dart';
 import 'package:petcure_user_app/modules/pet_details_module/widgets/detail_card.dart';
+import 'package:petcure_user_app/modules/update_pet_module/view/update_pet_page.dart';
 
 class PetDetailsPage extends StatelessWidget {
   final Pet pet;
@@ -29,7 +30,14 @@ class PetDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pet Details'),
-        actions: [TextButton(onPressed: () {}, child: Text("Update Pet"))],
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.push(context, UpdatePetPage.route(pet: pet));
+            },
+            child: Text("Update Pet"),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
@@ -40,7 +48,7 @@ class PetDetailsPage extends StatelessWidget {
           children: [
             // Profile Picture
             Hero(
-              tag: "child-${pet.petId}",
+              tag: "pet-${pet.petId}",
               child: CircleAvatar(
                 radius: avatarRadius,
                 backgroundImage: CachedNetworkImageProvider(pet.photoUrl),

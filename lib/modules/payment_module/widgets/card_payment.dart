@@ -8,9 +8,9 @@ import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
 import 'package:petcure_user_app/widgets/text_fields/normal_text_field.dart';
 
 class CardPayment extends StatefulWidget {
-  final String bookingId;
+  final String orderId;
   final double amount;
-  const CardPayment({super.key, required this.bookingId, required this.amount});
+  const CardPayment({super.key, required this.orderId, required this.amount});
 
   @override
   State<CardPayment> createState() => _CardPaymentState();

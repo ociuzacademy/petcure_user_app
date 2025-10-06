@@ -1,26 +1,27 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/payment_module/utils/payment_helper.dart';
 import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
 
 class PaymentPage extends StatefulWidget {
-  final String bookingId;
+  final String orderId;
   final double totalRate;
   const PaymentPage({
     super.key,
-    required this.bookingId,
+    required this.orderId,
     required this.totalRate,
   });
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 
-  static route({required String bookingId, required double totalRate}) =>
+  static route({required String orderId, required double totalRate}) =>
       MaterialPageRoute(
         builder: (context) =>
-            PaymentPage(bookingId: bookingId, totalRate: totalRate),
+            PaymentPage(orderId: orderId, totalRate: totalRate),
       );
 }
 
@@ -47,7 +48,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
     _paymentHelper = PaymentHelper(
       context: context,
-      bookingId: widget.bookingId,
+      orderId: widget.orderId,
       totalRate: widget.totalRate,
       selectedMethod: _selectedMethod,
     );

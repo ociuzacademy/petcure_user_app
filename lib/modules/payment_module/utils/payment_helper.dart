@@ -7,12 +7,12 @@ import 'package:petcure_user_app/modules/payment_module/widgets/u_p_i_payment.da
 class PaymentHelper {
   final BuildContext context;
   final ValueNotifier<String?> selectedMethod;
-  final String bookingId;
+  final String orderId;
   final double totalRate;
   const PaymentHelper({
     required this.context,
     required this.selectedMethod,
-    required this.bookingId,
+    required this.orderId,
     required this.totalRate,
   });
 
@@ -23,9 +23,9 @@ class PaymentHelper {
       builder: (context) {
         switch (selectedMethod.value) {
           case "UPI":
-            return UPIPayment(bookingId: bookingId, amount: totalRate);
+            return UPIPayment(orderId: orderId, amount: totalRate);
           default:
-            return CardPayment(bookingId: bookingId, amount: totalRate);
+            return CardPayment(orderId: orderId, amount: totalRate);
         }
       },
     );

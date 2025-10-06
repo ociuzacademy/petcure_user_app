@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:petcure_user_app/core/models/pet.dart';
 import 'package:petcure_user_app/core/helpers/fake_data.dart';
+import 'package:petcure_user_app/modules/add_pet_module/view/add_pet_page.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/pet_card.dart';
 
 class PetsListWidget extends StatelessWidget {
@@ -17,15 +19,35 @@ class PetsListWidget extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
-              child: Text(
-                "Your Pets",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Your Pets",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      pushWithoutNavBar(
+                        context,
+                        AddPetPage.route(isLoggedIn: true, ownerId: 1),
+                      );
+                    },
+                    child: Text(
+                      'Add Pet',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
           SliverGrid.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, // 2 children per row
+              crossAxisCount: 2, // 2 pets per row
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
               childAspectRatio: 0.7, // Adjust card proportions

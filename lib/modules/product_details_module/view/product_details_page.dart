@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:petcure_user_app/core/models/product.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
-import 'package:petcure_user_app/modules/cart_module/view/cart_page.dart';
+import 'package:petcure_user_app/modules/payment_module/view/payment_page.dart';
 import 'package:petcure_user_app/modules/product_details_module/utils/product_details_helper.dart';
 
 class ProductDetailsPage extends StatefulWidget {
@@ -309,7 +309,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         flex: 3,
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.push(context, CartPage.route());
+                            Navigator.push(
+                              context,
+                              PaymentPage.route(
+                                orderId: 'ORD-001',
+                                totalRate: widget.product.price,
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppPalette.firstColor,

@@ -25,7 +25,7 @@ class AppointmentHistoryHelper {
         selectedPet.value!,
       );
     } else {
-      CustomSnackBar.showError(context, message: "Please select a child");
+      CustomSnackBar.showError(context, message: "Please select a pet");
       showHistory.value = false;
     }
   }

@@ -96,76 +96,85 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                     ),
                     const SizedBox(height: 12),
 
-                    // Order date and status indicator
-                    Row(
-                      children: [
-                        Icon(
-                          _orderDetailsHelper.getStatusIcon(
-                            widget.order.orderDeliveryStatus,
-                          ),
-                          size: 16,
-                          color: _orderDetailsHelper.getStatusColor(
-                            widget.order.orderDeliveryStatus,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          _orderDetailsHelper.formatDate(
-                            widget.order.orderDate,
-                          ),
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-
-                    // Estimated Delivery Date
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.local_shipping,
-                          size: 16,
-                          color: isDelayed ? Colors.red : Colors.green,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            widget.order.orderDeliveryStatus ==
-                                    OrderDeliveryStatus.orderDelivered
-                                ? 'Delivered on: ${_orderDetailsHelper.formatDeliveryDate(widget.order.estimatedDeliveryDate)}'
-                                : 'Est. Delivery: ${_orderDetailsHelper.formatDeliveryDate(widget.order.estimatedDeliveryDate)}',
-                            style: TextStyle(
-                              color: isDelayed ? Colors.red : Colors.green,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                    if (widget.order.orderDeliveryStatus !=
+                        OrderDeliveryStatus.orderCancelled)
+                      SizedBox(
+                        child: Column(
+                          children: [
+                            // Order date and status indicator
+                            Row(
+                              children: [
+                                Icon(
+                                  _orderDetailsHelper.getStatusIcon(
+                                    widget.order.orderDeliveryStatus,
+                                  ),
+                                  size: 16,
+                                  color: _orderDetailsHelper.getStatusColor(
+                                    widget.order.orderDeliveryStatus,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  _orderDetailsHelper.formatDate(
+                                    widget.order.orderDate,
+                                  ),
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
+                            const SizedBox(height: 8),
+                            // Estimated Delivery Date
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.local_shipping,
+                                  size: 16,
+                                  color: isDelayed ? Colors.red : Colors.green,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    widget.order.orderDeliveryStatus ==
+                                            OrderDeliveryStatus.orderDelivered
+                                        ? 'Delivered on: ${_orderDetailsHelper.formatDeliveryDate(widget.order.estimatedDeliveryDate)}'
+                                        : 'Est. Delivery: ${_orderDetailsHelper.formatDeliveryDate(widget.order.estimatedDeliveryDate)}',
+                                    style: TextStyle(
+                                      color: isDelayed
+                                          ? Colors.red
+                                          : Colors.green,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                if (isDelayed)
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red[50],
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: const Text(
+                                      'Delayed',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                          ],
                         ),
-                        if (isDelayed)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.red[50],
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: const Text(
-                              'Delayed',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
+                      ),
 
                     // Number of items
                     Text(
