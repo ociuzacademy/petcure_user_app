@@ -48,7 +48,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to location when open.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app needs access to gallery for accessing images.</string>
+	<string>This app needs access to gallery for getting images.</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>geo</string>
