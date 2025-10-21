@@ -62,12 +62,9 @@ class _LoginPageState extends State<LoginPage> {
             case AuthLoading _:
               OverlayLoader.show(context, message: 'Logging in...');
               break;
-            case LoginSuccess _:
+            case LoginSuccess(:final response):
               OverlayLoader.hide();
-              CustomSnackBar.showSuccess(
-                context,
-                message: 'User logged in successfully.',
-              );
+              CustomSnackBar.showSuccess(context, message: response.message);
               Navigator.pushAndRemoveUntil(
                 context,
                 HomePage.route(),

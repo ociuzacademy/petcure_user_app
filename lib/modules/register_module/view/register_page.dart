@@ -20,7 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
   late final RegisterHelper _registerHelper;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -43,7 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _registerHelper = RegisterHelper(
       context: context,
       formKey: _formKey,
-      fullNameController: _fullNameController,
+      fullNameController: _usernameController,
       emailController: _emailController,
       phoneNumberController: _phoneNumberController,
       passwordController: _passwordController,
@@ -58,7 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void dispose() {
     // Dispose controllers to avoid memory leaks
-    _fullNameController.dispose();
+    _usernameController.dispose();
     _emailController.dispose();
     _phoneNumberController.dispose();
     _passwordController.dispose();
@@ -119,15 +119,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     SizedBox(height: screenSize.height * 0.025),
                     NormalTextField(
-                      textEditingController: _fullNameController,
+                      textEditingController: _usernameController,
                       validatorFunction: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter full name';
+                          return 'Please enter username';
                         }
                         return null;
                       },
-                      labelText: 'Full Name',
-                      hintText: 'Enter your full name',
+                      labelText: 'Username',
+                      hintText: 'Enter your username',
                       textFieldIcon: const Icon(Icons.person),
                       focusNode: _fullNameFocusNode,
                       nextFocusNode: _emailFocusNode,

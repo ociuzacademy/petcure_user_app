@@ -359,15 +359,15 @@ extension AuthStatePatterns on AuthState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthInitial value)?  initial,TResult Function( AuthLoading value)?  authLoading,TResult Function( LoginSuccess value)?  loginSuccess,TResult Function( AuthError value)?  authError,TResult Function( LogoutSuccess value)?  logoutSuccess,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthInitial value)?  initial,TResult Function( AuthLoading value)?  authLoading,TResult Function( LoginSuccess value)?  loginSuccess,TResult Function( LogoutSuccess value)?  logoutSuccess,TResult Function( AuthError value)?  authError,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
 return initial(_that);case AuthLoading() when authLoading != null:
 return authLoading(_that);case LoginSuccess() when loginSuccess != null:
-return loginSuccess(_that);case AuthError() when authError != null:
-return authError(_that);case LogoutSuccess() when logoutSuccess != null:
-return logoutSuccess(_that);case _:
+return loginSuccess(_that);case LogoutSuccess() when logoutSuccess != null:
+return logoutSuccess(_that);case AuthError() when authError != null:
+return authError(_that);case _:
   return orElse();
 
 }
@@ -385,15 +385,15 @@ return logoutSuccess(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthInitial value)  initial,required TResult Function( AuthLoading value)  authLoading,required TResult Function( LoginSuccess value)  loginSuccess,required TResult Function( AuthError value)  authError,required TResult Function( LogoutSuccess value)  logoutSuccess,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthInitial value)  initial,required TResult Function( AuthLoading value)  authLoading,required TResult Function( LoginSuccess value)  loginSuccess,required TResult Function( LogoutSuccess value)  logoutSuccess,required TResult Function( AuthError value)  authError,}){
 final _that = this;
 switch (_that) {
 case AuthInitial():
 return initial(_that);case AuthLoading():
 return authLoading(_that);case LoginSuccess():
-return loginSuccess(_that);case AuthError():
-return authError(_that);case LogoutSuccess():
-return logoutSuccess(_that);case _:
+return loginSuccess(_that);case LogoutSuccess():
+return logoutSuccess(_that);case AuthError():
+return authError(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -410,15 +410,15 @@ return logoutSuccess(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthInitial value)?  initial,TResult? Function( AuthLoading value)?  authLoading,TResult? Function( LoginSuccess value)?  loginSuccess,TResult? Function( AuthError value)?  authError,TResult? Function( LogoutSuccess value)?  logoutSuccess,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthInitial value)?  initial,TResult? Function( AuthLoading value)?  authLoading,TResult? Function( LoginSuccess value)?  loginSuccess,TResult? Function( LogoutSuccess value)?  logoutSuccess,TResult? Function( AuthError value)?  authError,}){
 final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
 return initial(_that);case AuthLoading() when authLoading != null:
 return authLoading(_that);case LoginSuccess() when loginSuccess != null:
-return loginSuccess(_that);case AuthError() when authError != null:
-return authError(_that);case LogoutSuccess() when logoutSuccess != null:
-return logoutSuccess(_that);case _:
+return loginSuccess(_that);case LogoutSuccess() when logoutSuccess != null:
+return logoutSuccess(_that);case AuthError() when authError != null:
+return authError(_that);case _:
   return null;
 
 }
@@ -435,14 +435,14 @@ return logoutSuccess(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  authLoading,TResult Function( LoginModel response)?  loginSuccess,TResult Function( String errorMessage)?  authError,TResult Function()?  logoutSuccess,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  authLoading,TResult Function( LoginModel response)?  loginSuccess,TResult Function()?  logoutSuccess,TResult Function( String errorMessage)?  authError,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
 return initial();case AuthLoading() when authLoading != null:
 return authLoading();case LoginSuccess() when loginSuccess != null:
-return loginSuccess(_that.response);case AuthError() when authError != null:
-return authError(_that.errorMessage);case LogoutSuccess() when logoutSuccess != null:
-return logoutSuccess();case _:
+return loginSuccess(_that.response);case LogoutSuccess() when logoutSuccess != null:
+return logoutSuccess();case AuthError() when authError != null:
+return authError(_that.errorMessage);case _:
   return orElse();
 
 }
@@ -460,14 +460,14 @@ return logoutSuccess();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  authLoading,required TResult Function( LoginModel response)  loginSuccess,required TResult Function( String errorMessage)  authError,required TResult Function()  logoutSuccess,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  authLoading,required TResult Function( LoginModel response)  loginSuccess,required TResult Function()  logoutSuccess,required TResult Function( String errorMessage)  authError,}) {final _that = this;
 switch (_that) {
 case AuthInitial():
 return initial();case AuthLoading():
 return authLoading();case LoginSuccess():
-return loginSuccess(_that.response);case AuthError():
-return authError(_that.errorMessage);case LogoutSuccess():
-return logoutSuccess();case _:
+return loginSuccess(_that.response);case LogoutSuccess():
+return logoutSuccess();case AuthError():
+return authError(_that.errorMessage);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -484,14 +484,14 @@ return logoutSuccess();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  authLoading,TResult? Function( LoginModel response)?  loginSuccess,TResult? Function( String errorMessage)?  authError,TResult? Function()?  logoutSuccess,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  authLoading,TResult? Function( LoginModel response)?  loginSuccess,TResult? Function()?  logoutSuccess,TResult? Function( String errorMessage)?  authError,}) {final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
 return initial();case AuthLoading() when authLoading != null:
 return authLoading();case LoginSuccess() when loginSuccess != null:
-return loginSuccess(_that.response);case AuthError() when authError != null:
-return authError(_that.errorMessage);case LogoutSuccess() when logoutSuccess != null:
-return logoutSuccess();case _:
+return loginSuccess(_that.response);case LogoutSuccess() when logoutSuccess != null:
+return logoutSuccess();case AuthError() when authError != null:
+return authError(_that.errorMessage);case _:
   return null;
 
 }
@@ -632,6 +632,38 @@ as LoginModel,
 /// @nodoc
 
 
+class LogoutSuccess implements AuthState {
+  const LogoutSuccess();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LogoutSuccess);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthState.logoutSuccess()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
 class AuthError implements AuthState {
   const AuthError(this.errorMessage);
   
@@ -694,37 +726,5 @@ as String,
 
 
 }
-
-/// @nodoc
-
-
-class LogoutSuccess implements AuthState {
-  const LogoutSuccess();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LogoutSuccess);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'AuthState.logoutSuccess()';
-}
-
-
-}
-
-
-
 
 // dart format on

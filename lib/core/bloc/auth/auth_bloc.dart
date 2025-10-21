@@ -15,9 +15,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onLogIn(UserLoggingIn event, Emitter<AuthState> emit) async {
-    emit(AuthState.authLoading());
+    emit(const AuthState.authLoading());
     try {
-      final LoginModel response = await userLogin(
+      final LoginModel response = await Login.userLogin(
         email: event.email,
         password: event.password,
       );
@@ -31,7 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onLogOut(UserLoggingOut event, Emitter<AuthState> emit) async {
-    emit(AuthState.authLoading());
+    emit(const AuthState.authLoading());
     try {
       await Future.delayed(Duration(seconds: 2));
 
