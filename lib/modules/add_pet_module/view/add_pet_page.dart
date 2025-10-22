@@ -2,13 +2,18 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:petcure_user_app/core/helpers/app_helpers.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_user_app/core/cubit/pet_category/pet_category_cubit.dart';
+import 'package:petcure_user_app/core/models/api_models/pet_category_model.dart';
+import 'package:petcure_user_app/core/models/api_models/pet_sub_category_model.dart';
 
 import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/add_pet_module/utils/add_pet_helper.dart';
 import 'package:petcure_user_app/widgets/dropdowns/categories_widget.dart';
 import 'package:petcure_user_app/widgets/dropdowns/gender_dropdown.dart';
 import 'package:petcure_user_app/widgets/dropdowns/options_dropdown.dart';
+import 'package:petcure_user_app/widgets/dropdowns/pet_categories_widget.dart';
+import 'package:petcure_user_app/widgets/dropdowns/pet_sub_categories_widget.dart';
 import 'package:petcure_user_app/widgets/dropdowns/sub_categories_widget.dart';
 import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
 import 'package:petcure_user_app/widgets/text_fields/normal_text_field.dart';
@@ -54,10 +59,10 @@ class _AddPetPageState extends State<AddPetPage> {
   final ValueNotifier<String?> _selectedGender = ValueNotifier<String?>(null);
   final ValueNotifier<bool> _havingSpecificHealthCondition =
       ValueNotifier<bool>(false);
-  final ValueNotifier<String?> _selectedCategory = ValueNotifier<String?>(null);
-  final ValueNotifier<String?> _selectedSubCategory = ValueNotifier<String?>(
-    null,
-  );
+  final ValueNotifier<PetCategoryModel?> _selectedCategory =
+      ValueNotifier<PetCategoryModel?>(null);
+  final ValueNotifier<Subcategory?> _selectedSubCategory =
+      ValueNotifier<Subcategory?>(null);
 
   @override
   void initState() {
@@ -77,6 +82,8 @@ class _AddPetPageState extends State<AddPetPage> {
       selectedSubCategory: _selectedSubCategory,
       birthDate: _birthDate,
     );
+
+    _addPetHelper.getPetCategories();
   }
 
   @override
@@ -217,14 +224,91 @@ class _AddPetPageState extends State<AddPetPage> {
                     SizedBox(height: screenSize.height * 0.025),
 
                     // Category Dropdown
-                    ValueListenableBuilder<String?>(
+                    ValueListenableBuilder<PetCategoryModel?>(
                       valueListenable: _selectedCategory,
                       builder: (context, selectedCategory, _) {
-                        return CategoriesWidget(
-                          selectedCategory: selectedCategory,
-                          categories: AppHelpers.petCategories.keys.toList(),
-                          onSelectingCategory: (value) {
-                            _selectedCategory.value = value;
+                        return BlocBuilder<PetCategoryCubit, PetCategoryState>(
+                          builder: (context, state) {
+                            switch (state) {
+                              case PetCategoryInitial _:
+                              case PetCategoriesLoading _:
+                                return CategoriesWidget(
+                                  categories: [],
+                                  onSelectingCategory: (_) {},
+                                  isLoading: true,
+                                );
+                              case PetCategoriesError(:final errorMessage):
+                                return CategoriesWidget(
+                                  categories: [],
+                                  onSelectingCategory: (_) {},
+                                  isError: true,
+                                  errorText: errorMessage,
+                                );
+                              case PetCategoriesSuccess(:final petCategories):
+                                return PetCategoriesWidget(
+                                  selectedCategory: selectedCategory,
+                                  categories: petCategories,
+                                  onSelectingCategory: (value) {
+                                    _selectedCategory.value = value;
+                                    _selectedSubCategory.value = null;
+                                    _addPetHelper.getPetSubCategories(
+                                      petCategories,
+                                      value!.id,
+                                    );
+                                  },
+                                );
+                              case PetSubCategoriesLoading(
+                                :final petCategories,
+                              ):
+                                return PetCategoriesWidget(
+                                  selectedCategory: selectedCategory,
+                                  categories: petCategories,
+                                  onSelectingCategory: (value) {
+                                    _selectedCategory.value = value;
+                                    _selectedSubCategory.value =
+                                        null; // Reset subcategory when category changes
+                                    _addPetHelper.getPetSubCategories(
+                                      petCategories,
+                                      value!.id,
+                                    );
+                                  },
+                                );
+                              case PetSubCategoriesSuccess(
+                                :final petCategories,
+                              ):
+                                return PetCategoriesWidget(
+                                  selectedCategory: selectedCategory,
+                                  categories: petCategories,
+                                  onSelectingCategory: (value) {
+                                    _selectedCategory.value = value;
+                                    // Reset subcategory when category changes
+                                    _selectedSubCategory.value = null;
+                                    _addPetHelper.getPetSubCategories(
+                                      petCategories,
+                                      value!.id,
+                                    );
+                                  },
+                                );
+                              case PetSubCategoriesError(:final petCategories):
+                                return PetCategoriesWidget(
+                                  selectedCategory: selectedCategory,
+                                  categories: petCategories,
+                                  onSelectingCategory: (value) {
+                                    _selectedCategory.value = value;
+                                    // Reset subcategory when category changes
+                                    _selectedSubCategory.value = null;
+                                    _addPetHelper.getPetSubCategories(
+                                      petCategories,
+                                      value!.id,
+                                    );
+                                  },
+                                );
+                              default:
+                                return CategoriesWidget(
+                                  categories: [],
+                                  onSelectingCategory: (_) {},
+                                );
+                            }
                           },
                         );
                       },
@@ -232,23 +316,65 @@ class _AddPetPageState extends State<AddPetPage> {
                     SizedBox(height: screenSize.height * 0.025),
 
                     // Sub-Category Dropdown
-                    ValueListenableBuilder<String?>(
-                      valueListenable: _selectedCategory,
-                      builder: (context, selectedCategory, _) {
-                        final List<String> subItemsList =
-                            selectedCategory != null
-                            ? AppHelpers.petCategories[selectedCategory]!
-                            : [];
-                        return ValueListenableBuilder<String?>(
-                          valueListenable: _selectedSubCategory,
-                          builder: (context, selectedSubCategory, __) {
-                            return SubCategoriesWidget(
-                              selectedSubCategory: selectedSubCategory,
-                              subCategories: subItemsList,
-                              onSelectingSubCategory: (value) {
-                                _selectedSubCategory.value = value;
-                              },
-                            );
+                    ValueListenableBuilder<Subcategory?>(
+                      valueListenable: _selectedSubCategory,
+                      builder: (context, selectedSubCategory, __) {
+                        return BlocBuilder<PetCategoryCubit, PetCategoryState>(
+                          builder: (context, state) {
+                            switch (state) {
+                              case PetCategoryInitial _:
+                              case PetCategoriesLoading _:
+                              case PetCategoriesError _:
+                                return SubCategoriesWidget(
+                                  subCategories: [],
+                                  onSelectingSubCategory: (_) {},
+                                );
+                              case PetCategoriesSuccess _:
+                                return SubCategoriesWidget(
+                                  subCategories: [],
+                                  onSelectingSubCategory: (_) {},
+                                  selectedSubCategory:
+                                      "Select a category first",
+                                );
+                              case PetSubCategoriesLoading _:
+                                return SubCategoriesWidget(
+                                  subCategories: [],
+                                  onSelectingSubCategory: (_) {},
+                                  isLoading: true,
+                                );
+                              case PetSubCategoriesError(:final errorMessage):
+                                return SubCategoriesWidget(
+                                  subCategories: [],
+                                  onSelectingSubCategory: (_) {},
+                                  isError: true,
+                                  errorText: errorMessage,
+                                );
+                              case PetSubCategoriesSuccess(
+                                :final petSubCategories,
+                              ):
+                                if (_selectedCategory.value != null) {
+                                  return PetSubCategoriesWidget(
+                                    selectedSubCategory: selectedSubCategory,
+                                    subCategories:
+                                        petSubCategories.subcategories,
+                                    onSelectingSubCategory: (value) {
+                                      _selectedSubCategory.value = value;
+                                    },
+                                  );
+                                } else {
+                                  return SubCategoriesWidget(
+                                    subCategories: [],
+                                    onSelectingSubCategory: (_) {},
+                                    selectedSubCategory:
+                                        "Select a category first",
+                                  );
+                                }
+                              default:
+                                return SubCategoriesWidget(
+                                  subCategories: [],
+                                  onSelectingSubCategory: (_) {},
+                                );
+                            }
                           },
                         );
                       },

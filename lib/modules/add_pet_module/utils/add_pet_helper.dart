@@ -2,9 +2,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:petcure_user_app/core/cubit/pet_category/pet_category_cubit.dart';
 import 'package:petcure_user_app/core/helpers/app_helpers.dart';
 import 'package:petcure_user_app/core/models/age.dart';
+import 'package:petcure_user_app/core/models/api_models/pet_category_model.dart';
+import 'package:petcure_user_app/core/models/api_models/pet_sub_category_model.dart';
 
 import 'package:petcure_user_app/modules/login_module/view/login_page.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
@@ -20,8 +24,8 @@ class AddPetHelper {
   final ValueNotifier<File?> imageFile;
   final ValueNotifier<String?> selectedGender;
   final ValueNotifier<bool> havingSpecificHealthCondition;
-  final ValueNotifier<String?> selectedCategory;
-  final ValueNotifier<String?> selectedSubCategory;
+  final ValueNotifier<PetCategoryModel?> selectedCategory;
+  final ValueNotifier<Subcategory?> selectedSubCategory;
   final ValueNotifier<DateTime?> birthDate;
   const AddPetHelper({
     required this.context,
@@ -84,6 +88,19 @@ class AddPetHelper {
       ageYearsController.text = age.ageInYears.toString();
       ageMonthsController.text = age.ageInMonths.toString();
     }
+  }
+
+  void getPetCategories() {
+    final PetCategoryCubit petCategoryCubit = context.read<PetCategoryCubit>();
+    petCategoryCubit.getPetCategories();
+  }
+
+  void getPetSubCategories(
+    List<PetCategoryModel> petCategories,
+    int categoryId,
+  ) {
+    final PetCategoryCubit petCategoryCubit = context.read<PetCategoryCubit>();
+    petCategoryCubit.getPetSubCategories(petCategories, categoryId);
   }
 
   void addPet() {

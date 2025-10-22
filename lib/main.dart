@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:petcure_user_app/core/bloc/auth/auth_bloc.dart';
+import 'package:petcure_user_app/core/cubit/pet_category/pet_category_cubit.dart';
 import 'package:petcure_user_app/core/localstorage/auth_storage_functions.dart';
 import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
 import 'package:petcure_user_app/modules/login_module/view/login_page.dart';
@@ -26,7 +27,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => AuthBloc())],
+      providers: [
+        BlocProvider(create: (context) => AuthBloc()),
+        BlocProvider(create: (context) => PetCategoryCubit()),
+      ],
       child: MaterialApp(
         title: 'PetCure User',
         debugShowCheckedModeBanner: false,

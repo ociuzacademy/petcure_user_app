@@ -4,4 +4,8 @@ class AppUrls {
 
   static const String loginUrl = '$userUrl/login/';
   static const String userRegisterUrl = '$userUrl/user_registration/';
+
+  static const String getPetCategoryListUrl = '$userUrl/view_pet_category/';
+  static const String getPetSubCategoryListUrl =
+      '$userUrl/view_pet_subcategory/';
 }

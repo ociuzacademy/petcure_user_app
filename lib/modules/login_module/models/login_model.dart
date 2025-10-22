@@ -15,7 +15,7 @@ class LoginModel {
   final String userId;
   final Data data;
 
-  LoginModel({
+  const LoginModel({
     required this.status,
     required this.message,
     required this.userId,
