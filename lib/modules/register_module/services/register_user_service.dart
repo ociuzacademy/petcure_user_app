@@ -1,12 +1,15 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:petcure_user_app/core/constants/app_constants.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/modules/register_module/class/user_register_details.dart';
 import 'package:petcure_user_app/modules/register_module/models/user_register_model.dart';
 
-class RegisterUser {
+class RegisterUserService {
   static Future<UserRegisterModel> registerUser({
     required UserRegisterDetails userRegisterDetails,
   }) async {
@@ -37,7 +40,14 @@ class RegisterUser {
       request.files.add(multipartFile);
 
       // Send request
-      final resp = await request.send();
+      final resp = await request.send().timeout(
+        Duration(seconds: AppConstants.requestTimeoutSeconds),
+        onTimeout: () {
+          throw TimeoutException(
+            'Request timed out after ${AppConstants.requestTimeoutSeconds} seconds',
+          );
+        },
+      );
 
       // Convert the response stream to a string
       final responseBody = await resp.stream.bytesToString();
@@ -50,6 +60,11 @@ class RegisterUser {
         final Map<String, dynamic> errorResponse = jsonDecode(responseBody);
         throw Exception(errorResponse['message'] ?? 'Unknown error');
       }
+    } on TimeoutException catch (e) {
+      debugPrint('MenuServices: Request timeout - $e');
+      throw Exception(
+        'Request timeout. Please check your internet connection and try again.',
+      );
     } on SocketException {
       throw Exception('No Internet connection');
     } on HttpException {

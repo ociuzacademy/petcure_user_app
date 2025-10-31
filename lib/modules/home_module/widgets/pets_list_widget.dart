@@ -30,7 +30,7 @@ class PetsListWidget extends StatelessWidget {
                     onPressed: () {
                       pushWithoutNavBar(
                         context,
-                        AddPetPage.route(isLoggedIn: true, ownerId: 1),
+                        AddPetPage.route(isLoggedIn: true),
                       );
                     },
                     child: Text(

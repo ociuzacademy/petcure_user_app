@@ -5,10 +5,7 @@ import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
 import 'package:petcure_user_app/modules/login_module/utils/login_helper.dart';
 import 'package:petcure_user_app/modules/register_module/view/register_page.dart';
-import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
-import 'package:petcure_user_app/widgets/loaders/overlay_loader.dart';
-import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
-import 'package:petcure_user_app/widgets/text_fields/normal_text_field.dart';
+import 'package:petcure_user_app/widgets/app_widget_export.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
