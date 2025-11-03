@@ -24,8 +24,10 @@ class PetOperationsBloc extends Bloc<PetOperationsEvent, PetOperationsState> {
       late final String userId;
       if (event.userId != null) {
         userId = event.userId!;
+        debugPrint('First pet');
       } else {
         userId = await AuthStorageFunctions.getUserId();
+        debugPrint('Not first pet');
       }
 
       debugPrint('User ID: $userId');

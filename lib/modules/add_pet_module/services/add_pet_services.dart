@@ -19,15 +19,23 @@ class AddPetServices {
       var request = http.MultipartRequest("POST", Uri.parse(AppUrls.addPetUrl));
 
       request.fields['user_id'] = userId;
+      debugPrint('User ID: $userId');
       request.fields['name'] = petDetails.name;
+      debugPrint('Name: ${petDetails.name}');
       final DateFormat formatter = DateFormat('yyyy-MM-dd');
       final String formattedDate = formatter.format(petDetails.birthDate);
+      debugPrint('Birth date: $formattedDate');
       request.fields['birth_date'] = formattedDate;
-      request.fields['gender'] = petDetails.gender;
+      debugPrint('Gender: ${petDetails.gender.toLowerCase()}');
+      request.fields['gender'] = petDetails.gender.toLowerCase();
+      debugPrint('Category ID: ${petDetails.categoryid}');
       request.fields['category'] = petDetails.categoryid.toString();
+      debugPrint('Sub Category ID: ${petDetails.subCategoryId}');
       request.fields['sub_category'] = petDetails.subCategoryId.toString();
+      debugPrint('Weight: ${petDetails.weight}');
       request.fields['weight'] = petDetails.weight.toString();
       if (petDetails.healthCondition != null) {
+        debugPrint('Health condition: ${petDetails.healthCondition}');
         request.fields['health_condition'] = petDetails.healthCondition!;
       }
 

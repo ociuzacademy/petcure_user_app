@@ -49,7 +49,7 @@ class Data {
   final String gender;
   final double weight;
   final String petImage;
-  final String healthCondition;
+  final String? healthCondition;
   final DateTime createdAt;
   final int user;
   final int category;
@@ -62,7 +62,7 @@ class Data {
     required this.gender,
     required this.weight,
     required this.petImage,
-    required this.healthCondition,
+    this.healthCondition,
     required this.createdAt,
     required this.user,
     required this.category,
