@@ -83,10 +83,7 @@ final _that = this;
 switch (_that) {
 case _Started():
 return started(_that);case _AddingPet():
-return addingPet(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return addingPet(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -148,10 +145,7 @@ return addingPet(_that.petDetails,_that.userId);case _:
 switch (_that) {
 case _Started():
 return started();case _AddingPet():
-return addingPet(_that.petDetails,_that.userId);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return addingPet(_that.petDetails,_that.userId);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -353,10 +347,7 @@ case PetOperationsInitial():
 return initial(_that);case PetOperationsLoading():
 return petOperationsLoading(_that);case PetOperationsError():
 return petOperationsError(_that);case AddPetSuccess():
-return addPetSuccess(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return addPetSuccess(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -424,10 +415,7 @@ case PetOperationsInitial():
 return initial();case PetOperationsLoading():
 return petOperationsLoading(_that.message);case PetOperationsError():
 return petOperationsError(_that.errorMessage);case AddPetSuccess():
-return addPetSuccess(_that.response);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return addPetSuccess(_that.response);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///

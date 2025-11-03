@@ -1,7 +1,7 @@
 part of 'pet_operations_bloc.dart';
 
 @freezed
-class PetOperationsState with _$PetOperationsState {
+sealed class PetOperationsState with _$PetOperationsState {
   const factory PetOperationsState.initial() = PetOperationsInitial;
   const factory PetOperationsState.petOperationsLoading(String message) =
       PetOperationsLoading;

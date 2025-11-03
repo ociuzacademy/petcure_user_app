@@ -83,10 +83,7 @@ final _that = this;
 switch (_that) {
 case _Started():
 return started(_that);case UserRegistering():
-return userRegistering(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return userRegistering(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -148,10 +145,7 @@ return userRegistering(_that.userRegisterDetails);case _:
 switch (_that) {
 case _Started():
 return started();case UserRegistering():
-return userRegistering(_that.userRegisterDetails);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return userRegistering(_that.userRegisterDetails);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -351,10 +345,7 @@ case RegisterInitial():
 return initial(_that);case RegisterLoading():
 return registerLoading(_that);case RegisterError():
 return registerError(_that);case UserRegisterSuccess():
-return userRegisterSuccess(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return userRegisterSuccess(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -422,10 +413,7 @@ case RegisterInitial():
 return initial();case RegisterLoading():
 return registerLoading();case RegisterError():
 return registerError(_that.errorMessage);case UserRegisterSuccess():
-return userRegisterSuccess(_that.response);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return userRegisterSuccess(_that.response);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///

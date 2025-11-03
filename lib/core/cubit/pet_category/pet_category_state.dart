@@ -1,7 +1,7 @@
 part of 'pet_category_cubit.dart';
 
 @freezed
-class PetCategoryState with _$PetCategoryState {
+sealed class PetCategoryState with _$PetCategoryState {
   const factory PetCategoryState.initial() = PetCategoryInitial;
   const factory PetCategoryState.petCategoriesLoading() = PetCategoriesLoading;
   const factory PetCategoryState.petCategoriesError(String errorMessage) =

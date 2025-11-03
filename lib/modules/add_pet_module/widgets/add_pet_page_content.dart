@@ -221,11 +221,6 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                                   );
                                 },
                               );
-                            default:
-                              return CategoriesWidget(
-                                categories: [],
-                                onSelectingCategory: (_) {},
-                              );
                           }
                         },
                       ),
@@ -281,11 +276,6 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                                       "Select a category first",
                                 );
                               }
-                            default:
-                              return SubCategoriesWidget(
-                                subCategories: [],
-                                onSelectingSubCategory: (_) {},
-                              );
                           }
                         },
                       ),

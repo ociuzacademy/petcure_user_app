@@ -1,64 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
-import 'package:petcure_user_app/core/models/pet.dart';
-import 'package:petcure_user_app/core/helpers/fake_data.dart';
+import 'package:petcure_user_app/modules/home_module/cubits/cubit/pets_list_cubit.dart';
 import 'package:petcure_user_app/modules/add_pet_module/view/add_pet_page.dart';
-import 'package:petcure_user_app/modules/home_module/widgets/pet_card.dart';
+import 'package:petcure_user_app/modules/home_module/utils/pet_list_widget_helper.dart';
+import 'package:petcure_user_app/modules/home_module/widgets/pet_list_content.dart';
 
-class PetsListWidget extends StatelessWidget {
+class PetsListWidget extends StatefulWidget {
   const PetsListWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<Pet> pets = FakeData.generateFakePets();
+  State<PetsListWidget> createState() => _PetsListWidgetState();
+}
 
+class _PetsListWidgetState extends State<PetsListWidget> {
+  late final PetListWidgetHelper _petListWidgetHelper;
+
+  @override
+  void initState() {
+    super.initState();
+    _petListWidgetHelper = PetListWidgetHelper(context: context);
+    _petListWidgetHelper.userPetsInitialize();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Your Pets",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      pushWithoutNavBar(
-                        context,
-                        AddPetPage.route(isLoggedIn: true),
-                      );
-                    },
-                    child: Text(
-                      'Add Pet',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
+      child: BlocBuilder<PetsListCubit, PetsListState>(
+        builder: (context, state) {
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Your Pets",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                      TextButton(
+                        onPressed: () {
+                          pushWithoutNavBar(
+                            context,
+                            AddPetPage.route(isLoggedIn: true),
+                          );
+                        },
+                        child: Text(
+                          'Add Pet',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-          SliverGrid.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, // 2 pets per row
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 0.7, // Adjust card proportions
-            ),
-            itemCount: pets.length,
-            itemBuilder: (context, index) {
-              final pet = pets[index];
-              return PetCard(pet: pet);
-            },
-          ),
-        ],
+              // Handle different states
+              PetListContent(
+                onRetry: () => _petListWidgetHelper.userPetsInitialize(),
+                state: state,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

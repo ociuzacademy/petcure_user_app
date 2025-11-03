@@ -1,7 +1,7 @@
 part of 'register_bloc.dart';
 
 @freezed
-class RegisterEvent with _$RegisterEvent {
+sealed class RegisterEvent with _$RegisterEvent {
   const factory RegisterEvent.started() = _Started;
   const factory RegisterEvent.userRegistering(
     UserRegisterDetails userRegisterDetails,

@@ -9,4 +9,8 @@ class AppUrls {
   static const String getPetSubCategoryListUrl =
       '$userUrl/view_pet_subcategory/';
   static const String addPetUrl = '$userUrl/add_pet/';
+
+  static const String getUserPetsUrl = '$userUrl/user_pets/';
+
+  static const String getPetDetailsUrl = '$userUrl/pet_details/';
 }

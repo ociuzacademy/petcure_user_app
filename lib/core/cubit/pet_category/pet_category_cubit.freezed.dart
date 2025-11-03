@@ -93,10 +93,7 @@ return petCategoriesError(_that);case PetCategoriesSuccess():
 return petCategoriesSuccess(_that);case PetSubCategoriesLoading():
 return petSubCategoriesLoading(_that);case PetSubCategoriesSuccess():
 return petSubCategoriesSuccess(_that);case PetSubCategoriesError():
-return petSubCategoriesError(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return petSubCategoriesError(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -173,10 +170,7 @@ return petCategoriesError(_that.errorMessage);case PetCategoriesSuccess():
 return petCategoriesSuccess(_that.petCategories);case PetSubCategoriesLoading():
 return petSubCategoriesLoading(_that.petCategories);case PetSubCategoriesSuccess():
 return petSubCategoriesSuccess(_that.petCategories,_that.petSubCategories);case PetSubCategoriesError():
-return petSubCategoriesError(_that.petCategories,_that.errorMessage);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return petSubCategoriesError(_that.petCategories,_that.errorMessage);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
