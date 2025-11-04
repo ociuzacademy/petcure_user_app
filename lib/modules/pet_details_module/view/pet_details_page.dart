@@ -65,16 +65,18 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
 
               // Convert the pet from PetDetailsModel to your core Pet model
               final corePet = Pet(
-                petId: pet.id.toString(),
+                petId: pet.id,
                 name: pet.name,
-                category: pet.category.toString(),
-                subCategory: pet.subCategory.toString(),
+                categoryId: pet.category,
+                category: pet.categoryName,
+                subCategoryId: pet.category,
+                subCategory: pet.subCategoryName,
                 birthDate: pet.birthDate,
                 gender: pet.gender,
                 weight: pet.weight,
                 healthConditions: pet.healthCondition,
                 photoUrl: pet.petImage,
-                ownerId: '',
+                ownerId: pet.user,
               );
 
               return SingleChildScrollView(
@@ -121,12 +123,12 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
                     DetailCard(
                       icon: Icons.pets,
                       title: 'Category',
-                      value: pet.category.toString(),
+                      value: pet.categoryName.toString(),
                     ),
                     DetailCard(
                       icon: Icons.pets,
                       title: 'Sub-Category',
-                      value: pet.subCategory.toString(),
+                      value: pet.subCategoryName.toString(),
                     ),
                     DetailCard(
                       icon: Icons.cake,

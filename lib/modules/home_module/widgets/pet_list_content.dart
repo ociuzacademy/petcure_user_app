@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:petcure_user_app/modules/home_module/cubits/cubit/pets_list_cubit.dart';
+import 'package:petcure_user_app/core/cubit/pets_list/pets_list_cubit.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/pets_list_error_widget.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/pets_loading_widget.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/user_pet_grid.dart';

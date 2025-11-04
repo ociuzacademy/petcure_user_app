@@ -19,10 +19,7 @@ class PetCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        pushWithoutNavBar(
-          context,
-          PetDetailsPage.route(petId: int.parse(pet.petId)),
-        );
+        pushWithoutNavBar(context, PetDetailsPage.route(petId: pet.petId));
       },
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

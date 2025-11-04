@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Pet {
-  final String petId;
-  final String ownerId;
+  final int petId;
+  final int ownerId;
   final String name;
   final DateTime birthDate;
+  final int categoryId;
   final String category;
+  final int subCategoryId;
   final String subCategory;
   final String photoUrl;
   final double weight; // in kg
@@ -15,7 +17,9 @@ class Pet {
     required this.ownerId,
     required this.name,
     required this.birthDate,
+    required this.categoryId,
     required this.category,
+    required this.subCategoryId,
     required this.subCategory,
     required this.photoUrl,
     required this.weight,
@@ -24,11 +28,13 @@ class Pet {
   });
 
   Pet copyWith({
-    String? petId,
-    String? ownerId,
+    int? petId,
+    int? ownerId,
     String? name,
     DateTime? birthDate,
+    int? categoryId,
     String? category,
+    int? subCategoryId,
     String? subCategory,
     String? photoUrl,
     double? weight,
@@ -40,7 +46,9 @@ class Pet {
       ownerId: ownerId ?? this.ownerId,
       name: name ?? this.name,
       birthDate: birthDate ?? this.birthDate,
+      categoryId: categoryId ?? this.categoryId,
       category: category ?? this.category,
+      subCategoryId: subCategoryId ?? this.subCategoryId,
       subCategory: subCategory ?? this.subCategory,
       photoUrl: photoUrl ?? this.photoUrl,
       weight: weight ?? this.weight,

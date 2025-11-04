@@ -68,10 +68,11 @@ class FakeData {
 
     // Generate random pets
     for (int i = 0; i < count; i++) {
-      final String category = categories[random.nextInt(categories.length)];
+      final int categoryId = random.nextInt(categories.length);
+      final String category = categories[categoryId];
       final List<String> availableSubCategories = subCategories[category]!;
-      final String subCategory =
-          availableSubCategories[random.nextInt(availableSubCategories.length)];
+      final int subCategoryId = random.nextInt(availableSubCategories.length);
+      final String subCategory = availableSubCategories[subCategoryId];
 
       // Generate a realistic weight based on category and subcategory
       double weight;
@@ -149,11 +150,13 @@ class FakeData {
 
       pets.add(
         Pet(
-          petId: 'pet_${i + 1}',
-          ownerId: 'owner_${random.nextInt(5) + 1}',
+          petId: i + 1,
+          ownerId: random.nextInt(5) + 1,
           name: names[random.nextInt(names.length)],
           birthDate: birthDate,
+          categoryId: categoryId,
           category: category,
+          subCategoryId: subCategoryId,
           subCategory: subCategory,
           photoUrl: 'https://picsum.photos/200/200?random=$i',
           weight: double.parse(weight.toStringAsFixed(1)),

@@ -27,12 +27,14 @@ class PetDetailsModel {
 
 class Pet {
   final int id;
+  final String categoryName;
+  final String subCategoryName;
   final String name;
   final DateTime birthDate;
   final String gender;
   final double weight;
   final String petImage;
-  final String? healthCondition;
+  final dynamic healthCondition;
   final DateTime createdAt;
   final int user;
   final int category;
@@ -40,12 +42,14 @@ class Pet {
 
   Pet({
     required this.id,
+    required this.categoryName,
+    required this.subCategoryName,
     required this.name,
     required this.birthDate,
     required this.gender,
     required this.weight,
     required this.petImage,
-    this.healthCondition,
+    required this.healthCondition,
     required this.createdAt,
     required this.user,
     required this.category,
@@ -54,6 +58,8 @@ class Pet {
 
   Pet copyWith({
     int? id,
+    String? categoryName,
+    String? subCategoryName,
     String? name,
     DateTime? birthDate,
     String? gender,
@@ -66,6 +72,8 @@ class Pet {
     int? subCategory,
   }) => Pet(
     id: id ?? this.id,
+    categoryName: categoryName ?? this.categoryName,
+    subCategoryName: subCategoryName ?? this.subCategoryName,
     name: name ?? this.name,
     birthDate: birthDate ?? this.birthDate,
     gender: gender ?? this.gender,
@@ -80,6 +88,8 @@ class Pet {
 
   factory Pet.fromJson(Map<String, dynamic> json) => Pet(
     id: json["id"],
+    categoryName: json["category_name"],
+    subCategoryName: json["sub_category_name"],
     name: json["name"],
     birthDate: DateTime.parse(json["birth_date"]),
     gender: json["gender"],
@@ -94,6 +104,8 @@ class Pet {
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "category_name": categoryName,
+    "sub_category_name": subCategoryName,
     "name": name,
     "birth_date":
         "${birthDate.year.toString().padLeft(4, '0')}-${birthDate.month.toString().padLeft(2, '0')}-${birthDate.day.toString().padLeft(2, '0')}",

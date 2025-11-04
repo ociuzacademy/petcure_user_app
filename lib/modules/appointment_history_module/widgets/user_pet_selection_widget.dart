@@ -1,16 +1,17 @@
-// doctor_booking_widget.dart
+// appointment_history_page.dart
 
 import 'package:flutter/material.dart';
-import 'package:petcure_user_app/modules/home_module/providers/doctor_booking_providers.dart';
-import 'package:petcure_user_app/widgets/dropdowns/pets_dropdown.dart';
 import 'package:provider/provider.dart';
 
-class PetSelectionWidget extends StatelessWidget {
-  const PetSelectionWidget({super.key});
+import 'package:petcure_user_app/modules/appointment_history_module/providers/appointment_history_provider.dart';
+import 'package:petcure_user_app/widgets/dropdowns/pets_dropdown.dart';
+
+class UserPetSelectionWidget extends StatelessWidget {
+  const UserPetSelectionWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<DoctorBookingProvider>();
+    final provider = context.watch<AppointmentHistoryProvider>();
 
     return SliverToBoxAdapter(
       child: provider.pets.isNotEmpty

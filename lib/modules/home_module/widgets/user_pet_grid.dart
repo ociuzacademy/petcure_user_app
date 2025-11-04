@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/core/models/pet.dart' show Pet;
-import 'package:petcure_user_app/modules/home_module/models/user_pets_model.dart'
+import 'package:petcure_user_app/core/models/api_models/user_pets_model.dart'
     hide Pet;
 import 'package:petcure_user_app/modules/home_module/widgets/pet_card.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/pets_list_empty_state_widget.dart';
@@ -20,14 +20,14 @@ class UserPetGrid extends StatelessWidget {
     // Convert API pets to local Pet model
     final List<Pet> pets = userPets.pets.map((apiPet) {
       return Pet(
-        petId: apiPet.id.toString(),
-        ownerId: apiPet.user.toString(),
+        petId: apiPet.id,
+        ownerId: apiPet.user,
         name: apiPet.name,
         birthDate: apiPet.birthDate,
-        category: apiPet.category
-            .toString(), // You might want to map this to category name
-        subCategory: apiPet.subCategory
-            .toString(), // You might want to map this to subcategory name
+        categoryId: apiPet.category,
+        category: apiPet.categoryName,
+        subCategoryId: apiPet.subCategory,
+        subCategory: apiPet.subCategoryName,
         photoUrl: "${AppUrls.baseUrl}/${apiPet.petImage}",
         weight: apiPet.weight,
         gender: apiPet.gender,

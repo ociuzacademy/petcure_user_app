@@ -5,7 +5,7 @@ import 'package:petcure_user_app/core/models/doctor.dart';
 import 'package:petcure_user_app/core/models/pet.dart';
 import 'package:petcure_user_app/core/helpers/fake_data.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
-import 'package:petcure_user_app/modules/home_module/models/user_pets_model.dart'
+import 'package:petcure_user_app/core/models/api_models/user_pets_model.dart'
     hide Pet;
 
 class DoctorBookingProvider with ChangeNotifier {
@@ -39,12 +39,14 @@ class DoctorBookingProvider with ChangeNotifier {
     // Convert API pets to local Pet model
     _pets = userPets.pets.map((apiPet) {
       return Pet(
-        petId: apiPet.id.toString(),
-        ownerId: apiPet.user.toString(),
+        petId: apiPet.id,
+        ownerId: apiPet.user,
         name: apiPet.name,
         birthDate: apiPet.birthDate,
-        category: apiPet.category.toString(),
-        subCategory: apiPet.subCategory.toString(),
+        categoryId: apiPet.category,
+        category: apiPet.categoryName,
+        subCategoryId: apiPet.subCategory,
+        subCategory: apiPet.subCategoryName,
         photoUrl: apiPet.petImage, // You might need to add base URL here
         weight: apiPet.weight,
         gender: apiPet.gender,
