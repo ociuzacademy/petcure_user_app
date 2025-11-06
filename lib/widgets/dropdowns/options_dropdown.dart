@@ -11,18 +11,18 @@ class OptionsDropdown extends StatelessWidget {
     this.onSelectingOption,
   });
 
-  static const List<String> options = ["No", "Yes"];
+  static const List<String> options = ['No', 'Yes'];
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: havingSpecificHealthCondition ? "Yes" : "No",
+      value: havingSpecificHealthCondition ? 'Yes' : 'No',
       items: options.map((option) {
         return DropdownMenuItem(value: option, child: Text(option));
       }).toList(),
       onChanged: onSelectingOption,
-      decoration: InputDecoration(
-        labelText: "Has Specific Health Condition?",
+      decoration: const InputDecoration(
+        labelText: 'Has Specific Health Condition?',
         border: OutlineInputBorder(),
       ),
       validator: (value) {

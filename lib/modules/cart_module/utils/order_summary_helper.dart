@@ -3,7 +3,7 @@ import 'package:petcure_user_app/core/models/cart_item.dart';
 
 class OrderSummaryHelper {
   final List<CartItem> cartItems;
-  OrderSummaryHelper({required this.cartItems});
+  const OrderSummaryHelper({required this.cartItems});
 
   // Calculate estimated delivery date (latest date among all items)
   DateTime get estimatedDeliveryDate {

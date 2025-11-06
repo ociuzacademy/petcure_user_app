@@ -11,7 +11,7 @@ class RegisterPage extends StatefulWidget {
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 
-  static route() => MaterialPageRoute(builder: (context) => RegisterPage());
+  static route() => MaterialPageRoute(builder: (context) => const RegisterPage());
 }
 
 class _RegisterPageState extends State<RegisterPage> {

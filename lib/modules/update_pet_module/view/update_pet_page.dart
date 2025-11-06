@@ -80,9 +80,9 @@ class _UpdatePetPageState extends State<UpdatePetPage> {
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(title: Text("Update child")),
+      appBar: AppBar(title: const Text('Update child')),
       body: Scaffold(
-        appBar: AppBar(title: Text("Add a Pet")),
+        appBar: AppBar(title: const Text('Add a Pet')),
         body: Form(
           key: _formKey,
           child: Center(
@@ -131,8 +131,8 @@ class _UpdatePetPageState extends State<UpdatePetPage> {
                                 }
                                 return null;
                               },
-                              labelText: "Age (Years)",
-                              hintText: "Years",
+                              labelText: 'Age (Years)',
+                              hintText: 'Years',
                               textInputType: TextInputType.number,
                               isDisabled: true,
                             ),
@@ -154,8 +154,8 @@ class _UpdatePetPageState extends State<UpdatePetPage> {
                                 }
                                 return null;
                               },
-                              labelText: "Age (Months)",
-                              hintText: "Months (0-11)",
+                              labelText: 'Age (Months)',
+                              hintText: 'Months (0-11)',
                               textInputType: TextInputType.number,
                               isDisabled: true,
                             ),
@@ -171,7 +171,7 @@ class _UpdatePetPageState extends State<UpdatePetPage> {
                                 color: AppPalette.firstColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 Icons.calendar_month,
                                 color: AppPalette.whiteColor,
                               ),
@@ -186,7 +186,7 @@ class _UpdatePetPageState extends State<UpdatePetPage> {
                         valueListenable: _selectedGender,
                         builder: (context, gender, _) {
                           return GenderDropdown(
-                            selectedGender: gender ?? "",
+                            selectedGender: gender ?? '',
                             onSelectingGender: (newValue) {
                               _selectedGender.value = newValue;
                             },
@@ -243,8 +243,8 @@ class _UpdatePetPageState extends State<UpdatePetPage> {
                           }
                           return null;
                         },
-                        labelText: "Weight",
-                        hintText: "Enter weight (in K.G.)",
+                        labelText: 'Weight',
+                        hintText: 'Enter weight (in K.G.)',
                         textInputType: TextInputType.number,
                         focusNode: _weightFocusNode,
                         nextFocusNode: _medicalConditionFocusNode,
@@ -259,7 +259,7 @@ class _UpdatePetPageState extends State<UpdatePetPage> {
                             havingSpecificHealthCondition: hasCondition,
                             onSelectingOption: (newValue) {
                               _havingSpecificHealthCondition.value =
-                                  newValue == "Yes";
+                                  newValue == 'Yes';
                             },
                           );
                         },
@@ -279,9 +279,9 @@ class _UpdatePetPageState extends State<UpdatePetPage> {
                               }
                               return null;
                             },
-                            labelText: "Medical Condition",
-                            hintText: "Enter medical condition",
-                            textFieldIcon: Icon(Icons.home),
+                            labelText: 'Medical Condition',
+                            hintText: 'Enter medical condition',
+                            textFieldIcon: const Icon(Icons.home),
                             isMultiline: true,
                             focusNode: _medicalConditionFocusNode,
                             isDisabled: !hasCondition,
@@ -324,7 +324,7 @@ class _UpdatePetPageState extends State<UpdatePetPage> {
                         buttonWidth: double.infinity,
                         backgroundColor: AppPalette.firstColor,
                         textColor: Colors.white,
-                        labelText: "Update Pet",
+                        labelText: 'Update Pet',
                         onClick: () {},
                       ),
                       SizedBox(height: screenSize.height * 0.025),

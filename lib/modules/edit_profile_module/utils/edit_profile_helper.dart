@@ -14,9 +14,8 @@ class EditProfileHelper {
   final TextEditingController phoneNumberController;
   final TextEditingController passwordController;
   final TextEditingController addressController;
-
   final ValueNotifier<File?> profileImage;
-  EditProfileHelper({
+  const EditProfileHelper({
     required this.context,
     required this.formKey,
     required this.fullNameController,

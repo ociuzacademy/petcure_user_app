@@ -29,15 +29,15 @@ class PetSubCategoryModel {
 
   factory PetSubCategoryModel.fromJson(Map<String, dynamic> json) =>
       PetSubCategoryModel(
-        success: json["success"],
+        success: json['success'],
         subcategories: List<Subcategory>.from(
-          json["subcategories"].map((x) => Subcategory.fromJson(x)),
+          json['subcategories'].map((x) => Subcategory.fromJson(x)),
         ),
       );
 
   Map<String, dynamic> toJson() => {
-    "success": success,
-    "subcategories": List<dynamic>.from(subcategories.map((x) => x.toJson())),
+    'success': success,
+    'subcategories': List<dynamic>.from(subcategories.map((x) => x.toJson())),
   };
 }
 
@@ -63,14 +63,14 @@ class Subcategory {
   );
 
   factory Subcategory.fromJson(Map<String, dynamic> json) => Subcategory(
-    petsubcategoryId: json["petsubcategory_id"],
-    categoryId: json["category_id"],
-    petsubcategory: json["petsubcategory"],
+    petsubcategoryId: json['petsubcategory_id'],
+    categoryId: json['category_id'],
+    petsubcategory: json['petsubcategory'],
   );
 
   Map<String, dynamic> toJson() => {
-    "petsubcategory_id": petsubcategoryId,
-    "category_id": categoryId,
-    "petsubcategory": petsubcategory,
+    'petsubcategory_id': petsubcategoryId,
+    'category_id': categoryId,
+    'petsubcategory': petsubcategory,
   };
 }

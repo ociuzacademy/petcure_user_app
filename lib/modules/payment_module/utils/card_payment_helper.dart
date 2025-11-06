@@ -7,7 +7,7 @@ import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 class CardPaymentHelper {
   final BuildContext context;
   final GlobalKey<FormState> formKey;
-  CardPaymentHelper({required this.context, required this.formKey});
+  const CardPaymentHelper({required this.context, required this.formKey});
 
   void cardPayment() {
     if (formKey.currentState!.validate()) {
@@ -20,7 +20,7 @@ class CardPaymentHelper {
     } else {
       CustomSnackBar.showError(
         context,
-        message: "Please fill all card details",
+        message: 'Please fill all card details',
       );
     }
   }

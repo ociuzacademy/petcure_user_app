@@ -15,7 +15,7 @@ class AddPetResponseModel {
   final String message;
   final Data data;
 
-  AddPetResponseModel({
+  const AddPetResponseModel({
     required this.success,
     required this.message,
     required this.data,
@@ -30,15 +30,15 @@ class AddPetResponseModel {
 
   factory AddPetResponseModel.fromJson(Map<String, dynamic> json) =>
       AddPetResponseModel(
-        success: json["success"],
-        message: json["message"],
-        data: Data.fromJson(json["data"]),
+        success: json['success'],
+        message: json['message'],
+        data: Data.fromJson(json['data']),
       );
 
   Map<String, dynamic> toJson() => {
-    "success": success,
-    "message": message,
-    "data": data.toJson(),
+    'success': success,
+    'message': message,
+    'data': data.toJson(),
   };
 }
 
@@ -55,7 +55,7 @@ class Data {
   final int category;
   final int subCategory;
 
-  Data({
+  const Data({
     required this.id,
     required this.name,
     required this.birthDate,
@@ -96,31 +96,31 @@ class Data {
   );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    id: json["id"],
-    name: json["name"],
-    birthDate: DateTime.parse(json["birth_date"]),
-    gender: json["gender"],
-    weight: json["weight"]?.toDouble(),
-    petImage: json["pet_image"],
-    healthCondition: json["health_condition"],
-    createdAt: DateTime.parse(json["created_at"]),
-    user: json["user"],
-    category: json["category"],
-    subCategory: json["sub_category"],
+    id: json['id'],
+    name: json['name'],
+    birthDate: DateTime.parse(json['birth_date']),
+    gender: json['gender'],
+    weight: json['weight']?.toDouble(),
+    petImage: json['pet_image'],
+    healthCondition: json['health_condition'],
+    createdAt: DateTime.parse(json['created_at']),
+    user: json['user'],
+    category: json['category'],
+    subCategory: json['sub_category'],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "birth_date":
+    'id': id,
+    'name': name,
+    'birth_date':
         "${birthDate.year.toString().padLeft(4, '0')}-${birthDate.month.toString().padLeft(2, '0')}-${birthDate.day.toString().padLeft(2, '0')}",
-    "gender": gender,
-    "weight": weight,
-    "pet_image": petImage,
-    "health_condition": healthCondition,
-    "created_at": createdAt.toIso8601String(),
-    "user": user,
-    "category": category,
-    "sub_category": subCategory,
+    'gender': gender,
+    'weight': weight,
+    'pet_image': petImage,
+    'health_condition': healthCondition,
+    'created_at': createdAt.toIso8601String(),
+    'user': user,
+    'category': category,
+    'sub_category': subCategory,
   };
 }

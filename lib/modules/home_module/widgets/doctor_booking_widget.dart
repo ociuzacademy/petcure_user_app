@@ -43,23 +43,23 @@ class _DoctorBookingWidgetState extends State<DoctorBookingWidget> {
             default:
           }
         },
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        child: const Padding(
+          padding: EdgeInsets.all(16.0),
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
-                child: const Text(
+                child: Text(
                   'Select Pet:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-              SliverToBoxAdapter(child: const SizedBox(height: 8)),
+              SliverToBoxAdapter(child: SizedBox(height: 8)),
               PetSelectionWidget(),
-              SliverToBoxAdapter(child: const SizedBox(height: 16)),
+              SliverToBoxAdapter(child: SizedBox(height: 16)),
               LocationInputWidget(),
-              SliverToBoxAdapter(child: const SizedBox(height: 16)),
+              SliverToBoxAdapter(child: SizedBox(height: 16)),
               FindDoctorsButton(),
-              SliverToBoxAdapter(child: const SizedBox(height: 16)),
+              SliverToBoxAdapter(child: SizedBox(height: 16)),
               DoctorsListWidget(),
             ],
           ),

@@ -33,7 +33,7 @@ class SubCategoriesWidget extends StatelessWidget {
       items: _buildDropdownItems(),
       onChanged: isError || isLoading ? null : onSelectingSubCategory,
       decoration: InputDecoration(
-        labelText: "Sub Category",
+        labelText: 'Sub Category',
         border: const OutlineInputBorder(),
         errorText: isError ? errorText : null,
         errorStyle: const TextStyle(color: Colors.red),
@@ -57,12 +57,12 @@ class SubCategoriesWidget extends StatelessWidget {
     if (isError) {
       return [
         DropdownMenuItem(
-          value: "error",
+          value: 'error',
           child: Row(
             children: [
-              Icon(Icons.error_outline, color: Colors.red, size: 16),
-              SizedBox(width: 8),
-              Flexible(child: Text(errorText ?? "Error loading categories")),
+              const Icon(Icons.error_outline, color: Colors.red, size: 16),
+              const SizedBox(width: 8),
+              Flexible(child: Text(errorText ?? 'Error loading categories')),
             ],
           ),
         ),
@@ -72,7 +72,7 @@ class SubCategoriesWidget extends StatelessWidget {
     if (isLoading) {
       return [
         const DropdownMenuItem(
-          value: "loading",
+          value: 'loading',
           child: Row(
             children: [
               SizedBox(
@@ -81,7 +81,7 @@ class SubCategoriesWidget extends StatelessWidget {
                 child: CircularProgressIndicator(strokeWidth: 2),
               ),
               SizedBox(width: 8),
-              Text("Loading categories..."),
+              Text('Loading categories...'),
             ],
           ),
         ),

@@ -75,7 +75,7 @@ class _UPIPaymentState extends State<UPIPayment> {
             buttonWidth: double.infinity,
             backgroundColor: AppPalette.firstColor,
             textColor: Colors.white,
-            labelText: "Pay",
+            labelText: 'Pay',
             onClick: _upiPaymentHelper.upiPayement,
           ),
         ],

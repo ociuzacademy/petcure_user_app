@@ -281,8 +281,8 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                       }
                       return null;
                     },
-                    labelText: "Symptoms",
-                    hintText: "Enter symptoms",
+                    labelText: 'Symptoms',
+                    hintText: 'Enter symptoms',
                     isMultiline: true,
                   ),
                   SizedBox(height: screenSize.height * 0.03),

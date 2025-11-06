@@ -11,7 +11,7 @@ class GenderDropdown extends StatelessWidget {
     this.onSelectingGender,
   });
 
-  static const List<String> genders = ["Male", "Female"];
+  static const List<String> genders = ['Male', 'Female'];
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +21,8 @@ class GenderDropdown extends StatelessWidget {
         return DropdownMenuItem(value: gender, child: Text(gender));
       }).toList(),
       onChanged: onSelectingGender,
-      decoration: InputDecoration(
-        labelText: "Gender",
+      decoration: const InputDecoration(
+        labelText: 'Gender',
         border: OutlineInputBorder(),
       ),
       validator: (value) {

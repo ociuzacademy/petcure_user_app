@@ -54,7 +54,7 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
         builder: (context, state) {
           switch (state) {
             case PetDetailsLoading _:
-              return PetDetailsLoadingWidget();
+              return const PetDetailsLoadingWidget();
             case PetDetailsError(:final errorMessage):
               return PetDetailsErrorWidget(
                 errorMessage: errorMessage,
@@ -88,11 +88,11 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
                   children: [
                     // Profile Picture
                     Hero(
-                      tag: "pet-${pet.id}",
+                      tag: 'pet-${pet.id}',
                       child: CircleAvatar(
                         radius: avatarRadius,
                         backgroundImage: CachedNetworkImageProvider(
-                          "${AppUrls.baseUrl}/${pet.petImage}",
+                          '${AppUrls.baseUrl}/${pet.petImage}',
                         ),
                       ),
                     ),
@@ -109,7 +109,7 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
                           );
                         },
                         icon: const Icon(Icons.edit),
-                        label: const Text("Update Pet Details"),
+                        label: const Text('Update Pet Details'),
                       ),
                     ),
                     SizedBox(height: verticalSpacing),
@@ -159,7 +159,7 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
                 ),
               );
             default:
-              return PetDetailsLoadingWidget();
+              return const PetDetailsLoadingWidget();
           }
         },
       ),

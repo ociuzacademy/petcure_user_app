@@ -11,7 +11,7 @@ part 'pet_operations_state.dart';
 part 'pet_operations_bloc.freezed.dart';
 
 class PetOperationsBloc extends Bloc<PetOperationsEvent, PetOperationsState> {
-  PetOperationsBloc() : super(PetOperationsInitial()) {
+  PetOperationsBloc() : super(const PetOperationsInitial()) {
     on<_AddingPet>(_onAddingPet);
   }
 

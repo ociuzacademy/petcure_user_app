@@ -7,7 +7,7 @@ part 'pet_details_state.dart';
 part 'pet_details_cubit.freezed.dart';
 
 class PetDetailsCubit extends Cubit<PetDetailsState> {
-  PetDetailsCubit() : super(PetDetailsState.initial());
+  PetDetailsCubit() : super(const PetDetailsState.initial());
 
   Future<void> getPetDetails(int petId) async {
     emit(const PetDetailsState.petDetailsLoading());

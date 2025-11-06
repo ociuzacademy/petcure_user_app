@@ -13,7 +13,7 @@ class EditProfilePage extends StatefulWidget {
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 
-  static route() => MaterialPageRoute(builder: (context) => EditProfilePage());
+  static route() => MaterialPageRoute(builder: (context) => const EditProfilePage());
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
@@ -77,7 +77,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(title: Text("Edit User Details")),
+      appBar: AppBar(title: const Text('Edit User Details')),
       body: Form(
         key: _formKey,
         child: Center(
@@ -103,7 +103,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             backgroundColor: Colors.grey[300],
                             backgroundImage: profileImage != null
                                 ? FileImage(profileImage)
-                                : CachedNetworkImageProvider(
+                                : const CachedNetworkImageProvider(
                                     'https://i.pravatar.cc/300',
                                   ),
                             child: null,
@@ -124,7 +124,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       },
                       labelText: 'Full Name',
                       hintText: 'Enter your full name',
-                      textFieldIcon: Icon(Icons.person),
+                      textFieldIcon: const Icon(Icons.person),
                       focusNode: _fullNameFocusNode,
                       nextFocusNode: _emailFocusNode,
                     ),
@@ -148,7 +148,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       },
                       labelText: 'Email',
                       hintText: 'Enter your email',
-                      textFieldIcon: Icon(Icons.email_outlined),
+                      textFieldIcon: const Icon(Icons.email_outlined),
                       textInputType: TextInputType.emailAddress,
                       focusNode: _emailFocusNode,
                       nextFocusNode: _phoneNumberFocusNode,
@@ -174,7 +174,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       labelText: 'Phone Number',
                       hintText: 'Enter your phone number',
                       textInputType: TextInputType.phone,
-                      textFieldIcon: Icon(Icons.phone),
+                      textFieldIcon: const Icon(Icons.phone),
                       focusNode: _phoneNumberFocusNode,
                       nextFocusNode: _addressFocusNode,
                     ),
@@ -187,9 +187,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         }
                         return null;
                       },
-                      labelText: "Address",
-                      hintText: "Enter your address",
-                      textFieldIcon: Icon(Icons.home),
+                      labelText: 'Address',
+                      hintText: 'Enter your address',
+                      textFieldIcon: const Icon(Icons.home),
                       isMultiline: true,
                       focusNode: _addressFocusNode,
                       nextFocusNode: _passwordFocusNode,
@@ -209,7 +209,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       },
                       labelText: 'Password',
                       hintText: 'Enter your password',
-                      textFieldIcon: Icon(Icons.password),
+                      textFieldIcon: const Icon(Icons.password),
                       textInputType: TextInputType.visiblePassword,
                       isPassword: true,
                       focusNode: _passwordFocusNode,
@@ -219,7 +219,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       buttonWidth: double.infinity,
                       backgroundColor: AppPalette.firstColor,
                       textColor: Colors.white,
-                      labelText: "Edit Parent",
+                      labelText: 'Edit Parent',
                       onClick: _editProfileHelper.editProfile,
                     ),
                   ],

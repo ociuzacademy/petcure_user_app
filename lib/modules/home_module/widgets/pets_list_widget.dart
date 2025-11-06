@@ -37,8 +37,8 @@ class _PetsListWidgetState extends State<PetsListWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "Your Pets",
+                      const Text(
+                        'Your Pets',
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -51,7 +51,7 @@ class _PetsListWidgetState extends State<PetsListWidget> {
                             AddPetPage.route(isLoggedIn: true),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           'Add Pet',
                           style: TextStyle(
                             fontSize: 25,

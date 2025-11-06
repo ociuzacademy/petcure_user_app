@@ -10,7 +10,7 @@ class OrdersListPage extends StatefulWidget {
   @override
   State<OrdersListPage> createState() => _OrdersListPageState();
 
-  static route() => MaterialPageRoute(builder: (context) => OrdersListPage());
+  static route() => MaterialPageRoute(builder: (context) => const OrdersListPage());
 }
 
 class _OrdersListPageState extends State<OrdersListPage> {

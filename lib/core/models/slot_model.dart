@@ -5,5 +5,5 @@ import 'package:flutter/material.dart';
 class SlotModel {
   final TimeOfDay startingTime;
   final TimeOfDay endingTime;
-  SlotModel({required this.startingTime, required this.endingTime});
+  const SlotModel({required this.startingTime, required this.endingTime});
 }

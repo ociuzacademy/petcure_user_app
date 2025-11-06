@@ -22,7 +22,7 @@ class PaymentHelper {
       isScrollControlled: true,
       builder: (context) {
         switch (selectedMethod.value) {
-          case "UPI":
+          case 'UPI':
             return UPIPayment(orderId: orderId, amount: totalRate);
           default:
             return CardPayment(orderId: orderId, amount: totalRate);

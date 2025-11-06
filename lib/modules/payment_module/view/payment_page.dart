@@ -74,7 +74,7 @@ class _PaymentPageState extends State<PaymentPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          "Payment Option",
+          'Payment Option',
           style: TextStyle(fontSize: 18.sp, color: Colors.black),
         ),
         centerTitle: true,
@@ -114,7 +114,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Choose Your transaction method",
+                      'Choose Your transaction method',
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
@@ -170,7 +170,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       buttonWidth: double.infinity,
                       backgroundColor: AppPalette.firstColor,
                       textColor: Colors.white,
-                      labelText: "Confirm Payment Method",
+                      labelText: 'Confirm Payment Method',
                       onClick: _paymentHelper.makePayment,
                     ),
                   ],

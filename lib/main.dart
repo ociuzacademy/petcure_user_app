@@ -12,9 +12,9 @@ void main() async {
   late final Widget initialWidget;
   final bool isLoggedIn = await AuthStorageFunctions.getLoginStatus();
   if (isLoggedIn) {
-    initialWidget = HomePage();
+    initialWidget = const HomePage();
   } else {
-    initialWidget = LoginPage();
+    initialWidget = const LoginPage();
   }
   runApp(MyApp(initialWidget: initialWidget));
 }

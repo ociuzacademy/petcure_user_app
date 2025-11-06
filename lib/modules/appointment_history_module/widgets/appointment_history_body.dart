@@ -16,20 +16,20 @@ class AppointmentHistoryBody extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: const Text(
+          const SliverToBoxAdapter(
+            child: Text(
               'Select Pet:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
-          SliverToBoxAdapter(child: const SizedBox(height: 8)),
-          UserPetSelectionWidget(),
-          SliverToBoxAdapter(child: const SizedBox(height: 16)),
-          GetPetHistoryButton(),
-          SliverToBoxAdapter(child: const SizedBox(height: 16)),
-          PetAppointmentHistoryHeader(),
+          const SliverToBoxAdapter(child: SizedBox(height: 8)),
+          const UserPetSelectionWidget(),
+          const SliverToBoxAdapter(child: SizedBox(height: 16)),
+          const GetPetHistoryButton(),
+          const SliverToBoxAdapter(child: SizedBox(height: 16)),
+          const PetAppointmentHistoryHeader(),
           HistorySpacingWidget(context: context),
-          PetAppointmentHistoryListWidget(),
+          const PetAppointmentHistoryListWidget(),
         ],
       ),
     );

@@ -12,7 +12,7 @@ class AppointmentBookingHelper {
   final ValueNotifier<SlotModel?> selectedTimeSlot;
   final ValueNotifier<String?> selectedReason;
   final ValueNotifier<BookingOption> selectedBookingOption;
-  AppointmentBookingHelper({
+  const AppointmentBookingHelper({
     required this.context,
     required this.symptomsController,
     required this.selectedDate,
@@ -26,7 +26,7 @@ class AppointmentBookingHelper {
       if (selectedDate.value == null) {
         CustomSnackBar.showError(
           context,
-          message: "Please select a date for appointment.",
+          message: 'Please select a date for appointment.',
         );
         return;
       }
@@ -34,7 +34,7 @@ class AppointmentBookingHelper {
       if (selectedReason.value == null) {
         CustomSnackBar.showError(
           context,
-          message: "Please select reason for the appointment.",
+          message: 'Please select reason for the appointment.',
         );
         return;
       }
@@ -42,7 +42,7 @@ class AppointmentBookingHelper {
       if (selectedTimeSlot.value == null) {
         CustomSnackBar.showError(
           context,
-          message: "Please select any one of the time slot.",
+          message: 'Please select any one of the time slot.',
         );
         return;
       }
@@ -59,7 +59,7 @@ class AppointmentBookingHelper {
           symptoms.isEmpty) {
         CustomSnackBar.showError(
           context,
-          message: "Please enter symptoms of youe pet.",
+          message: 'Please enter symptoms of youe pet.',
         );
         return;
       }

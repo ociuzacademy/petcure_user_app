@@ -49,7 +49,7 @@ class PetServices {
     required int categoryId,
   }) async {
     try {
-      Map<String, dynamic> params = {"category_id": categoryId.toString()};
+      Map<String, dynamic> params = {'category_id': categoryId.toString()};
 
       // Construct the URL with query parameters
       final url = Uri.parse(
@@ -84,7 +84,7 @@ class PetServices {
 
   static Future<UserPetsModel> getUserPets(String userId) async {
     try {
-      Map<String, dynamic> params = {"user_id": userId.toString()};
+      Map<String, dynamic> params = {'user_id': userId.toString()};
 
       final url = Uri.parse(
         AppUrls.getUserPetsUrl,
@@ -98,7 +98,7 @@ class PetServices {
             },
           )
           .timeout(
-            Duration(seconds: AppConstants.requestTimeoutSeconds),
+            const Duration(seconds: AppConstants.requestTimeoutSeconds),
             onTimeout: () {
               throw TimeoutException(
                 'Request timed out after ${AppConstants.requestTimeoutSeconds} seconds',

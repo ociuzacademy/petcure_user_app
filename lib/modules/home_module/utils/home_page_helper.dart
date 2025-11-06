@@ -16,7 +16,7 @@ class HomePageHelper {
       message: 'Do you wanted to logout from the app?',
       onSubmit: () {
         final AuthBloc authBloc = context.read<AuthBloc>();
-        authBloc.add(AuthEvent.userLoggingOut());
+        authBloc.add(const AuthEvent.userLoggingOut());
       },
     );
   }

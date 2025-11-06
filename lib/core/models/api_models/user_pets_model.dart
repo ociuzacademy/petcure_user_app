@@ -15,7 +15,7 @@ class UserPetsModel {
   final int numberOfPets;
   final List<Pet> pets;
 
-  UserPetsModel({
+  const UserPetsModel({
     required this.success,
     required this.userId,
     required this.numberOfPets,
@@ -35,17 +35,17 @@ class UserPetsModel {
   );
 
   factory UserPetsModel.fromJson(Map<String, dynamic> json) => UserPetsModel(
-    success: json["success"],
-    userId: json["user_id"],
-    numberOfPets: json["number_of_pets"],
-    pets: List<Pet>.from(json["pets"].map((x) => Pet.fromJson(x))),
+    success: json['success'],
+    userId: json['user_id'],
+    numberOfPets: json['number_of_pets'],
+    pets: List<Pet>.from(json['pets'].map((x) => Pet.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "success": success,
-    "user_id": userId,
-    "number_of_pets": numberOfPets,
-    "pets": List<dynamic>.from(pets.map((x) => x.toJson())),
+    'success': success,
+    'user_id': userId,
+    'number_of_pets': numberOfPets,
+    'pets': List<dynamic>.from(pets.map((x) => x.toJson())),
   };
 }
 
@@ -64,7 +64,7 @@ class Pet {
   final int category;
   final int subCategory;
 
-  Pet({
+  const Pet({
     required this.id,
     required this.categoryName,
     required this.subCategoryName,
@@ -111,35 +111,35 @@ class Pet {
   );
 
   factory Pet.fromJson(Map<String, dynamic> json) => Pet(
-    id: json["id"],
-    categoryName: json["category_name"],
-    subCategoryName: json["sub_category_name"],
-    name: json["name"],
-    birthDate: DateTime.parse(json["birth_date"]),
-    gender: json["gender"],
-    weight: json["weight"]?.toDouble(),
-    petImage: json["pet_image"],
-    healthCondition: json["health_condition"],
-    createdAt: DateTime.parse(json["created_at"]),
-    user: json["user"],
-    category: json["category"],
-    subCategory: json["sub_category"],
+    id: json['id'],
+    categoryName: json['category_name'],
+    subCategoryName: json['sub_category_name'],
+    name: json['name'],
+    birthDate: DateTime.parse(json['birth_date']),
+    gender: json['gender'],
+    weight: json['weight']?.toDouble(),
+    petImage: json['pet_image'],
+    healthCondition: json['health_condition'],
+    createdAt: DateTime.parse(json['created_at']),
+    user: json['user'],
+    category: json['category'],
+    subCategory: json['sub_category'],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "category_name": categoryName,
-    "sub_category_name": subCategoryName,
-    "name": name,
-    "birth_date":
+    'id': id,
+    'category_name': categoryName,
+    'sub_category_name': subCategoryName,
+    'name': name,
+    'birth_date':
         "${birthDate.year.toString().padLeft(4, '0')}-${birthDate.month.toString().padLeft(2, '0')}-${birthDate.day.toString().padLeft(2, '0')}",
-    "gender": gender,
-    "weight": weight,
-    "pet_image": petImage,
-    "health_condition": healthCondition,
-    "created_at": createdAt.toIso8601String(),
-    "user": user,
-    "category": category,
-    "sub_category": subCategory,
+    'gender': gender,
+    'weight': weight,
+    'pet_image': petImage,
+    'health_condition': healthCondition,
+    'created_at': createdAt.toIso8601String(),
+    'user': user,
+    'category': category,
+    'sub_category': subCategory,
   };
 }

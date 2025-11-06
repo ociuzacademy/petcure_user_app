@@ -16,7 +16,7 @@ class AddPetServices {
     required String userId,
   }) async {
     try {
-      var request = http.MultipartRequest("POST", Uri.parse(AppUrls.addPetUrl));
+      var request = http.MultipartRequest('POST', Uri.parse(AppUrls.addPetUrl));
 
       request.fields['user_id'] = userId;
       debugPrint('User ID: $userId');
@@ -45,13 +45,13 @@ class AddPetServices {
         'pet_image',
         imageStream,
         imageLength,
-        filename: petDetails.petImage.path.split("/").last,
+        filename: petDetails.petImage.path.split('/').last,
       );
       request.files.add(multipartFile);
 
       // Send request
       final resp = await request.send().timeout(
-        Duration(seconds: AppConstants.requestTimeoutSeconds),
+        const Duration(seconds: AppConstants.requestTimeoutSeconds),
         onTimeout: () {
           throw TimeoutException(
             'Request timed out after ${AppConstants.requestTimeoutSeconds} seconds',

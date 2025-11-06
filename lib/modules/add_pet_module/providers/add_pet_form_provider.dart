@@ -9,6 +9,7 @@ import 'package:petcure_user_app/core/models/age.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_category_model.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_sub_category_model.dart';
 import 'package:petcure_user_app/modules/add_pet_module/class/add_pet_details.dart';
+import 'package:petcure_user_app/modules/add_pet_module/cubit/pet_sub_category_cubit.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 
 class AddPetFormProvider with ChangeNotifier {
@@ -137,13 +138,10 @@ class AddPetFormProvider with ChangeNotifier {
     petCategoryCubit.getPetCategories();
   }
 
-  void getPetSubCategories(
-    BuildContext context,
-    List<PetCategoryModel> petCategories,
-    int categoryId,
-  ) {
-    final PetCategoryCubit petCategoryCubit = context.read<PetCategoryCubit>();
-    petCategoryCubit.getPetSubCategories(petCategories, categoryId);
+  void getPetSubCategories(BuildContext context, int categoryId) {
+    final PetSubCategoryCubit petSubCategoryCubit = context
+        .read<PetSubCategoryCubit>();
+    petSubCategoryCubit.getPetSubCategories(categoryId);
   }
 
   // Validation methods
@@ -196,7 +194,7 @@ class AddPetFormProvider with ChangeNotifier {
       CustomSnackBar.showError(
         context,
         message:
-            "If your pet has any specific medical condition, please specify.",
+            'If your pet has any specific medical condition, please specify.',
       );
       return null;
     }
@@ -205,7 +203,7 @@ class AddPetFormProvider with ChangeNotifier {
     if (!formKey.currentState!.validate()) {
       CustomSnackBar.showError(
         context,
-        message: "Please add data in all required fields.",
+        message: 'Please add data in all required fields.',
       );
       return null;
     }
@@ -214,7 +212,7 @@ class AddPetFormProvider with ChangeNotifier {
     if (selectedCategory == null || selectedSubCategory == null) {
       CustomSnackBar.showError(
         context,
-        message: "Please select both category and sub-category.",
+        message: 'Please select both category and sub-category.',
       );
       return null;
     }
@@ -223,7 +221,7 @@ class AddPetFormProvider with ChangeNotifier {
     int years = int.tryParse(ageYearsController.text) ?? 0;
     int months = int.tryParse(ageMonthsController.text) ?? 0;
     if (years == 0 && months == 0) {
-      CustomSnackBar.showError(context, message: "Please enter a valid age.");
+      CustomSnackBar.showError(context, message: 'Please enter a valid age.');
       return null;
     }
 
@@ -232,7 +230,7 @@ class AddPetFormProvider with ChangeNotifier {
     if (weight == 0.0) {
       CustomSnackBar.showError(
         context,
-        message: "Please enter a valid weight.",
+        message: 'Please enter a valid weight.',
       );
       return null;
     }
@@ -250,7 +248,7 @@ class AddPetFormProvider with ChangeNotifier {
     if (selectedGender == null) {
       CustomSnackBar.showError(
         context,
-        message: "Please select the gender of your pet.",
+        message: 'Please select the gender of your pet.',
       );
       return null;
     }

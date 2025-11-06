@@ -484,8 +484,8 @@ class FakeData {
     final Random random = Random();
     final List<Doctor> doctors = generateFakeDoctors();
     final List<SlotModel> slots = AppHelpers.generateTimeSlots();
-    final List<String> reasons = AppHelpers.bookingReasons;
-    final List<BookingOption> bookingOptions = BookingOption.values;
+    const List<String> reasons = AppHelpers.bookingReasons;
+    const List<BookingOption> bookingOptions = BookingOption.values;
 
     final List<Booking> bookings = [];
     final DateTime now = DateTime.now();
@@ -554,8 +554,8 @@ class FakeData {
   static List<Order> generateFakeOrders({int count = 5}) {
     final Random random = Random();
     final List<Order> orders = [];
-    final List<OrderDeliveryStatus> statuses = OrderDeliveryStatus.values;
-    final String userId = 'current_user_id'; // Fixed user ID for single user
+    const List<OrderDeliveryStatus> statuses = OrderDeliveryStatus.values;
+    const String userId = 'current_user_id'; // Fixed user ID for single user
 
     for (int i = 0; i < count; i++) {
       // Generate random order date within the last 30 days

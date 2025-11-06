@@ -10,7 +10,7 @@ part 'register_state.dart';
 part 'register_bloc.freezed.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  RegisterBloc() : super(RegisterInitial()) {
+  RegisterBloc() : super(const RegisterInitial()) {
     on<UserRegistering>(_onUserRegister);
   }
 

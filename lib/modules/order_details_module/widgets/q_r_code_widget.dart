@@ -90,7 +90,7 @@ class QRCodeWidget extends StatelessWidget {
                       child: Container(
                         width: 250,
                         height: 250,
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: AppPalette.blackColor,

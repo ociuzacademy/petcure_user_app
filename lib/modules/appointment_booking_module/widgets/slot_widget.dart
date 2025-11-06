@@ -18,7 +18,7 @@ class SlotWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String slotTimeRange =
-        "${AppHelpers.formatTimeOfDayTo12Hour(slot.startingTime)} - ${AppHelpers.formatTimeOfDayTo12Hour(slot.endingTime)}";
+        '${AppHelpers.formatTimeOfDayTo12Hour(slot.startingTime)} - ${AppHelpers.formatTimeOfDayTo12Hour(slot.endingTime)}';
     return GestureDetector(
       onTap: () {
         if (onSelect != null) {

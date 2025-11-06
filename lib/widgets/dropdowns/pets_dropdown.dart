@@ -28,7 +28,7 @@ class PetsDropdown extends StatelessWidget {
       }).toList(),
       onChanged: onSelectingPet,
       decoration: const InputDecoration(
-        labelText: "Select Pet",
+        labelText: 'Select Pet',
         border: OutlineInputBorder(),
       ),
       validator: (value) {

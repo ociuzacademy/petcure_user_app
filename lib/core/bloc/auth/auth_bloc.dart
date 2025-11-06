@@ -9,7 +9,7 @@ part 'auth_state.dart';
 part 'auth_bloc.freezed.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(AuthInitial()) {
+  AuthBloc() : super(const AuthInitial()) {
     on<UserLoggingIn>(_onLogIn);
     on<UserLoggingOut>(_onLogOut);
   }
@@ -33,11 +33,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onLogOut(UserLoggingOut event, Emitter<AuthState> emit) async {
     emit(const AuthState.authLoading());
     try {
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
 
       await AuthStorageFunctions.logout();
 
-      emit(AuthState.logoutSuccess());
+      emit(const AuthState.logoutSuccess());
     } catch (e) {
       emit(AuthState.authError(e.toString()));
     }

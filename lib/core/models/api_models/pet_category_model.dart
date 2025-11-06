@@ -26,7 +26,7 @@ class PetCategoryModel {
   );
 
   factory PetCategoryModel.fromJson(Map<String, dynamic> json) =>
-      PetCategoryModel(id: json["id"], petcategory: json["petcategory"]);
+      PetCategoryModel(id: json['id'], petcategory: json['petcategory']);
 
-  Map<String, dynamic> toJson() => {"id": id, "petcategory": petcategory};
+  Map<String, dynamic> toJson() => {'id': id, 'petcategory': petcategory};
 }

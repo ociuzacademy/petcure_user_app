@@ -23,7 +23,7 @@ class UpdatePetHelper {
   final ValueNotifier<String?> selectedCategory;
   final ValueNotifier<String?> selectedSubCategory;
   final ValueNotifier<DateTime?> birthDate;
-  UpdatePetHelper({
+  const UpdatePetHelper({
     required this.context,
     required this.formKey,
     required this.petNameController,
@@ -97,7 +97,7 @@ class UpdatePetHelper {
       CustomSnackBar.showError(
         context,
         message:
-            "If your pet has any specific medical condition, please specify.",
+            'If your pet has any specific medical condition, please specify.',
       );
       return;
     }
@@ -111,7 +111,7 @@ class UpdatePetHelper {
         if (years == 0 && months == 0) {
           CustomSnackBar.showError(
             context,
-            message: "Please enter a valid age.",
+            message: 'Please enter a valid age.',
           );
           return;
         }
@@ -120,7 +120,7 @@ class UpdatePetHelper {
         if (weight == 0.0) {
           CustomSnackBar.showError(
             context,
-            message: "Please enter a valid weight.",
+            message: 'Please enter a valid weight.',
           );
           return;
         }
@@ -136,7 +136,7 @@ class UpdatePetHelper {
         if (selectedGender.value == null) {
           CustomSnackBar.showError(
             context,
-            message: "Please select the gender of your pet.",
+            message: 'Please select the gender of your pet.',
           );
           return;
         }
@@ -153,13 +153,13 @@ class UpdatePetHelper {
       } else {
         CustomSnackBar.showError(
           context,
-          message: "Please select both category and sub-category.",
+          message: 'Please select both category and sub-category.',
         );
       }
     } else {
       CustomSnackBar.showError(
         context,
-        message: "Please add data in all required fields.",
+        message: 'Please add data in all required fields.',
       );
     }
   }

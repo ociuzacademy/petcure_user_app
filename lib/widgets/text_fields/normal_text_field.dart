@@ -53,8 +53,8 @@ class _NormalTextFieldState extends State<NormalTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.labelText, style: TextStyle(fontWeight: FontWeight.bold)),
-        SizedBox(height: 4),
+        Text(widget.labelText, style: const TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 4),
         TextFormField(
           controller: widget.textEditingController,
           validator: widget.validatorFunction,
@@ -80,7 +80,7 @@ class _NormalTextFieldState extends State<NormalTextField> {
                               isObscured = false;
                             });
                           },
-                          icon: Icon(Icons.visibility),
+                          icon: const Icon(Icons.visibility),
                         )
                       : IconButton(
                           onPressed: () {
@@ -88,10 +88,10 @@ class _NormalTextFieldState extends State<NormalTextField> {
                               isObscured = true;
                             });
                           },
-                          icon: Icon(Icons.visibility_off),
+                          icon: const Icon(Icons.visibility_off),
                         )
                 : null,
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
           ),
           keyboardType: widget.isMultiline
               ? TextInputType.multiline

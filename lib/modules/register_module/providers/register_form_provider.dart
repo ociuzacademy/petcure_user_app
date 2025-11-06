@@ -59,7 +59,7 @@ class RegisterFormProvider with ChangeNotifier {
       }
     } catch (e) {
       if (context.mounted) {
-        CustomSnackBar.showError(context, message: "Error: ${e.toString()}");
+        CustomSnackBar.showError(context, message: 'Error: ${e.toString()}');
       }
     }
   }
@@ -109,7 +109,7 @@ class RegisterFormProvider with ChangeNotifier {
 
       // Get current position
       Position position = await Geolocator.getCurrentPosition(
-        locationSettings: LocationSettings(accuracy: LocationAccuracy.high),
+        locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
       );
 
       // Update the text fields with the coordinates

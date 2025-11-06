@@ -22,7 +22,7 @@ class UserProfileWidget extends StatelessWidget {
             Center(
               child: Stack(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 60,
                     backgroundImage: CachedNetworkImageProvider(
                       'https://i.pravatar.cc/300',
@@ -46,19 +46,19 @@ class UserProfileWidget extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Profile Details
-            ProfileItem(icon: Icons.person, title: 'Name', value: 'John Doe'),
-            ProfileItem(
+            const ProfileItem(icon: Icons.person, title: 'Name', value: 'John Doe'),
+            const ProfileItem(
               icon: Icons.email,
               title: 'Email',
               value: 'user@email.com',
             ),
-            ProfileItem(
+            const ProfileItem(
               icon: Icons.phone,
               title: 'Phone',
               value: '+91 9876543210',
             ),
-            ProfileItem(icon: Icons.pets, title: 'Number of Pets', value: '10'),
-            ProfileItem(
+            const ProfileItem(icon: Icons.pets, title: 'Number of Pets', value: '10'),
+            const ProfileItem(
               icon: Icons.location_on,
               title: 'Address',
               value:

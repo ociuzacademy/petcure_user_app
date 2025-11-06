@@ -15,7 +15,7 @@ class AppointmentHistoryPage extends StatefulWidget {
   State<AppointmentHistoryPage> createState() => _AppointmentHistoryPageState();
 
   static route() =>
-      MaterialPageRoute(builder: (context) => AppointmentHistoryPage());
+      MaterialPageRoute(builder: (context) => const AppointmentHistoryPage());
 }
 
 class _AppointmentHistoryPageState extends State<AppointmentHistoryPage> {

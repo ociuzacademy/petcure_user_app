@@ -292,7 +292,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: AppPalette.firstColor,
-                            side: BorderSide(color: AppPalette.firstColor),
+                            side: const BorderSide(color: AppPalette.firstColor),
                             padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
                           icon: const Icon(Icons.shopping_cart),

@@ -35,17 +35,17 @@ class LoginModel {
   );
 
   factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
-    status: json["status"],
-    message: json["message"],
-    userId: json["user_id"],
-    data: Data.fromJson(json["data"]),
+    status: json['status'],
+    message: json['message'],
+    userId: json['user_id'],
+    data: Data.fromJson(json['data']),
   );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "user_id": userId,
-    "data": data.toJson(),
+    'status': status,
+    'message': message,
+    'user_id': userId,
+    'data': data.toJson(),
   };
 }
 
@@ -53,13 +53,13 @@ class Data {
   final String email;
   final String password;
 
-  Data({required this.email, required this.password});
+  const Data({required this.email, required this.password});
 
   Data copyWith({String? email, String? password}) =>
       Data(email: email ?? this.email, password: password ?? this.password);
 
   factory Data.fromJson(Map<String, dynamic> json) =>
-      Data(email: json["email"], password: json["password"]);
+      Data(email: json['email'], password: json['password']);
 
-  Map<String, dynamic> toJson() => {"email": email, "password": password};
+  Map<String, dynamic> toJson() => {'email': email, 'password': password};
 }

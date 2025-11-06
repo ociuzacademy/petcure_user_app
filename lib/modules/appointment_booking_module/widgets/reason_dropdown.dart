@@ -24,8 +24,8 @@ class ReasonDropdown extends StatelessWidget {
         return DropdownMenuItem(value: category, child: Text(category));
       }).toList(),
       onChanged: onSelectingReason,
-      decoration: InputDecoration(
-        labelText: "Reason",
+      decoration: const InputDecoration(
+        labelText: 'Reason',
         border: OutlineInputBorder(),
       ),
       validator: (value) {

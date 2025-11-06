@@ -11,7 +11,7 @@ import 'package:petcure_user_app/modules/pet_details_module/models/pet_details_m
 class PetDetailsServices {
   static Future<PetDetailsModel> getUserPets(int petId) async {
     try {
-      Map<String, dynamic> params = {"pet_id": petId.toString()};
+      Map<String, dynamic> params = {'pet_id': petId.toString()};
 
       final url = Uri.parse(
         AppUrls.getPetDetailsUrl,
@@ -25,7 +25,7 @@ class PetDetailsServices {
             },
           )
           .timeout(
-            Duration(seconds: AppConstants.requestTimeoutSeconds),
+            const Duration(seconds: AppConstants.requestTimeoutSeconds),
             onTimeout: () {
               throw TimeoutException(
                 'Request timed out after ${AppConstants.requestTimeoutSeconds} seconds',

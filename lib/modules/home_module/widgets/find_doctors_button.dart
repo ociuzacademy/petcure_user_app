@@ -18,7 +18,7 @@ class FindDoctorsButton extends StatelessWidget {
         buttonWidth: double.infinity,
         backgroundColor: AppPalette.firstColor,
         textColor: Colors.white,
-        labelText: "Find Doctors",
+        labelText: 'Find Doctors',
         onClick: () => provider.findDoctors(context),
       ),
     );

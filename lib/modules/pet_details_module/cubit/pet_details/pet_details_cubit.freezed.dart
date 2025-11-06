@@ -332,12 +332,12 @@ $PetDetailsSuccessCopyWith<PetDetailsSuccess> get copyWith => _$PetDetailsSucces
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PetDetailsSuccess&&const DeepCollectionEquality().equals(other.petDetails, petDetails));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PetDetailsSuccess&&(identical(other.petDetails, petDetails) || other.petDetails == petDetails));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(petDetails));
+int get hashCode => Object.hash(runtimeType,petDetails);
 
 @override
 String toString() {
@@ -369,9 +369,9 @@ class _$PetDetailsSuccessCopyWithImpl<$Res>
 
 /// Create a copy of PetDetailsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? petDetails = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? petDetails = null,}) {
   return _then(PetDetailsSuccess(
-freezed == petDetails ? _self.petDetails : petDetails // ignore: cast_nullable_to_non_nullable
+null == petDetails ? _self.petDetails : petDetails // ignore: cast_nullable_to_non_nullable
 as PetDetailsModel,
   ));
 }

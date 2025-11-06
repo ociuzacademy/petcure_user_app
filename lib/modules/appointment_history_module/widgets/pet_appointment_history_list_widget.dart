@@ -33,7 +33,7 @@ class PetAppointmentHistoryListWidget extends StatelessWidget {
               '${booking.doctor.name} - ${DateFormat('dd-MM-yyyy').format(booking.bookingDate)}',
             ),
             subtitle: Text(
-              "${AppHelpers.formatTimeOfDayTo12Hour(booking.timeSlot.startingTime)} - ${AppHelpers.formatTimeOfDayTo12Hour(booking.timeSlot.endingTime)}",
+              '${AppHelpers.formatTimeOfDayTo12Hour(booking.timeSlot.startingTime)} - ${AppHelpers.formatTimeOfDayTo12Hour(booking.timeSlot.endingTime)}',
             ),
             trailing: Text(booking.reasonForBooking),
           ),

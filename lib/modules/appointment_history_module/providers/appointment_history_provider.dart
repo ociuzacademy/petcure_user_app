@@ -68,18 +68,18 @@ class AppointmentHistoryProvider with ChangeNotifier {
     } else {
       _showHistory = false;
       notifyListeners();
-      throw Exception("Please select a pet");
+      throw Exception('Please select a pet');
     }
   }
 
   String fetchLeadingImage(String reason) {
     switch (reason) {
-      case "Vaccine":
-        return "assets/icons/icons8-syringe-48.png";
-      case "Routine Checkup":
-        return "assets/icons/icons8-veterinary-examination-48.png";
+      case 'Vaccine':
+        return 'assets/icons/icons8-syringe-48.png';
+      case 'Routine Checkup':
+        return 'assets/icons/icons8-veterinary-examination-48.png';
       default:
-        return "assets/icons/icons8-pets-medical-examination-48.png";
+        return 'assets/icons/icons8-pets-medical-examination-48.png';
     }
   }
 }

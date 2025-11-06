@@ -76,7 +76,7 @@ class DoctorBookingProvider with ChangeNotifier {
         if (!context.mounted) return;
         CustomSnackBar.showError(
           context,
-          message: "Location services are disabled.",
+          message: 'Location services are disabled.',
         );
         return;
       }
@@ -88,7 +88,7 @@ class DoctorBookingProvider with ChangeNotifier {
           if (!context.mounted) return;
           CustomSnackBar.showError(
             context,
-            message: "Location permissions are denied.",
+            message: 'Location permissions are denied.',
           );
           return;
         }
@@ -98,12 +98,12 @@ class DoctorBookingProvider with ChangeNotifier {
         if (!context.mounted) return;
         CustomSnackBar.showError(
           context,
-          message: "Location permissions are permanently denied.",
+          message: 'Location permissions are permanently denied.',
         );
         return;
       }
 
-      LocationSettings locationSettings = LocationSettings(
+      LocationSettings locationSettings = const LocationSettings(
         accuracy: LocationAccuracy.high,
         distanceFilter: 10,
       );
@@ -117,7 +117,7 @@ class DoctorBookingProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       if (!context.mounted) return;
-      CustomSnackBar.showError(context, message: "Error getting location: $e");
+      CustomSnackBar.showError(context, message: 'Error getting location: $e');
     }
   }
 
@@ -128,12 +128,12 @@ class DoctorBookingProvider with ChangeNotifier {
         _showDoctors = true;
         notifyListeners();
       } else {
-        CustomSnackBar.showError(context, message: "Please select a pet");
+        CustomSnackBar.showError(context, message: 'Please select a pet');
         _showDoctors = false;
         notifyListeners();
       }
     } else {
-      CustomSnackBar.showError(context, message: "Please add location");
+      CustomSnackBar.showError(context, message: 'Please add location');
       _showDoctors = false;
       notifyListeners();
     }

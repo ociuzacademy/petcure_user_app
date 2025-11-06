@@ -26,8 +26,8 @@ class PetSubCategoriesWidget extends StatelessWidget {
         );
       }).toList(),
       onChanged: onSelectingSubCategory,
-      decoration: InputDecoration(
-        labelText: "Sub Category",
+      decoration: const InputDecoration(
+        labelText: 'Sub Category',
         border: OutlineInputBorder(),
       ),
       validator: (value) {

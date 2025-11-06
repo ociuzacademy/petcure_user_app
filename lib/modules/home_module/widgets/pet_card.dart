@@ -28,7 +28,7 @@ class PetCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15),
                 topRight: Radius.circular(15),
                 bottomLeft: Radius.circular(0),
@@ -37,7 +37,7 @@ class PetCard extends StatelessWidget {
               child: Stack(
                 children: [
                   Hero(
-                    tag: "pet-${pet.petId}",
+                    tag: 'pet-${pet.petId}',
                     child: CachedNetworkImage(
                       imageUrl: pet.photoUrl,
                       height: screenSize.height * 0.175,
@@ -46,7 +46,7 @@ class PetCard extends StatelessWidget {
                       progressIndicatorBuilder: (context, url, progress) =>
                           CircularProgressIndicator(
                             value: progress.progress,
-                            valueColor: AlwaysStoppedAnimation<Color>(
+                            valueColor: const AlwaysStoppedAnimation<Color>(
                               AppPalette.firstColor,
                             ),
                           ),
@@ -68,7 +68,7 @@ class PetCard extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
@@ -76,16 +76,16 @@ class PetCard extends StatelessWidget {
                   children: [
                     Text(
                       pet.name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 25,
                         // fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      "AGE: ${AppHelpers.formatDate(pet.birthDate).toStringAsFixed(1)} years",
+                      'AGE: ${AppHelpers.formatDate(pet.birthDate).toStringAsFixed(1)} years',
                       style: TextStyle(fontSize: 15, color: Colors.grey[600]),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -95,7 +95,7 @@ class PetCard extends StatelessWidget {
                             text: pet.category.toUpperCase(),
                           ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         Flexible(
                           child: InfoChip(
                             icon: Icons.pets,

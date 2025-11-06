@@ -14,7 +14,7 @@ class CartPage extends StatefulWidget {
   @override
   State<CartPage> createState() => _CartPageState();
 
-  static route() => MaterialPageRoute(builder: (context) => CartPage());
+  static route() => MaterialPageRoute(builder: (context) => const CartPage());
 }
 
 class _CartPageState extends State<CartPage> {

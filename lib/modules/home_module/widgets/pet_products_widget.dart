@@ -52,7 +52,7 @@ class _PetProductsWidgetState extends State<PetProductsWidget> {
               children: [
                 const SizedBox(height: 20),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
                     'Categories',
                     style: Theme.of(context).textTheme.labelMedium,

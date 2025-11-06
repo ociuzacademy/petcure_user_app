@@ -62,7 +62,7 @@ class _CardPaymentState extends State<CardPayment> {
                 }
                 return null;
               },
-              labelText: "Cardholder Name",
+              labelText: 'Cardholder Name',
               hintText: "Enter cardholder's name",
               onChange: (value) {
                 _cardNameController.value = _cardNameController.value.copyWith(
@@ -87,7 +87,7 @@ class _CardPaymentState extends State<CardPayment> {
 
                 return null;
               },
-              labelText: "Card Number",
+              labelText: 'Card Number',
               hintText: "Enter card's number",
               textInputType: TextInputType.number,
             ),
@@ -127,7 +127,7 @@ class _CardPaymentState extends State<CardPayment> {
               buttonWidth: double.infinity,
               backgroundColor: AppPalette.firstColor,
               textColor: Colors.white,
-              labelText: "Pay",
+              labelText: 'Pay',
               onClick: _cardPaymentHelper.cardPayment,
             ),
           ],

@@ -28,7 +28,7 @@ class LoginHelper {
     } else {
       CustomSnackBar.showError(
         context,
-        message: "Please add both email and password.",
+        message: 'Please add both email and password.',
       );
     }
   }

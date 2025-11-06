@@ -14,13 +14,13 @@ class PetListContent extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (state) {
       case PetsListLoading _:
-        return PetsLoadingWidget();
+        return const PetsLoadingWidget();
       case PetsListError(:final error):
         return PetsListErrorWidget(onRetry: onRetry, errorMessage: error);
       case UserPetsSuccess(:final userPets):
         return UserPetGrid(userPets: userPets);
       default:
-        return PetsLoadingWidget();
+        return const PetsLoadingWidget();
     }
   }
 }

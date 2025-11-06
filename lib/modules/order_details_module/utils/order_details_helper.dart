@@ -7,7 +7,7 @@ import 'package:petcure_user_app/modules/order_details_module/widgets/q_r_code_w
 class OrderDetailsHelper {
   final BuildContext context;
   final Order order;
-  OrderDetailsHelper({required this.context, required this.order});
+  const OrderDetailsHelper({required this.context, required this.order});
 
   // Helper function to get status color
   Color getStatusColor(OrderDeliveryStatus status) {

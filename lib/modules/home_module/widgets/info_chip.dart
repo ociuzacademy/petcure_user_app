@@ -10,7 +10,7 @@ class InfoChip extends StatelessWidget {
     return Chip(
       label: Text(
         text,
-        style: TextStyle(fontSize: 12),
+        style: const TextStyle(fontSize: 12),
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
       ),

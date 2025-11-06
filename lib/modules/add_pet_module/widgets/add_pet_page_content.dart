@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_user_app/modules/add_pet_module/cubit/pet_sub_category_cubit.dart';
 import 'package:petcure_user_app/modules/login_module/view/login_page.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +41,7 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
     final provider = Provider.of<AddPetFormProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Add a Pet")),
+      appBar: AppBar(title: const Text('Add a Pet')),
       body: BlocListener<PetOperationsBloc, PetOperationsState>(
         listener: (context, state) {
           switch (state) {
@@ -103,8 +104,8 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                               textEditingController:
                                   provider.ageYearsController,
                               validatorFunction: provider.validateAgeYears,
-                              labelText: "Age (Years)",
-                              hintText: "Years",
+                              labelText: 'Age (Years)',
+                              hintText: 'Years',
                               textInputType: TextInputType.number,
                               isDisabled: true,
                             ),
@@ -116,8 +117,8 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                               textEditingController:
                                   provider.ageMonthsController,
                               validatorFunction: provider.validateAgeMonths,
-                              labelText: "Age (Months)",
-                              hintText: "Months (0-11)",
+                              labelText: 'Age (Months)',
+                              hintText: 'Months (0-11)',
                               textInputType: TextInputType.number,
                               isDisabled: true,
                             ),
@@ -144,7 +145,7 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
 
                       // Gender Dropdown
                       GenderDropdown(
-                        selectedGender: provider.selectedGender ?? "",
+                        selectedGender: provider.selectedGender ?? '',
                         onSelectingGender: (newValue) {
                           provider.selectedGender = newValue;
                         },
@@ -158,13 +159,13 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                             case PetCategoryInitial _:
                             case PetCategoriesLoading _:
                               return CategoriesWidget(
-                                categories: [],
+                                categories: const [],
                                 onSelectingCategory: (_) {},
                                 isLoading: true,
                               );
                             case PetCategoriesError(:final errorMessage):
                               return CategoriesWidget(
-                                categories: [],
+                                categories: const [],
                                 onSelectingCategory: (_) {},
                                 isError: true,
                                 errorText: errorMessage,
@@ -177,46 +178,6 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                                   provider.selectedCategory = value;
                                   provider.getPetSubCategories(
                                     context,
-                                    petCategories,
-                                    value!.id,
-                                  );
-                                },
-                              );
-                            case PetSubCategoriesLoading(:final petCategories):
-                              return PetCategoriesWidget(
-                                selectedCategory: provider.selectedCategory,
-                                categories: petCategories,
-                                onSelectingCategory: (value) {
-                                  provider.selectedCategory = value;
-                                  provider.getPetSubCategories(
-                                    context,
-                                    petCategories,
-                                    value!.id,
-                                  );
-                                },
-                              );
-                            case PetSubCategoriesSuccess(:final petCategories):
-                              return PetCategoriesWidget(
-                                selectedCategory: provider.selectedCategory,
-                                categories: petCategories,
-                                onSelectingCategory: (value) {
-                                  provider.selectedCategory = value;
-                                  provider.getPetSubCategories(
-                                    context,
-                                    petCategories,
-                                    value!.id,
-                                  );
-                                },
-                              );
-                            case PetSubCategoriesError(:final petCategories):
-                              return PetCategoriesWidget(
-                                selectedCategory: provider.selectedCategory,
-                                categories: petCategories,
-                                onSelectingCategory: (value) {
-                                  provider.selectedCategory = value;
-                                  provider.getPetSubCategories(
-                                    context,
-                                    petCategories,
                                     value!.id,
                                   );
                                 },
@@ -227,38 +188,29 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                       SizedBox(height: screenSize.height * 0.025),
 
                       // Sub-Category Dropdown
-                      BlocBuilder<PetCategoryCubit, PetCategoryState>(
+                      BlocBuilder<PetSubCategoryCubit, PetSubCategoryState>(
                         builder: (context, state) {
                           switch (state) {
-                            case PetCategoryInitial _:
-                            case PetCategoriesLoading _:
-                            case PetCategoriesError _:
+                            case PetSubCategoryInitial _:
                               return SubCategoriesWidget(
-                                subCategories: [],
+                                subCategories: const [],
                                 onSelectingSubCategory: (_) {},
                               );
-                            case PetCategoriesSuccess _:
+
+                            case PetSubCategoryLoading _:
                               return SubCategoriesWidget(
-                                subCategories: [],
-                                onSelectingSubCategory: (_) {},
-                                selectedSubCategory: "Select a category first",
-                              );
-                            case PetSubCategoriesLoading _:
-                              return SubCategoriesWidget(
-                                subCategories: [],
+                                subCategories: const [],
                                 onSelectingSubCategory: (_) {},
                                 isLoading: true,
                               );
-                            case PetSubCategoriesError(:final errorMessage):
+                            case PetSubCategoryError(:final errorMessage):
                               return SubCategoriesWidget(
-                                subCategories: [],
+                                subCategories: const [],
                                 onSelectingSubCategory: (_) {},
                                 isError: true,
                                 errorText: errorMessage,
                               );
-                            case PetSubCategoriesSuccess(
-                              :final petSubCategories,
-                            ):
+                            case PetSubCategorySuccess(:final petSubCategories):
                               if (provider.selectedCategory != null) {
                                 return PetSubCategoriesWidget(
                                   selectedSubCategory:
@@ -270,10 +222,10 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                                 );
                               } else {
                                 return SubCategoriesWidget(
-                                  subCategories: [],
+                                  subCategories: const [],
                                   onSelectingSubCategory: (_) {},
                                   selectedSubCategory:
-                                      "Select a category first",
+                                      'Select a category first',
                                 );
                               }
                           }
@@ -285,8 +237,8 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                       NormalTextField(
                         textEditingController: provider.weightController,
                         validatorFunction: provider.validateWeight,
-                        labelText: "Weight",
-                        hintText: "Enter weight (in K.G.)",
+                        labelText: 'Weight',
+                        hintText: 'Enter weight (in K.G.)',
                         textInputType: TextInputType.number,
                         focusNode: provider.weightFocusNode,
                         nextFocusNode: provider.medicalConditionFocusNode,
@@ -299,7 +251,7 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                             provider.havingSpecificHealthCondition,
                         onSelectingOption: (newValue) {
                           provider.havingSpecificHealthCondition =
-                              newValue == "Yes";
+                              newValue == 'Yes';
                         },
                       ),
                       SizedBox(height: screenSize.height * 0.025),
@@ -309,8 +261,8 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                         textEditingController:
                             provider.medicalConditionController,
                         validatorFunction: provider.validateMedicalCondition,
-                        labelText: "Medical Condition",
-                        hintText: "Enter medical condition",
+                        labelText: 'Medical Condition',
+                        hintText: 'Enter medical condition',
                         textFieldIcon: const Icon(Icons.home),
                         isMultiline: true,
                         focusNode: provider.medicalConditionFocusNode,
@@ -357,7 +309,7 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                         buttonWidth: double.infinity,
                         backgroundColor: AppPalette.firstColor,
                         textColor: Colors.white,
-                        labelText: "Add Pet",
+                        labelText: 'Add Pet',
                         onClick: _addPetHelper.addPet,
                       ),
                       SizedBox(height: screenSize.height * 0.025),

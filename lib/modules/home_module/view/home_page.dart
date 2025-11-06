@@ -21,7 +21,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 
-  static route() => MaterialPageRoute(builder: (context) => HomePage());
+  static route() => MaterialPageRoute(builder: (context) => const HomePage());
 }
 
 class _HomePageState extends State<HomePage> {
@@ -69,25 +69,25 @@ class _HomePageState extends State<HomePage> {
         child: PersistentTabView(
           tabs: [
             PersistentTabConfig(
-              screen: PetsListWidget(),
-              item: ItemConfig(icon: Icon(Icons.pets), title: "Pets"),
+              screen: const PetsListWidget(),
+              item: ItemConfig(icon: const Icon(Icons.pets), title: 'Pets'),
             ),
             PersistentTabConfig(
-              screen: DoctorBookingWidget(),
+              screen: const DoctorBookingWidget(),
               item: ItemConfig(
-                icon: Icon(Icons.local_hospital),
-                title: "Hospital",
+                icon: const Icon(Icons.local_hospital),
+                title: 'Hospital',
               ),
             ),
             PersistentTabConfig(
-              screen: PetProductsWidget(),
-              item: ItemConfig(icon: Icon(Icons.store), title: "Store"),
+              screen: const PetProductsWidget(),
+              item: ItemConfig(icon: const Icon(Icons.store), title: 'Store'),
             ),
             PersistentTabConfig(
               screen: UserProfileWidget(
                 logout: _homePageHelper.showLogoutDialog,
               ),
-              item: ItemConfig(icon: Icon(Icons.person), title: "Profile"),
+              item: ItemConfig(icon: const Icon(Icons.person), title: 'Profile'),
             ),
           ],
           navBarBuilder: (navBarConfig) =>
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           padding: const EdgeInsets.all(0),
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(color: AppPalette.firstColor),
               child: Text(
                 'PetCure',
@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.history, color: AppPalette.firstColor),
+              leading: const Icon(Icons.history, color: AppPalette.firstColor),
               title: const Text(
                 'Booking History',
                 style: TextStyle(
@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.shopping_cart, color: AppPalette.firstColor),
+              leading: const Icon(Icons.shopping_cart, color: AppPalette.firstColor),
               title: const Text(
                 'Shopping Cart',
                 style: TextStyle(
@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.format_list_bulleted,
                 color: AppPalette.firstColor,
               ),

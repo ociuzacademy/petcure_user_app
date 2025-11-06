@@ -7,7 +7,7 @@ class UPIPaymentHelper {
   final GlobalKey<FormState> formKey;
   final double amount;
 
-  UPIPaymentHelper({
+  const UPIPaymentHelper({
     required this.context,
     required this.formKey,
     required this.amount,
@@ -22,7 +22,7 @@ class UPIPaymentHelper {
       Navigator.pop(context); // close bottom sheet
       Navigator.pushAndRemoveUntil(context, HomePage.route(), (route) => false);
     } else {
-      CustomSnackBar.showError(context, message: "Please fill UPI ID.");
+      CustomSnackBar.showError(context, message: 'Please fill UPI ID.');
     }
   }
 }

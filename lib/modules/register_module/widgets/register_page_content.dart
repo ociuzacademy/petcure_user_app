@@ -125,8 +125,8 @@ class RegisterPageContent extends StatelessWidget {
                         textEditingController:
                             registerProvider.addressController,
                         validatorFunction: registerProvider.validateAddress,
-                        labelText: "Address",
-                        hintText: "Enter your address",
+                        labelText: 'Address',
+                        hintText: 'Enter your address',
                         textFieldIcon: const Icon(Icons.home),
                         isMultiline: true,
                         focusNode: registerProvider.addressFocusNode,
@@ -233,7 +233,7 @@ class RegisterPageContent extends StatelessWidget {
                         buttonWidth: double.infinity,
                         backgroundColor: AppPalette.firstColor,
                         textColor: Colors.white,
-                        labelText: "Register",
+                        labelText: 'Register',
                         onClick: () {
                           final userDetails = registerProvider.validateForm(
                             context,
@@ -254,8 +254,8 @@ class RegisterPageContent extends StatelessWidget {
       persistentFooterButtons: [
         InkWell(
           onTap: () => Navigator.pushReplacement(context, LoginPage.route()),
-          child: Text(
-            "Login Account",
+          child: const Text(
+            'Login Account',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,

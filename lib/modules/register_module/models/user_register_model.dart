@@ -15,7 +15,7 @@ class UserRegisterModel {
   final String message;
   final Data data;
 
-  UserRegisterModel({
+  const UserRegisterModel({
     required this.status,
     required this.message,
     required this.data,
@@ -30,15 +30,15 @@ class UserRegisterModel {
 
   factory UserRegisterModel.fromJson(Map<String, dynamic> json) =>
       UserRegisterModel(
-        status: json["status"],
-        message: json["message"],
-        data: Data.fromJson(json["data"]),
+        status: json['status'],
+        message: json['message'],
+        data: Data.fromJson(json['data']),
       );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data.toJson(),
+    'status': status,
+    'message': message,
+    'data': data.toJson(),
   };
 }
 
@@ -54,7 +54,7 @@ class Data {
   final String longitude;
   final int numberOfPets;
 
-  Data({
+  const Data({
     required this.id,
     required this.username,
     required this.email,
@@ -92,28 +92,28 @@ class Data {
   );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    id: json["id"],
-    username: json["username"],
-    email: json["email"],
-    address: json["address"],
-    password: json["password"],
-    phone: json["phone"],
-    image: json["image"],
-    latitude: json["latitude"],
-    longitude: json["longitude"],
-    numberOfPets: json["number_of_pets"],
+    id: json['id'],
+    username: json['username'],
+    email: json['email'],
+    address: json['address'],
+    password: json['password'],
+    phone: json['phone'],
+    image: json['image'],
+    latitude: json['latitude'],
+    longitude: json['longitude'],
+    numberOfPets: json['number_of_pets'],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "username": username,
-    "email": email,
-    "address": address,
-    "password": password,
-    "phone": phone,
-    "image": image,
-    "latitude": latitude,
-    "longitude": longitude,
-    "number_of_pets": numberOfPets,
+    'id': id,
+    'username': username,
+    'email': email,
+    'address': address,
+    'password': password,
+    'phone': phone,
+    'image': image,
+    'latitude': latitude,
+    'longitude': longitude,
+    'number_of_pets': numberOfPets,
   };
 }

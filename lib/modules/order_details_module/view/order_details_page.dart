@@ -350,7 +350,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                     const SizedBox(height: 8),
 
                     // Shipping
-                    OrderDetailsSummaryRow(
+                    const OrderDetailsSummaryRow(
                       label: 'Shipping',
                       value: '\u{20B9}0.00',
                     ),
@@ -365,7 +365,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                     const SizedBox(height: 8),
 
                     // Delivery Info
-                    OrderDetailsSummaryRow(
+                    const OrderDetailsSummaryRow(
                       label: 'Delivery Type',
                       value: 'Standard Delivery',
                     ),
