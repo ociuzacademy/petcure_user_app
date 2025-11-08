@@ -1,16 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:petcure_user_app/core/models/product.dart';
+import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 
 class ProductDetailsHelper {
-  final Product product;
+  final BuildContext context;
+  final int productId;
   final ValueNotifier<bool> addedToCart;
 
   const ProductDetailsHelper({
-    required this.product,
+    required this.context,
+    required this.productId,
     required this.addedToCart,
   });
+
+  void productDetailsInit() {
+    final ProductCubit productCubit = context.read<ProductCubit>();
+    productCubit.getPetProductDetails(productId);
+  }
 
   void addToCart() {
     addedToCart.value = true;
@@ -18,7 +26,7 @@ class ProductDetailsHelper {
 
   // Calculate estimated delivery date
   DateTime get estimatedDeliveryDate {
-    return DateTime.now().add(Duration(days: product.daysToDeliver));
+    return DateTime.now().add(const Duration(days: 2));
   }
 
   // Format date to display

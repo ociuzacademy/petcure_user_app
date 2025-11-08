@@ -8,10 +8,16 @@ import 'package:petcure_user_app/core/constants/app_constants.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_product_model.dart';
 
-class HomeModuleServices {
-  static Future<List<PetProductModel>> getPetProductList() async {
+class ProductDetailsServices {
+  static Future<PetProductModel> getPetProductDetails({
+    required int productId,
+  }) async {
     try {
-      final url = Uri.parse(AppUrls.getPetProductsListUrl);
+      final Map<String, dynamic> params = {'product_id': productId.toString()};
+
+      final url = Uri.parse(
+        AppUrls.getPetProductDetailsUrl,
+      ).replace(queryParameters: params);
 
       final resp = await http
           .get(
@@ -30,10 +36,8 @@ class HomeModuleServices {
           );
 
       if (resp.statusCode == 200) {
-        final List<dynamic> decoded = jsonDecode(resp.body);
-        final response = decoded
-            .map((item) => PetProductModel.fromJson(item))
-            .toList();
+        final dynamic decoded = jsonDecode(resp.body);
+        final response = PetProductModel.fromJson(decoded);
 
         return response;
       } else {

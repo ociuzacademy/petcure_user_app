@@ -1,96 +1,141 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/modules/edit_profile_module/view/edit_profile_page.dart';
+import 'package:petcure_user_app/core/cubit/user_profile/user_profile_cubit.dart';
+import 'package:petcure_user_app/modules/home_module/utils/user_profile_helper.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/profile_item.dart';
+import 'package:petcure_user_app/widgets/custom_error_widget.dart';
+import 'package:petcure_user_app/widgets/loaders/custom_loading_widget.dart';
 
-class UserProfileWidget extends StatelessWidget {
+class UserProfileWidget extends StatefulWidget {
   final VoidCallback logout;
   const UserProfileWidget({super.key, required this.logout});
 
   @override
+  State<UserProfileWidget> createState() => _UserProfileWidgetState();
+}
+
+class _UserProfileWidgetState extends State<UserProfileWidget> {
+  late final UserProfileHelper _userProfileHelper;
+
+  @override
+  void initState() {
+    super.initState();
+    _userProfileHelper = UserProfileHelper(context: context);
+    _userProfileHelper.userProfileDataInit();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Dispatch the event once when the widget is built
-
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Profile Picture
-            Center(
-              child: Stack(
-                children: [
-                  const CircleAvatar(
-                    radius: 60,
-                    backgroundImage: CachedNetworkImageProvider(
-                      'https://i.pravatar.cc/300',
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.blue,
+      body: BlocBuilder<UserProfileCubit, UserProfileState>(
+        builder: (context, state) {
+          switch (state) {
+            case UserProfileInitial _:
+            case UserProfileLoading _:
+              return const CustomLoadingWidget();
+            case UserProfileError(:final errorMessage):
+              return CustomErrorWidget(
+                onRetry: () {},
+                errorMessage: errorMessage,
+              );
+            case UserPrfoileDataSuccess(:final userProfileData):
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    // Profile Picture
+                    Center(
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 60,
+                            backgroundImage: CachedNetworkImageProvider(
+                              '${AppUrls.baseUrl}${userProfileData.image}',
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue,
+                              ),
+                              child: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: const Icon(Icons.edit, color: Colors.white),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-            // Profile Details
-            const ProfileItem(icon: Icons.person, title: 'Name', value: 'John Doe'),
-            const ProfileItem(
-              icon: Icons.email,
-              title: 'Email',
-              value: 'user@email.com',
-            ),
-            const ProfileItem(
-              icon: Icons.phone,
-              title: 'Phone',
-              value: '+91 9876543210',
-            ),
-            const ProfileItem(icon: Icons.pets, title: 'Number of Pets', value: '10'),
-            const ProfileItem(
-              icon: Icons.location_on,
-              title: 'Address',
-              value:
-                  '3058 Peck Court, Costa Mesa, California, 92627, United States.',
-            ),
+                    // Profile Details
+                    ProfileItem(
+                      icon: Icons.person,
+                      title: 'Name',
+                      value: userProfileData.username,
+                    ),
+                    ProfileItem(
+                      icon: Icons.email,
+                      title: 'Email',
+                      value: userProfileData.email,
+                    ),
+                    ProfileItem(
+                      icon: Icons.phone,
+                      title: 'Phone',
+                      value: userProfileData.phone,
+                    ),
+                    ProfileItem(
+                      icon: Icons.pets,
+                      title: 'Number of Pets',
+                      value: '${userProfileData.numberOfPets}',
+                    ),
+                    ProfileItem(
+                      icon: Icons.location_on,
+                      title: 'Address',
+                      value: userProfileData.address,
+                    ),
 
-            const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-            // Edit & Logout Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    pushWithoutNavBar(context, EditProfilePage.route());
-                  },
-                  icon: const Icon(Icons.edit),
-                  label: const Text('Edit Profile'),
+                    // Edit & Logout Buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            pushWithoutNavBar(context, EditProfilePage.route());
+                          },
+                          icon: const Icon(Icons.edit),
+                          label: const Text('Edit Profile'),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: widget.logout,
+                          icon: const Icon(Icons.logout, color: Colors.white),
+                          label: const Text(
+                            'Logout',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                ElevatedButton.icon(
-                  onPressed: logout,
-                  icon: const Icon(Icons.logout, color: Colors.white),
-                  label: const Text(
-                    'Logout',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                ),
-              ],
-            ),
-          ],
-        ),
+              );
+          }
+        },
       ),
     );
   }

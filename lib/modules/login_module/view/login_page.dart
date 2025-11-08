@@ -77,73 +77,75 @@ class _LoginPageState extends State<LoginPage> {
               break;
           }
         },
-        child: Form(
-          key: _formKey,
-          child: Center(
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: screenSize.width * 0.05,
-                vertical: screenSize.height * 0.05,
-              ),
-              constraints: BoxConstraints(maxWidth: screenSize.width * 0.85),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    NormalTextField(
-                      textEditingController: _emailController,
-                      validatorFunction: (value) {
-                        // add email validation
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
-                        }
+        child: SafeArea(
+          child: Form(
+            key: _formKey,
+            child: Center(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenSize.width * 0.05,
+                  vertical: screenSize.height * 0.05,
+                ),
+                constraints: BoxConstraints(maxWidth: screenSize.width * 0.85),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      NormalTextField(
+                        textEditingController: _emailController,
+                        validatorFunction: (value) {
+                          // add email validation
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
 
-                        bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                        ).hasMatch(value);
-                        if (!emailValid) {
-                          return 'Please enter a valid email';
-                        }
+                          bool emailValid = RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                          ).hasMatch(value);
+                          if (!emailValid) {
+                            return 'Please enter a valid email';
+                          }
 
-                        return null;
-                      },
-                      labelText: 'Email',
-                      hintText: 'Enter your email',
-                      textFieldIcon: const Icon(Icons.email_outlined),
-                      textInputType: TextInputType.emailAddress,
-                      focusNode: _emailFocusNode,
-                      nextFocusNode: _passwordFocusNode,
-                    ),
-                    SizedBox(height: screenSize.height * 0.025),
-                    NormalTextField(
-                      textEditingController: _passwordController,
-                      validatorFunction: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter password';
-                        }
+                          return null;
+                        },
+                        labelText: 'Email',
+                        hintText: 'Enter your email',
+                        textFieldIcon: const Icon(Icons.email_outlined),
+                        textInputType: TextInputType.emailAddress,
+                        focusNode: _emailFocusNode,
+                        nextFocusNode: _passwordFocusNode,
+                      ),
+                      SizedBox(height: screenSize.height * 0.025),
+                      NormalTextField(
+                        textEditingController: _passwordController,
+                        validatorFunction: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter password';
+                          }
 
-                        if (value.length < 3) {
-                          return 'Password must be at least 3 characters';
-                        }
-                        return null;
-                      },
-                      labelText: 'Password',
-                      hintText: 'Enter your password',
-                      textFieldIcon: const Icon(Icons.password),
-                      textInputType: TextInputType.visiblePassword,
-                      isPassword: true,
-                      focusNode: _passwordFocusNode,
-                    ),
-                    SizedBox(height: screenSize.height * 0.025),
-                    CustomButton(
-                      buttonWidth: double.infinity,
-                      backgroundColor: AppPalette.firstColor,
-                      textColor: Colors.white,
-                      labelText: 'Login',
-                      onClick: _loginHelper.login,
-                    ),
-                  ],
+                          if (value.length < 3) {
+                            return 'Password must be at least 3 characters';
+                          }
+                          return null;
+                        },
+                        labelText: 'Password',
+                        hintText: 'Enter your password',
+                        textFieldIcon: const Icon(Icons.password),
+                        textInputType: TextInputType.visiblePassword,
+                        isPassword: true,
+                        focusNode: _passwordFocusNode,
+                      ),
+                      SizedBox(height: screenSize.height * 0.025),
+                      CustomButton(
+                        buttonWidth: double.infinity,
+                        backgroundColor: AppPalette.firstColor,
+                        textColor: Colors.white,
+                        labelText: 'Login',
+                        onClick: _loginHelper.login,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -66,32 +66,37 @@ class _HomePageState extends State<HomePage> {
               OverlayLoader.hide();
           }
         },
-        child: PersistentTabView(
-          tabs: [
-            PersistentTabConfig(
-              screen: const PetsListWidget(),
-              item: ItemConfig(icon: const Icon(Icons.pets), title: 'Pets'),
-            ),
-            PersistentTabConfig(
-              screen: const DoctorBookingWidget(),
-              item: ItemConfig(
-                icon: const Icon(Icons.local_hospital),
-                title: 'Hospital',
+        child: SafeArea(
+          child: PersistentTabView(
+            tabs: [
+              PersistentTabConfig(
+                screen: const PetsListWidget(),
+                item: ItemConfig(icon: const Icon(Icons.pets), title: 'Pets'),
               ),
-            ),
-            PersistentTabConfig(
-              screen: const PetProductsWidget(),
-              item: ItemConfig(icon: const Icon(Icons.store), title: 'Store'),
-            ),
-            PersistentTabConfig(
-              screen: UserProfileWidget(
-                logout: _homePageHelper.showLogoutDialog,
+              PersistentTabConfig(
+                screen: const DoctorBookingWidget(),
+                item: ItemConfig(
+                  icon: const Icon(Icons.local_hospital),
+                  title: 'Hospital',
+                ),
               ),
-              item: ItemConfig(icon: const Icon(Icons.person), title: 'Profile'),
-            ),
-          ],
-          navBarBuilder: (navBarConfig) =>
-              Style2BottomNavBar(navBarConfig: navBarConfig),
+              PersistentTabConfig(
+                screen: const PetProductsWidget(),
+                item: ItemConfig(icon: const Icon(Icons.store), title: 'Store'),
+              ),
+              PersistentTabConfig(
+                screen: UserProfileWidget(
+                  logout: _homePageHelper.showLogoutDialog,
+                ),
+                item: ItemConfig(
+                  icon: const Icon(Icons.person),
+                  title: 'Profile',
+                ),
+              ),
+            ],
+            navBarBuilder: (navBarConfig) =>
+                Style2BottomNavBar(navBarConfig: navBarConfig),
+          ),
         ),
       ),
       drawer: Drawer(
@@ -125,7 +130,10 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.shopping_cart, color: AppPalette.firstColor),
+              leading: const Icon(
+                Icons.shopping_cart,
+                color: AppPalette.firstColor,
+              ),
               title: const Text(
                 'Shopping Cart',
                 style: TextStyle(

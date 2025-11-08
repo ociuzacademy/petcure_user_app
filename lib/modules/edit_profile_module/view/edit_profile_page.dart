@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
-import 'package:petcure_user_app/modules/edit_profile_module/utils/edit_profile_helper.dart';
+import 'package:petcure_user_app/modules/edit_profile_module/providers/edit_profile_provider.dart';
 import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
 import 'package:petcure_user_app/widgets/text_fields/normal_text_field.dart';
 
@@ -13,63 +12,18 @@ class EditProfilePage extends StatefulWidget {
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 
-  static route() => MaterialPageRoute(builder: (context) => const EditProfilePage());
+  static route() =>
+      MaterialPageRoute(builder: (context) => const EditProfilePage());
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  late final EditProfileHelper _editProfileHelper;
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _fullNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-
-  final FocusNode _fullNameFocusNode = FocusNode();
-  final FocusNode _emailFocusNode = FocusNode();
-  final FocusNode _phoneNumberFocusNode = FocusNode();
-  final FocusNode _passwordFocusNode = FocusNode();
-  final FocusNode _addressFocusNode = FocusNode();
-
-  final ValueNotifier<File?> _profileImage = ValueNotifier(null);
-
-  @override
-  void dispose() {
-    // Dispose controllers to avoid memory leaks
-    _fullNameController.dispose();
-    _emailController.dispose();
-    _phoneNumberController.dispose();
-    _passwordController.dispose();
-    _addressController.dispose();
-
-    _fullNameFocusNode.dispose();
-    _emailFocusNode.dispose();
-    _phoneNumberFocusNode.dispose();
-    _passwordFocusNode.dispose();
-    _addressFocusNode.dispose();
-    super.dispose();
-  }
-
   @override
   void initState() {
     super.initState();
-    _fullNameController.text = 'John Doe';
-    _emailController.text = 'user@email.com';
-    _phoneNumberController.text = '+91 9876543210';
-    _passwordController.text = 'pass';
-    _addressController.text =
-        '3058 Peck Court, Costa Mesa, California, 92627, United States.';
-    _editProfileHelper = EditProfileHelper(
-      context: context,
-      formKey: _formKey,
-      fullNameController: _fullNameController,
-      emailController: _emailController,
-      phoneNumberController: _phoneNumberController,
-      passwordController: _passwordController,
-      addressController: _addressController,
-      profileImage: _profileImage,
-    );
+    // Load initial user data when the page initializes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<EditProfileProvider>().loadUserData();
+    });
   }
 
   @override
@@ -78,157 +32,135 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Edit User Details')),
-      body: Form(
-        key: _formKey,
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenSize.width * 0.05,
-              vertical: screenSize.height * 0.05,
-            ),
-            child: SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: screenSize.width * 0.85),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ValueListenableBuilder(
-                      valueListenable: _profileImage,
-                      builder: (context, profileImage, child) {
-                        return InkWell(
-                          onTap: _editProfileHelper.pickImage,
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundColor: Colors.grey[300],
-                            backgroundImage: profileImage != null
-                                ? FileImage(profileImage)
-                                : const CachedNetworkImageProvider(
-                                    'https://i.pravatar.cc/300',
-                                  ),
-                            child: null,
+      body: ChangeNotifierProvider(
+        create: (context) => EditProfileProvider(),
+        child: Consumer<EditProfileProvider>(
+          builder: (context, provider, child) {
+            return Form(
+              key: provider.formKey,
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: screenSize.width * 0.05,
+                    vertical: screenSize.height * 0.05,
+                  ),
+                  child: SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: screenSize.width * 0.85,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Profile Image
+                          InkWell(
+                            onTap: () => provider.pickImage(context),
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.grey[300],
+                              backgroundImage: _getProfileImage(provider),
+                              child: provider.isLoadingImage
+                                  ? const CircularProgressIndicator()
+                                  : null,
+                            ),
                           ),
-                        );
-                      },
-                    ),
-                    SizedBox(height: screenSize.height * 0.025),
-                    NormalTextField(
-                      textEditingController: _fullNameController,
-                      validatorFunction: (value) {
-                        // add full name validation
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter full name';
-                        }
+                          SizedBox(height: screenSize.height * 0.025),
 
-                        return null;
-                      },
-                      labelText: 'Full Name',
-                      hintText: 'Enter your full name',
-                      textFieldIcon: const Icon(Icons.person),
-                      focusNode: _fullNameFocusNode,
-                      nextFocusNode: _emailFocusNode,
-                    ),
-                    SizedBox(height: screenSize.height * 0.025),
-                    NormalTextField(
-                      textEditingController: _emailController,
-                      validatorFunction: (value) {
-                        // add email validation
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter email';
-                        }
+                          // Full Name Field
+                          NormalTextField(
+                            textEditingController: provider.fullNameController,
+                            validatorFunction: provider.validateFullName,
+                            labelText: 'Full Name',
+                            hintText: 'Enter your full name',
+                            textFieldIcon: const Icon(Icons.person),
+                            focusNode: provider.fullNameFocusNode,
+                            nextFocusNode: provider.emailFocusNode,
+                          ),
+                          SizedBox(height: screenSize.height * 0.025),
 
-                        bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                        ).hasMatch(value);
-                        if (!emailValid) {
-                          return 'Please enter a valid email';
-                        }
+                          // Email Field
+                          NormalTextField(
+                            textEditingController: provider.emailController,
+                            validatorFunction: provider.validateEmail,
+                            labelText: 'Email',
+                            hintText: 'Enter your email',
+                            textFieldIcon: const Icon(Icons.email_outlined),
+                            textInputType: TextInputType.emailAddress,
+                            focusNode: provider.emailFocusNode,
+                            nextFocusNode: provider.phoneNumberFocusNode,
+                          ),
+                          SizedBox(height: screenSize.height * 0.025),
 
-                        return null;
-                      },
-                      labelText: 'Email',
-                      hintText: 'Enter your email',
-                      textFieldIcon: const Icon(Icons.email_outlined),
-                      textInputType: TextInputType.emailAddress,
-                      focusNode: _emailFocusNode,
-                      nextFocusNode: _phoneNumberFocusNode,
-                    ),
-                    SizedBox(height: screenSize.height * 0.025),
-                    NormalTextField(
-                      textEditingController: _phoneNumberController,
-                      validatorFunction: (value) {
-                        // add phone number validation
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter phone number';
-                        }
+                          // Phone Number Field
+                          NormalTextField(
+                            textEditingController:
+                                provider.phoneNumberController,
+                            validatorFunction: provider.validatePhoneNumber,
+                            labelText: 'Phone Number',
+                            hintText: 'Enter your phone number',
+                            textInputType: TextInputType.phone,
+                            textFieldIcon: const Icon(Icons.phone),
+                            focusNode: provider.phoneNumberFocusNode,
+                            nextFocusNode: provider.addressFocusNode,
+                          ),
+                          SizedBox(height: screenSize.height * 0.025),
 
-                        bool phoneValid = RegExp(
-                          r'^(\+91[\-\s]?)?[6-9]\d{9}$',
-                        ).hasMatch(value);
-                        if (!phoneValid) {
-                          return 'Please enter a valid phone number';
-                        }
+                          // Address Field
+                          NormalTextField(
+                            textEditingController: provider.addressController,
+                            validatorFunction: provider.validateAddress,
+                            labelText: 'Address',
+                            hintText: 'Enter your address',
+                            textFieldIcon: const Icon(Icons.home),
+                            isMultiline: true,
+                            focusNode: provider.addressFocusNode,
+                            nextFocusNode: provider.passwordFocusNode,
+                          ),
+                          SizedBox(height: screenSize.height * 0.025),
 
-                        return null;
-                      },
-                      labelText: 'Phone Number',
-                      hintText: 'Enter your phone number',
-                      textInputType: TextInputType.phone,
-                      textFieldIcon: const Icon(Icons.phone),
-                      focusNode: _phoneNumberFocusNode,
-                      nextFocusNode: _addressFocusNode,
-                    ),
-                    SizedBox(height: screenSize.height * 0.025),
-                    NormalTextField(
-                      textEditingController: _addressController,
-                      validatorFunction: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please add your address';
-                        }
-                        return null;
-                      },
-                      labelText: 'Address',
-                      hintText: 'Enter your address',
-                      textFieldIcon: const Icon(Icons.home),
-                      isMultiline: true,
-                      focusNode: _addressFocusNode,
-                      nextFocusNode: _passwordFocusNode,
-                    ),
-                    SizedBox(height: screenSize.height * 0.025),
-                    NormalTextField(
-                      textEditingController: _passwordController,
-                      validatorFunction: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter password';
-                        }
+                          // Password Field
+                          NormalTextField(
+                            textEditingController: provider.passwordController,
+                            validatorFunction: provider.validatePassword,
+                            labelText: 'Password',
+                            hintText: 'Enter your password',
+                            textFieldIcon: const Icon(Icons.password),
+                            textInputType: TextInputType.visiblePassword,
+                            isPassword: true,
+                            focusNode: provider.passwordFocusNode,
+                          ),
+                          SizedBox(height: screenSize.height * 0.025),
 
-                        if (value.length < 3) {
-                          return 'Password must be at least 6 characters';
-                        }
-                        return null;
-                      },
-                      labelText: 'Password',
-                      hintText: 'Enter your password',
-                      textFieldIcon: const Icon(Icons.password),
-                      textInputType: TextInputType.visiblePassword,
-                      isPassword: true,
-                      focusNode: _passwordFocusNode,
+                          // Update Button
+                          CustomButton(
+                            buttonWidth: double.infinity,
+                            backgroundColor: AppPalette.firstColor,
+                            textColor: Colors.white,
+                            labelText: 'Update Profile',
+                            onClick: () => provider.updateProfile(context),
+                            // isLoading: provider.isUpdatingProfile,
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(height: screenSize.height * 0.025),
-                    CustomButton(
-                      buttonWidth: double.infinity,
-                      backgroundColor: AppPalette.firstColor,
-                      textColor: Colors.white,
-                      labelText: 'Edit Parent',
-                      onClick: _editProfileHelper.editProfile,
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
+  }
+
+  ImageProvider? _getProfileImage(EditProfileProvider provider) {
+    if (provider.profileImage != null) {
+      return FileImage(provider.profileImage!);
+    } else if (provider.initialProfileImageUrl != null) {
+      return CachedNetworkImageProvider(provider.initialProfileImageUrl!);
+    } else {
+      return const CachedNetworkImageProvider('https://i.pravatar.cc/300');
+    }
   }
 }

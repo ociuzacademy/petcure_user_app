@@ -11,6 +11,10 @@ class AppUrls {
   static const String addPetUrl = '$userUrl/add_pet/';
 
   static const String getUserPetsUrl = '$userUrl/user_pets/';
-
   static const String getPetDetailsUrl = '$userUrl/pet_details/';
+
+  static const String getPetProductsListUrl = '$userUrl/view_all_products/';
+  static const String getUserProfileDataUrl = '$userUrl/view_profile/';
+
+  static const String getPetProductDetailsUrl = '$userUrl/product_details/';
 }

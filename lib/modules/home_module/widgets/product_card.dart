@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
-import 'package:petcure_user_app/core/models/product.dart';
-import 'package:petcure_user_app/modules/product_details_module/view/product_details_page.dart';
+import 'package:petcure_user_app/core/constants/app_urls.dart';
+import 'package:petcure_user_app/core/models/api_models/pet_product_model.dart'
+    hide Image;
 
 class ProductCard extends StatelessWidget {
-  final Product product;
+  final PetProductModel product;
 
   const ProductCard({super.key, required this.product});
 
@@ -12,7 +12,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        pushWithoutNavBar(context, ProductDetailsPage.route(product: product));
+        // pushWithoutNavBar(context, ProductDetailsPage.route(product: product));
       },
       child: Card(
         elevation: 2,
@@ -27,8 +27,8 @@ class ProductCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  product.imageURLs.isNotEmpty
-                      ? product.imageURLs[0]
+                  product.images.isNotEmpty
+                      ? '${AppUrls.baseUrl}${product.images[0].image}'
                       : 'https://via.placeholder.com/300',
                   width: 100,
                   height: 100,
@@ -50,7 +50,7 @@ class ProductCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      product.productName,
+                      product.name,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -72,7 +72,7 @@ class ProductCard extends StatelessWidget {
                                   maxWidth: 100,
                                 ),
                                 child: Text(
-                                  product.productCategory,
+                                  product.petcategoryName,
                                   style: const TextStyle(fontSize: 12),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -86,7 +86,7 @@ class ProductCard extends StatelessWidget {
                                   maxWidth: 100,
                                 ),
                                 child: Text(
-                                  product.petSubCategory,
+                                  product.petsubcategoryName,
                                   style: const TextStyle(fontSize: 12),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -103,18 +103,11 @@ class ProductCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '\u{20B9}${product.price.toStringAsFixed(2)}',
+                          '\u{20B9}${product.price}',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,
-                          ),
-                        ),
-                        Text(
-                          product.quantity,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
                           ),
                         ),
                       ],

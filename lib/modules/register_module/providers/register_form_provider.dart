@@ -25,12 +25,10 @@ class RegisterFormProvider with ChangeNotifier {
 
   File? _profileImage;
   bool _isLoadingLocation = false;
-  bool _isRegistering = false;
 
   // Getters
   File? get profileImage => _profileImage;
   bool get isLoadingLocation => _isLoadingLocation;
-  bool get isRegistering => _isRegistering;
 
   // Setters with notifyListeners
   set profileImage(File? value) {
@@ -40,11 +38,6 @@ class RegisterFormProvider with ChangeNotifier {
 
   set isLoadingLocation(bool value) {
     _isLoadingLocation = value;
-    notifyListeners();
-  }
-
-  set isRegistering(bool value) {
-    _isRegistering = value;
     notifyListeners();
   }
 
@@ -109,7 +102,9 @@ class RegisterFormProvider with ChangeNotifier {
 
       // Get current position
       Position position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+        ),
       );
 
       // Update the text fields with the coordinates
