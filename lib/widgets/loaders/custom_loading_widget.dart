@@ -18,7 +18,7 @@ class CustomLoadingWidget extends StatelessWidget {
     this.indicatorColor = Colors.blue,
     this.useSliver = false,
     this.padding = EdgeInsets.zero,
-    this.expand = true,
+    this.expand = false, // Changed default to false to prevent issues
     this.alignment = MainAxisAlignment.center,
     this.messageStyle,
     this.spacing = 16.0,
@@ -32,7 +32,7 @@ class CustomLoadingWidget extends StatelessWidget {
     this.indicatorColor = Colors.blue,
     this.useSliver = true,
     this.padding = EdgeInsets.zero,
-    this.expand = true,
+    this.expand = false,
     this.alignment = MainAxisAlignment.center,
     this.messageStyle,
     this.spacing = 16.0,
@@ -52,7 +52,7 @@ class CustomLoadingWidget extends StatelessWidget {
     this.spacing = 8.0,
   });
 
-  // Constructor for full screen loading
+  // Constructor for full screen loading - FIXED VERSION
   const CustomLoadingWidget.fullScreen({
     super.key,
     this.message = 'Loading...',
@@ -60,7 +60,7 @@ class CustomLoadingWidget extends StatelessWidget {
     this.indicatorColor = Colors.blue,
     this.useSliver = false,
     this.padding = const EdgeInsets.all(32.0),
-    this.expand = true,
+    this.expand = false, // Never use Expanded in full screen
     this.alignment = MainAxisAlignment.center,
     this.messageStyle,
     this.spacing = 24.0,
@@ -82,6 +82,20 @@ class CustomLoadingWidget extends StatelessWidget {
       fontWeight: FontWeight.w500,
     ),
     this.spacing = 8.0,
+  });
+
+  // Simple constructor for basic centered loading
+  const CustomLoadingWidget.centered({
+    super.key,
+    this.message,
+    this.indicatorSize = 32.0,
+    this.indicatorColor = Colors.blue,
+    this.useSliver = false,
+    this.padding = EdgeInsets.zero,
+    this.expand = false,
+    this.alignment = MainAxisAlignment.center,
+    this.messageStyle,
+    this.spacing = 16.0,
   });
 
   @override
@@ -111,14 +125,17 @@ class CustomLoadingWidget extends StatelessWidget {
       ),
     );
 
-    final widget = expand
-        ? Expanded(child: Center(child: loadingContent))
-        : Center(child: loadingContent);
-
+    // FIXED: Only use Expanded when explicitly requested AND not using sliver
     if (useSliver) {
-      return SliverFillRemaining(hasScrollBody: false, child: widget);
+      return SliverFillRemaining(
+        hasScrollBody: false,
+        child: Center(child: loadingContent),
+      );
+    } else if (expand) {
+      // Only use Expanded if we're in a Flex parent and expand is explicitly true
+      return Expanded(child: Center(child: loadingContent));
     } else {
-      return widget;
+      return Center(child: loadingContent);
     }
   }
 

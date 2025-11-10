@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_product_model.dart'
     hide Image;
+import 'package:petcure_user_app/modules/product_details_module/view/product_details_page.dart';
 
 class ProductCard extends StatelessWidget {
   final PetProductModel product;
@@ -12,7 +14,10 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // pushWithoutNavBar(context, ProductDetailsPage.route(product: product));
+        pushWithoutNavBar(
+          context,
+          ProductDetailsPage.route(productId: product.id),
+        );
       },
       child: Card(
         elevation: 2,

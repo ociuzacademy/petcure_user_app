@@ -8,6 +8,4 @@ sealed class ProductState with _$ProductState {
   const factory ProductState.productListSuccess(
     List<PetProductModel> products,
   ) = ProductListSuccess;
-  const factory ProductState.productDetailsSuccess(PetProductModel product) =
-      ProductDetailsSuccess;
 }

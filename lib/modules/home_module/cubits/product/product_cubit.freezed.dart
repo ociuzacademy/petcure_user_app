@@ -55,15 +55,14 @@ extension ProductStatePatterns on ProductState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ProductInitial value)?  initial,TResult Function( ProductLoading value)?  productLoading,TResult Function( ProductError value)?  productError,TResult Function( ProductListSuccess value)?  productListSuccess,TResult Function( ProductDetailsSuccess value)?  productDetailsSuccess,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ProductInitial value)?  initial,TResult Function( ProductLoading value)?  productLoading,TResult Function( ProductError value)?  productError,TResult Function( ProductListSuccess value)?  productListSuccess,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case ProductInitial() when initial != null:
 return initial(_that);case ProductLoading() when productLoading != null:
 return productLoading(_that);case ProductError() when productError != null:
 return productError(_that);case ProductListSuccess() when productListSuccess != null:
-return productListSuccess(_that);case ProductDetailsSuccess() when productDetailsSuccess != null:
-return productDetailsSuccess(_that);case _:
+return productListSuccess(_that);case _:
   return orElse();
 
 }
@@ -81,15 +80,14 @@ return productDetailsSuccess(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ProductInitial value)  initial,required TResult Function( ProductLoading value)  productLoading,required TResult Function( ProductError value)  productError,required TResult Function( ProductListSuccess value)  productListSuccess,required TResult Function( ProductDetailsSuccess value)  productDetailsSuccess,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ProductInitial value)  initial,required TResult Function( ProductLoading value)  productLoading,required TResult Function( ProductError value)  productError,required TResult Function( ProductListSuccess value)  productListSuccess,}){
 final _that = this;
 switch (_that) {
 case ProductInitial():
 return initial(_that);case ProductLoading():
 return productLoading(_that);case ProductError():
 return productError(_that);case ProductListSuccess():
-return productListSuccess(_that);case ProductDetailsSuccess():
-return productDetailsSuccess(_that);}
+return productListSuccess(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -103,15 +101,14 @@ return productDetailsSuccess(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ProductInitial value)?  initial,TResult? Function( ProductLoading value)?  productLoading,TResult? Function( ProductError value)?  productError,TResult? Function( ProductListSuccess value)?  productListSuccess,TResult? Function( ProductDetailsSuccess value)?  productDetailsSuccess,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ProductInitial value)?  initial,TResult? Function( ProductLoading value)?  productLoading,TResult? Function( ProductError value)?  productError,TResult? Function( ProductListSuccess value)?  productListSuccess,}){
 final _that = this;
 switch (_that) {
 case ProductInitial() when initial != null:
 return initial(_that);case ProductLoading() when productLoading != null:
 return productLoading(_that);case ProductError() when productError != null:
 return productError(_that);case ProductListSuccess() when productListSuccess != null:
-return productListSuccess(_that);case ProductDetailsSuccess() when productDetailsSuccess != null:
-return productDetailsSuccess(_that);case _:
+return productListSuccess(_that);case _:
   return null;
 
 }
@@ -128,14 +125,13 @@ return productDetailsSuccess(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  productLoading,TResult Function( String errorMessage)?  productError,TResult Function( List<PetProductModel> products)?  productListSuccess,TResult Function( PetProductModel product)?  productDetailsSuccess,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  productLoading,TResult Function( String errorMessage)?  productError,TResult Function( List<PetProductModel> products)?  productListSuccess,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ProductInitial() when initial != null:
 return initial();case ProductLoading() when productLoading != null:
 return productLoading();case ProductError() when productError != null:
 return productError(_that.errorMessage);case ProductListSuccess() when productListSuccess != null:
-return productListSuccess(_that.products);case ProductDetailsSuccess() when productDetailsSuccess != null:
-return productDetailsSuccess(_that.product);case _:
+return productListSuccess(_that.products);case _:
   return orElse();
 
 }
@@ -153,14 +149,13 @@ return productDetailsSuccess(_that.product);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  productLoading,required TResult Function( String errorMessage)  productError,required TResult Function( List<PetProductModel> products)  productListSuccess,required TResult Function( PetProductModel product)  productDetailsSuccess,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  productLoading,required TResult Function( String errorMessage)  productError,required TResult Function( List<PetProductModel> products)  productListSuccess,}) {final _that = this;
 switch (_that) {
 case ProductInitial():
 return initial();case ProductLoading():
 return productLoading();case ProductError():
 return productError(_that.errorMessage);case ProductListSuccess():
-return productListSuccess(_that.products);case ProductDetailsSuccess():
-return productDetailsSuccess(_that.product);}
+return productListSuccess(_that.products);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -174,14 +169,13 @@ return productDetailsSuccess(_that.product);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  productLoading,TResult? Function( String errorMessage)?  productError,TResult? Function( List<PetProductModel> products)?  productListSuccess,TResult? Function( PetProductModel product)?  productDetailsSuccess,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  productLoading,TResult? Function( String errorMessage)?  productError,TResult? Function( List<PetProductModel> products)?  productListSuccess,}) {final _that = this;
 switch (_that) {
 case ProductInitial() when initial != null:
 return initial();case ProductLoading() when productLoading != null:
 return productLoading();case ProductError() when productError != null:
 return productError(_that.errorMessage);case ProductListSuccess() when productListSuccess != null:
-return productListSuccess(_that.products);case ProductDetailsSuccess() when productDetailsSuccess != null:
-return productDetailsSuccess(_that.product);case _:
+return productListSuccess(_that.products);case _:
   return null;
 
 }
@@ -385,72 +379,6 @@ class _$ProductListSuccessCopyWithImpl<$Res>
   return _then(ProductListSuccess(
 null == products ? _self._products : products // ignore: cast_nullable_to_non_nullable
 as List<PetProductModel>,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class ProductDetailsSuccess implements ProductState {
-  const ProductDetailsSuccess(this.product);
-  
-
- final  PetProductModel product;
-
-/// Create a copy of ProductState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$ProductDetailsSuccessCopyWith<ProductDetailsSuccess> get copyWith => _$ProductDetailsSuccessCopyWithImpl<ProductDetailsSuccess>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductDetailsSuccess&&(identical(other.product, product) || other.product == product));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,product);
-
-@override
-String toString() {
-  return 'ProductState.productDetailsSuccess(product: $product)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $ProductDetailsSuccessCopyWith<$Res> implements $ProductStateCopyWith<$Res> {
-  factory $ProductDetailsSuccessCopyWith(ProductDetailsSuccess value, $Res Function(ProductDetailsSuccess) _then) = _$ProductDetailsSuccessCopyWithImpl;
-@useResult
-$Res call({
- PetProductModel product
-});
-
-
-
-
-}
-/// @nodoc
-class _$ProductDetailsSuccessCopyWithImpl<$Res>
-    implements $ProductDetailsSuccessCopyWith<$Res> {
-  _$ProductDetailsSuccessCopyWithImpl(this._self, this._then);
-
-  final ProductDetailsSuccess _self;
-  final $Res Function(ProductDetailsSuccess) _then;
-
-/// Create a copy of ProductState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? product = null,}) {
-  return _then(ProductDetailsSuccess(
-null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
-as PetProductModel,
   ));
 }
 

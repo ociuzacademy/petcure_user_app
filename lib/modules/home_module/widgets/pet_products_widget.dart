@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 
+import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_category_model.dart';
 import 'package:petcure_user_app/modules/home_module/utils/pet_products_helper.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/product_card.dart';
 import 'package:petcure_user_app/widgets/custom_error_widget.dart';
 import 'package:petcure_user_app/widgets/loaders/list_item_loading_widget.dart';
-import 'package:petcure_user_app/widgets/loaders/custom_loading_widget.dart';
 
 class PetProductsWidget extends StatefulWidget {
   const PetProductsWidget({super.key});
@@ -233,8 +232,6 @@ class _PetProductsWidgetState extends State<PetProductsWidget> {
                           );
                         },
                       );
-                    default:
-                      return const CustomLoadingWidget();
                   }
                 },
               ),

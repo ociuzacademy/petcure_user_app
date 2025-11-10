@@ -17,4 +17,6 @@ class AppUrls {
   static const String getUserProfileDataUrl = '$userUrl/view_profile/';
 
   static const String getPetProductDetailsUrl = '$userUrl/product_details/';
+
+  static const String editProfileUrl = '$userUrl/update_profile/';
 }

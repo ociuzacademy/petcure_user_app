@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
+import 'package:petcure_user_app/modules/product_details_module/cubit/product_details_cubit.dart';
 
 class ProductDetailsHelper {
   final BuildContext context;
@@ -16,8 +17,9 @@ class ProductDetailsHelper {
   });
 
   void productDetailsInit() {
-    final ProductCubit productCubit = context.read<ProductCubit>();
-    productCubit.getPetProductDetails(productId);
+    final ProductDetailsCubit productDetailsCubit = context
+        .read<ProductDetailsCubit>();
+    productDetailsCubit.getPetProductDetails(productId);
   }
 
   void addToCart() {

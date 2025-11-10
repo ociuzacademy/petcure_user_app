@@ -5,6 +5,7 @@ import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/product_details_module/utils/product_details_helper.dart';
+import 'package:petcure_user_app/widgets/loaders/custom_loading_widget.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final int productId;
@@ -44,17 +45,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         backgroundColor: AppPalette.firstColor,
         foregroundColor: Colors.white,
       ),
-      body: BlocBuilder<ProductCubit, ProductState>(
+      body: BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
         builder: (context, state) {
           switch (state) {
-            case ProductInitial _:
-            case ProductLoading _:
-              return const SafeArea(
-                child: Expanded(
-                  child: Center(child: CircularProgressIndicator()),
-                ),
+            case ProductDetailsInitial _:
+            case ProductDetailsLoading _:
+              return const CustomLoadingWidget.centered(
+                message: 'Loading product details...',
               );
-            case ProductError(:final errorMessage):
+            case ProductDetailsError(:final errorMessage):
               return SafeArea(
                 child: Expanded(
                   child: Center(
@@ -275,8 +274,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   ),
                 ),
               );
-            default:
-              return const SafeArea(child: SizedBox.shrink());
           }
         },
       ),

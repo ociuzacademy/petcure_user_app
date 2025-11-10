@@ -1,11 +1,11 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+
 import 'package:petcure_user_app/core/constants/app_urls.dart';
-import 'package:petcure_user_app/modules/edit_profile_module/view/edit_profile_page.dart';
 import 'package:petcure_user_app/core/cubit/user_profile/user_profile_cubit.dart';
+import 'package:petcure_user_app/modules/edit_profile_module/view/edit_profile_page.dart';
 import 'package:petcure_user_app/modules/home_module/utils/user_profile_helper.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/profile_item.dart';
 import 'package:petcure_user_app/widgets/custom_error_widget.dart';
@@ -37,10 +37,14 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
           switch (state) {
             case UserProfileInitial _:
             case UserProfileLoading _:
-              return const CustomLoadingWidget();
+              return const CustomLoadingWidget.centered(
+                message: 'Loading profile...',
+                indicatorSize: 40.0,
+              );
             case UserProfileError(:final errorMessage):
               return CustomErrorWidget(
-                onRetry: () {},
+                onRetry: () =>
+                    context.read<UserProfileCubit>().getUserProfileData(),
                 errorMessage: errorMessage,
               );
             case UserPrfoileDataSuccess(:final userProfileData):
@@ -50,30 +54,11 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                   children: [
                     // Profile Picture
                     Center(
-                      child: Stack(
-                        children: [
-                          CircleAvatar(
-                            radius: 60,
-                            backgroundImage: CachedNetworkImageProvider(
-                              '${AppUrls.baseUrl}${userProfileData.image}',
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              padding: const EdgeInsets.all(6),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                              ),
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundImage: CachedNetworkImageProvider(
+                          '${AppUrls.baseUrl}${userProfileData.image}',
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),

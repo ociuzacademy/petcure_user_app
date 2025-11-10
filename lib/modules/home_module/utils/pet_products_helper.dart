@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petcure_user_app/core/cubit/pet_category/pet_category_cubit.dart';
-import 'package:petcure_user_app/core/cubit/product/product_cubit.dart';
+import 'package:petcure_user_app/modules/home_module/cubits/product/product_cubit.dart';
 
 class PetProductsHelper {
   final BuildContext context;
