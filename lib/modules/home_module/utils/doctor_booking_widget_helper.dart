@@ -1,14 +1,20 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:petcure_user_app/core/cubit/pets_list/pets_list_cubit.dart';
+import 'package:provider/provider.dart';
+
+import 'package:petcure_user_app/core/exports/bloc_exports.dart';
+import 'package:petcure_user_app/core/models/location.dart';
 
 class DoctorBookingWidgetHelper {
-  final BuildContext context;
-  const DoctorBookingWidgetHelper({required this.context});
+  const DoctorBookingWidgetHelper();
 
-  void petsListInit() {
+  void petsListInit(BuildContext context) {
     final PetsListCubit petsListCubit = context.read<PetsListCubit>();
     petsListCubit.getUserPets();
+  }
+
+  void fetchNearbyDoctorsList(BuildContext context, Location location) {
+    final NearbyDoctorsCubit nearbyDoctorsCubit = context
+        .read<NearbyDoctorsCubit>();
+    nearbyDoctorsCubit.getNearbyDoctorsList(location);
   }
 }

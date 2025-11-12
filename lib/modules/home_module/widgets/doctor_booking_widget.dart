@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:petcure_user_app/core/cubit/pets_list/pets_list_cubit.dart';
+import 'package:petcure_user_app/core/models/location.dart';
 import 'package:petcure_user_app/modules/home_module/providers/doctor_booking_providers.dart';
 import 'package:petcure_user_app/modules/home_module/utils/doctor_booking_widget_helper.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/doctors_list_widget.dart';
@@ -19,13 +20,14 @@ class DoctorBookingWidget extends StatefulWidget {
 }
 
 class _DoctorBookingWidgetState extends State<DoctorBookingWidget> {
-  late final DoctorBookingWidgetHelper _doctorBookingWidgetHelper;
+  final DoctorBookingWidgetHelper _doctorBookingWidgetHelper =
+      const DoctorBookingWidgetHelper();
 
   @override
   void initState() {
     super.initState();
-    _doctorBookingWidgetHelper = DoctorBookingWidgetHelper(context: context);
-    _doctorBookingWidgetHelper.petsListInit();
+
+    _doctorBookingWidgetHelper.petsListInit(context);
   }
 
   @override
@@ -43,26 +45,70 @@ class _DoctorBookingWidgetState extends State<DoctorBookingWidget> {
             default:
           }
         },
-        child: const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Text(
-                  'Select Pet:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
+        child: Builder(
+          builder: (context) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: CustomScrollView(
+                slivers: [
+                  const SliverToBoxAdapter(
+                    child: Text(
+                      'Select Pet:',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 8)),
+                  const PetSelectionWidget(),
+                  const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                  const LocationInputWidget(),
+                  const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                  FindDoctorsButton(
+                    onClickingFindButton: () {
+                      debugPrint('Fetching locations...');
+                      final DoctorBookingProvider provider =
+                          Provider.of<DoctorBookingProvider>(
+                            context,
+                            listen: false,
+                          );
+                      final Location? location = provider
+                          .validateNearbyDoctorSearch();
+                      if (location != null) {
+                        _doctorBookingWidgetHelper.fetchNearbyDoctorsList(
+                          context,
+                          location,
+                        );
+                      } else {
+                        debugPrint('Location empty');
+                      }
+                    },
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                  DoctorsListWidget(
+                    onClickingFindButton: () {
+                      final DoctorBookingProvider provider =
+                          Provider.of<DoctorBookingProvider>(
+                            context,
+                            listen: false,
+                          );
+                      final Location? location = provider
+                          .validateNearbyDoctorSearch();
+                      if (location != null) {
+                        _doctorBookingWidgetHelper.fetchNearbyDoctorsList(
+                          context,
+                          location,
+                        );
+                      } else {
+                        debugPrint('Location empty');
+                      }
+                    },
+                  ),
+                ],
               ),
-              SliverToBoxAdapter(child: SizedBox(height: 8)),
-              PetSelectionWidget(),
-              SliverToBoxAdapter(child: SizedBox(height: 16)),
-              LocationInputWidget(),
-              SliverToBoxAdapter(child: SizedBox(height: 16)),
-              FindDoctorsButton(),
-              SliverToBoxAdapter(child: SizedBox(height: 16)),
-              DoctorsListWidget(),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

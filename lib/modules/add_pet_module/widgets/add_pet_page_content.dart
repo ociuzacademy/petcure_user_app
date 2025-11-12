@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:petcure_user_app/modules/add_pet_module/cubit/pet_sub_category_cubit.dart';
+import 'package:petcure_user_app/core/cubit/pet_sub_category/pet_sub_category_cubit.dart';
 import 'package:petcure_user_app/modules/login_module/view/login_page.dart';
 import 'package:provider/provider.dart';
 
@@ -256,6 +256,10 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                           onSelectingOption: (newValue) {
                             provider.havingSpecificHealthCondition =
                                 newValue == 'Yes';
+
+                            if (!provider.havingSpecificHealthCondition) {
+                              provider.medicalConditionController.text = '';
+                            }
                           },
                         ),
                         SizedBox(height: screenSize.height * 0.025),

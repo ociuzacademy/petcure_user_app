@@ -9,9 +9,9 @@ import 'package:http/http.dart' as http;
 import 'package:petcure_user_app/core/constants/app_constants.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_category_model.dart';
+import 'package:petcure_user_app/core/models/api_models/pet_details_model.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_sub_category_model.dart';
 import 'package:petcure_user_app/core/models/api_models/user_pets_model.dart';
-import 'package:petcure_user_app/core/models/api_models/user_profile_model.dart';
 
 class PetServices {
   static Future<List<PetCategoryModel>> getPetCategoryList() async {
@@ -134,14 +134,12 @@ class PetServices {
     }
   }
 
-  static Future<UserProfileModel> getUserProfileData({
-    required String userId,
-  }) async {
+  static Future<PetDetailsModel> getPetDetails(int petId) async {
     try {
-      final Map<String, dynamic> params = {'user_id': userId};
+      Map<String, dynamic> params = {'pet_id': petId.toString()};
 
       final url = Uri.parse(
-        AppUrls.getUserProfileDataUrl,
+        AppUrls.getPetDetailsUrl,
       ).replace(queryParameters: params);
 
       final resp = await http
@@ -162,11 +160,14 @@ class PetServices {
 
       if (resp.statusCode == 200) {
         final dynamic decoded = jsonDecode(resp.body);
-        final response = UserProfileModel.fromJson(decoded);
+        final response = PetDetailsModel.fromJson(decoded);
+
+        debugPrint(response.toString());
 
         return response;
       } else {
-        throw Exception('Failed to load response');
+        final Map<String, dynamic> errorResponse = jsonDecode(resp.body);
+        throw Exception('${errorResponse['message'] ?? 'Unknown error'}');
       }
     } on TimeoutException catch (e) {
       debugPrint('MenuServices: Request timeout - $e');

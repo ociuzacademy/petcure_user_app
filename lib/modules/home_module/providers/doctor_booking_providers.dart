@@ -1,12 +1,13 @@
 // doctor_booking_providers.dart
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:petcure_user_app/core/models/doctor.dart';
-import 'package:petcure_user_app/core/models/pet.dart';
-import 'package:petcure_user_app/core/helpers/fake_data.dart';
-import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
+
 import 'package:petcure_user_app/core/models/api_models/user_pets_model.dart'
     hide Pet;
+import 'package:petcure_user_app/core/models/location.dart';
+import 'package:petcure_user_app/core/models/pet.dart';
+import 'package:petcure_user_app/modules/home_module/models/nearby_doctors_model.dart';
+import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 
 class DoctorBookingProvider with ChangeNotifier {
   final TextEditingController _latitudeController = TextEditingController();
@@ -25,12 +26,13 @@ class DoctorBookingProvider with ChangeNotifier {
   Pet? get selectedPet => _selectedPet;
   bool get showDoctors => _showDoctors;
 
-  DoctorBookingProvider() {
-    _initializeData();
+  set showDoctors(bool value) {
+    _showDoctors = value;
+    notifyListeners();
   }
 
-  void _initializeData() {
-    _doctors = FakeData.generateFakeDoctors(); // Keep doctors as fake for now
+  void initializeData(NearbyDoctorsModel nearbyDoctors) {
+    _doctors = nearbyDoctors.doctors;
     notifyListeners();
   }
 
@@ -121,22 +123,23 @@ class DoctorBookingProvider with ChangeNotifier {
     }
   }
 
-  void findDoctors(BuildContext context) {
-    if (_latitudeController.text.isNotEmpty &&
-        _longitudeController.text.isNotEmpty) {
-      if (_selectedPet != null) {
-        _showDoctors = true;
-        notifyListeners();
-      } else {
-        CustomSnackBar.showError(context, message: 'Please select a pet');
-        _showDoctors = false;
-        notifyListeners();
-      }
-    } else {
-      CustomSnackBar.showError(context, message: 'Please add location');
-      _showDoctors = false;
-      notifyListeners();
+  Location? validateNearbyDoctorSearch() {
+    if (_selectedPet == null) {
+      debugPrint('Selected pet empty');
+      return null;
     }
+
+    final String latitudeText = _latitudeController.text.trim();
+    final String longitudeText = _longitudeController.text.trim();
+    if (latitudeText.isEmpty || longitudeText.isEmpty) {
+      debugPrint('Location empty');
+      return null;
+    }
+
+    return Location(
+      latitude: double.parse(latitudeText),
+      longitude: double.parse(longitudeText),
+    );
   }
 
   @override

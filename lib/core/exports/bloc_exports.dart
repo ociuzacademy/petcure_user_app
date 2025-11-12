@@ -3,8 +3,10 @@ export 'package:petcure_user_app/core/cubit/pet_category/pet_category_cubit.dart
 export 'package:petcure_user_app/modules/register_module/bloc/register_bloc.dart';
 export 'package:petcure_user_app/core/bloc/pet_operations/pet_operations_bloc.dart';
 export 'package:petcure_user_app/core/cubit/pets_list/pets_list_cubit.dart';
-export 'package:petcure_user_app/modules/pet_details_module/cubit/pet_details/pet_details_cubit.dart';
+export 'package:petcure_user_app/core/cubit/pet_details/pet_details_cubit.dart';
 export 'package:petcure_user_app/modules/home_module/cubits/product/product_cubit.dart';
 export 'package:petcure_user_app/core/cubit/user_profile/user_profile_cubit.dart';
 export 'package:petcure_user_app/modules/edit_profile_module/bloc/edit_user_profile_bloc.dart';
 export 'package:petcure_user_app/modules/product_details_module/cubit/product_details_cubit.dart';
+export 'package:petcure_user_app/modules/home_module/cubits/nearby_doctors/nearby_doctors_cubit.dart';
+export 'package:petcure_user_app/modules/update_pet_module/bloc/update_pet_details_bloc.dart';

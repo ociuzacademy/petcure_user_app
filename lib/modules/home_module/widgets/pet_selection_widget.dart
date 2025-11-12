@@ -19,6 +19,7 @@ class PetSelectionWidget extends StatelessWidget {
               pets: provider.pets,
               onSelectingPet: (pet) {
                 provider.setSelectedPet(pet);
+                provider.showDoctors = false;
               },
             )
           : PetsDropdown(selectedPet: provider.selectedPet, pets: const []),

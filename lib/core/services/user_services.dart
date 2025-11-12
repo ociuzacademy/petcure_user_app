@@ -6,22 +6,24 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:petcure_user_app/core/constants/app_constants.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
-import 'package:petcure_user_app/modules/login_module/models/login_model.dart';
+import 'package:petcure_user_app/core/models/api_models/user_profile_model.dart';
 
-class Login {
-  static Future<LoginModel> userLogin({
-    required String email,
-    required String password,
+class UserServices {
+  static Future<UserProfileModel> getUserProfileData({
+    required String userId,
   }) async {
     try {
-      Map<String, dynamic> params = {'email': email, 'password': password};
+      final Map<String, dynamic> params = {'user_id': userId};
+
+      final url = Uri.parse(
+        AppUrls.getUserProfileDataUrl,
+      ).replace(queryParameters: params);
 
       final resp = await http
-          .post(
-            Uri.parse(AppUrls.loginUrl),
-            body: jsonEncode(params),
+          .get(
+            url,
             headers: <String, String>{
-              'Content-Type': 'application/json; charset=utf-8',
+              'Content-Type': 'application/x-www-form-urlencoded',
             },
           )
           .timeout(
@@ -35,13 +37,11 @@ class Login {
 
       if (resp.statusCode == 200) {
         final dynamic decoded = jsonDecode(resp.body);
-        final LoginModel response = LoginModel.fromJson(decoded);
+        final response = UserProfileModel.fromJson(decoded);
+
         return response;
       } else {
-        final Map<String, dynamic> errorResponse = jsonDecode(resp.body);
-        throw Exception(
-          'Failed to login: ${errorResponse['message'] ?? 'Unknown error'}',
-        );
+        throw Exception('Failed to load response');
       }
     } on TimeoutException catch (e) {
       debugPrint('MenuServices: Request timeout - $e');
@@ -49,13 +49,13 @@ class Login {
         'Request timeout. Please check your internet connection and try again.',
       );
     } on SocketException {
-      throw Exception('No Internet connection');
-    } on HttpException {
       throw Exception('Server error');
+    } on HttpException {
+      throw Exception('Something went wrong');
     } on FormatException {
-      throw Exception('Bad response format');
+      throw Exception('Bad request');
     } catch (e) {
-      throw Exception('Unexpected error: ${e.toString()}');
+      throw Exception(e.toString());
     }
   }
 }

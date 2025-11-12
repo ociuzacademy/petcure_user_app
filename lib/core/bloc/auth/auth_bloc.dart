@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:petcure_user_app/core/localstorage/auth_storage_functions.dart';
 import 'package:petcure_user_app/modules/login_module/models/login_model.dart';
-import 'package:petcure_user_app/modules/login_module/services/login.dart';
+import 'package:petcure_user_app/modules/login_module/services/login_services.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -17,7 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onLogIn(UserLoggingIn event, Emitter<AuthState> emit) async {
     emit(const AuthState.authLoading());
     try {
-      final LoginModel response = await Login.userLogin(
+      final LoginModel response = await LoginServices.userLogin(
         email: event.email,
         password: event.password,
       );

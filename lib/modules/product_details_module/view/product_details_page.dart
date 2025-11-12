@@ -1,3 +1,4 @@
+// product_details_page.dart
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -295,11 +296,56 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 ),
               ],
             ),
-            child: addedToCart
-                ? // Expanded Buy Now button after adding to cart
-                  ElevatedButton(
+            child: Row(
+              children: [
+                // First button - changes based on cart state
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton.icon(
+                    onPressed: addedToCart
+                        ? _productDetailsHelper.navigateToCart
+                        : _productDetailsHelper.addToCart,
+                    // Alternative styling for the Go To Cart button
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: addedToCart
+                          ? AppPalette
+                                .firstColor // Use your primary color
+                          : Colors.white,
+                      foregroundColor: addedToCart
+                          ? Colors.white
+                          : AppPalette.firstColor,
+                      side: BorderSide(
+                        color: addedToCart
+                            ? AppPalette.firstColor
+                            : AppPalette.firstColor,
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    icon: Icon(
+                      addedToCart
+                          ? Icons.shopping_cart_checkout
+                          : Icons.shopping_cart,
+                    ),
+                    label: Text(
+                      addedToCart ? 'Go To Cart' : 'Add to Cart',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+
+                // Buy Now Button (always visible)
+                Expanded(
+                  flex: 3,
+                  child: ElevatedButton(
                     onPressed: () {
-                      // Buy now functionality
+                      // Navigator.push(
+                      //   context,
+                      //   PaymentPage.route(
+                      //     orderId: 'ORD-001',
+                      //     totalRate: widget.product.price,
+                      //   ),
+                      // );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppPalette.firstColor,
@@ -313,61 +359,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  )
-                : // Original two buttons before adding to cart
-                  Row(
-                    children: [
-                      // Add to Cart Button
-                      Expanded(
-                        flex: 2,
-                        child: ElevatedButton.icon(
-                          onPressed: _productDetailsHelper.addToCart,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: AppPalette.firstColor,
-                            side: const BorderSide(
-                              color: AppPalette.firstColor,
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                          ),
-                          icon: const Icon(Icons.shopping_cart),
-                          label: const Text(
-                            'Add to Cart',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-
-                      // Buy Now Button
-                      Expanded(
-                        flex: 3,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   PaymentPage.route(
-                            //     orderId: 'ORD-001',
-                            //     totalRate: widget.product.price,
-                            //   ),
-                            // );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppPalette.firstColor,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                          ),
-                          child: const Text(
-                            'Buy Now',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
+                ),
+              ],
+            ),
           );
         },
       ),

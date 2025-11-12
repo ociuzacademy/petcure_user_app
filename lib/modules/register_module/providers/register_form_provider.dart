@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:petcure_user_app/core/models/location.dart';
 import 'package:petcure_user_app/modules/register_module/class/user_register_details.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 

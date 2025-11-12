@@ -1,3 +1,4 @@
+// product_details_helper.dart
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +25,20 @@ class ProductDetailsHelper {
 
   void addToCart() {
     addedToCart.value = true;
+    // You can also add API call here to actually add the product to cart
+  }
+
+  void navigateToCart() {
+    // Uncomment and implement when you have a cart page
+    // Navigator.push(context, CartPage.route());
+
+    // For now, just show a dialog or snackbar
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Navigate to cart page'),
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 
   // Calculate estimated delivery date

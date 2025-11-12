@@ -16,7 +16,7 @@ class EditProfileServices {
   }) async {
     try {
       if (_isUpdatedDataEmpty(updatedProfileData)) {
-        throw TimeoutException('You haven\'t provided anything to update.');
+        throw Exception('You haven\'t provided anything to update.');
       }
 
       var request = http.MultipartRequest(

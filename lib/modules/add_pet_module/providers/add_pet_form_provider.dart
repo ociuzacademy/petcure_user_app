@@ -9,7 +9,7 @@ import 'package:petcure_user_app/core/models/age.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_category_model.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_sub_category_model.dart';
 import 'package:petcure_user_app/modules/add_pet_module/class/add_pet_details.dart';
-import 'package:petcure_user_app/modules/add_pet_module/cubit/pet_sub_category_cubit.dart';
+import 'package:petcure_user_app/core/cubit/pet_sub_category/pet_sub_category_cubit.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 
 class AddPetFormProvider with ChangeNotifier {

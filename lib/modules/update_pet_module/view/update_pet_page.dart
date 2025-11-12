@@ -1,383 +1,342 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
+// update_pet_page.dart
 import 'package:flutter/material.dart';
-import 'package:petcure_user_app/core/helpers/app_helpers.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
+import 'package:provider/provider.dart';
 
-import 'package:petcure_user_app/core/models/pet.dart';
+import 'package:petcure_user_app/core/cubit/pet_details/pet_details_cubit.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
-import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
-import 'package:petcure_user_app/widgets/dropdowns/categories_widget.dart';
-import 'package:petcure_user_app/widgets/dropdowns/gender_dropdown.dart';
-import 'package:petcure_user_app/widgets/dropdowns/options_dropdown.dart';
-import 'package:petcure_user_app/widgets/dropdowns/sub_categories_widget.dart';
-import 'package:petcure_user_app/widgets/text_fields/normal_text_field.dart';
+import 'package:petcure_user_app/modules/update_pet_module/bloc/update_pet_details_bloc.dart';
+import 'package:petcure_user_app/modules/update_pet_module/class/update_pet_details.dart';
+import 'package:petcure_user_app/modules/update_pet_module/providers/update_pet_provider.dart';
+import 'package:petcure_user_app/modules/update_pet_module/utils/update_pet_helper.dart';
+import 'package:petcure_user_app/modules/update_pet_module/widgets/pet_image_preview.dart';
+import 'package:petcure_user_app/widgets/app_widget_export.dart';
 
 class UpdatePetPage extends StatefulWidget {
-  final Pet pet;
-  const UpdatePetPage({super.key, required this.pet});
+  final int petId;
+  const UpdatePetPage({super.key, required this.petId});
 
   @override
   State<UpdatePetPage> createState() => _UpdatePetPageState();
 
-  static route({required Pet pet}) =>
-      MaterialPageRoute(builder: (context) => UpdatePetPage(pet: pet));
+  static route({required int petId}) =>
+      MaterialPageRoute(builder: (context) => UpdatePetPage(petId: petId));
 }
 
 class _UpdatePetPageState extends State<UpdatePetPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _petNameController = TextEditingController();
-  final TextEditingController _weightController = TextEditingController();
-  final TextEditingController _medicalConditionController =
-      TextEditingController();
-  final TextEditingController _ageYearsController = TextEditingController();
-  final TextEditingController _ageMonthsController = TextEditingController();
-
-  final FocusNode _petNameFocusNode = FocusNode();
-  final FocusNode _weightFocusNode = FocusNode();
-  final FocusNode _medicalConditionFocusNode = FocusNode();
-
-  // ValueNotifiers for state
-  final ValueNotifier<File?> _imageFile = ValueNotifier<File?>(null);
-  final ValueNotifier<DateTime?> _birthDate = ValueNotifier<DateTime?>(null);
-  final ValueNotifier<String?> _selectedGender = ValueNotifier<String?>(null);
-  final ValueNotifier<bool> _havingSpecificHealthCondition =
-      ValueNotifier<bool>(false);
-  final ValueNotifier<String?> _selectedCategory = ValueNotifier<String?>(null);
-  final ValueNotifier<String?> _selectedSubCategory = ValueNotifier<String?>(
-    null,
-  );
-
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _petNameController.dispose();
-    _weightController.dispose();
-    _medicalConditionController.dispose();
-    _ageYearsController.dispose();
-    _ageMonthsController.dispose();
-
-    _petNameFocusNode.dispose();
-    _weightFocusNode.dispose();
-    _medicalConditionFocusNode.dispose();
-
-    _imageFile.dispose();
-    _selectedGender.dispose();
-    _havingSpecificHealthCondition.dispose();
-    _selectedCategory.dispose();
-    _selectedSubCategory.dispose();
-    _birthDate.dispose();
-    super.dispose();
+    UpdatePetHelper.petDetailsInit(context, widget.petId);
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Update child')),
-      body: Scaffold(
-        appBar: AppBar(title: const Text('Add a Pet')),
-        body: Form(
-          key: _formKey,
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: screenSize.width * 0.05,
-                vertical: screenSize.height * 0.05,
-              ),
-              child: SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: screenSize.width * 0.85,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Pet Name Field
-                      NormalTextField(
-                        textEditingController: _petNameController,
-                        validatorFunction: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter pet name';
-                          }
-                          return null;
-                        },
-                        labelText: "Pet's Name",
-                        hintText: "Enter your pet's name",
-                        focusNode: _petNameFocusNode,
-                        nextFocusNode: _weightFocusNode,
-                      ),
-                      SizedBox(height: screenSize.height * 0.025),
-
-                      // Age Fields (Years and Months)
-                      // Alternative solution with fixed widths
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Year field
-                          SizedBox(
-                            width: screenSize.width * 0.3,
-                            child: NormalTextField(
-                              textEditingController: _ageYearsController,
-                              validatorFunction: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Years';
-                                }
-                                return null;
-                              },
-                              labelText: 'Age (Years)',
-                              hintText: 'Years',
-                              textInputType: TextInputType.number,
-                              isDisabled: true,
-                            ),
-                          ),
-                          // SizedBox(width: 10),
-                          // Month field
-                          SizedBox(
-                            width: screenSize.width * 0.3,
-                            child: NormalTextField(
-                              textEditingController: _ageMonthsController,
-                              validatorFunction: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Months';
-                                }
-                                int? months = int.tryParse(value);
-                                if (months != null &&
-                                    (months < 0 || months > 11)) {
-                                  return '0-11 only';
-                                }
-                                return null;
-                              },
-                              labelText: 'Age (Months)',
-                              hintText: 'Months (0-11)',
-                              textInputType: TextInputType.number,
-                              isDisabled: true,
-                            ),
-                          ),
-                          // SizedBox(width: 10),
-                          // Calendar button
-                          GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              width: screenSize.width * 0.2,
-                              height: screenSize.height * 0.08,
-                              decoration: BoxDecoration(
-                                color: AppPalette.firstColor,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Icon(
-                                Icons.calendar_month,
-                                color: AppPalette.whiteColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: screenSize.height * 0.025),
-
-                      // Gender Dropdown
-                      ValueListenableBuilder<String?>(
-                        valueListenable: _selectedGender,
-                        builder: (context, gender, _) {
-                          return GenderDropdown(
-                            selectedGender: gender ?? '',
-                            onSelectingGender: (newValue) {
-                              _selectedGender.value = newValue;
-                            },
-                          );
-                        },
-                      ),
-                      SizedBox(height: screenSize.height * 0.025),
-
-                      // Category Dropdown
-                      ValueListenableBuilder<String?>(
-                        valueListenable: _selectedCategory,
-                        builder: (context, selectedCategory, _) {
-                          return CategoriesWidget(
-                            selectedCategory: selectedCategory,
-                            categories: AppHelpers.petCategories.keys.toList(),
-                            onSelectingCategory: (value) {
-                              _selectedCategory.value = value;
-                            },
-                          );
-                        },
-                      ),
-                      SizedBox(height: screenSize.height * 0.025),
-
-                      // Sub-Category Dropdown
-                      ValueListenableBuilder<String?>(
-                        valueListenable: _selectedCategory,
-                        builder: (context, selectedCategory, _) {
-                          final List<String> subItemsList =
-                              selectedCategory != null
-                              ? AppHelpers.petCategories[selectedCategory]!
-                              : [];
-                          return ValueListenableBuilder<String?>(
-                            valueListenable: _selectedSubCategory,
-                            builder: (context, selectedSubCategory, __) {
-                              return SubCategoriesWidget(
-                                selectedSubCategory: selectedSubCategory,
-                                subCategories: subItemsList,
-                                onSelectingSubCategory: (value) {
-                                  _selectedSubCategory.value = value;
-                                },
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      SizedBox(height: screenSize.height * 0.025),
-
-                      // Weight Field
-                      NormalTextField(
-                        textEditingController: _weightController,
-                        validatorFunction: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter weight';
-                          }
-                          return null;
-                        },
-                        labelText: 'Weight',
-                        hintText: 'Enter weight (in K.G.)',
-                        textInputType: TextInputType.number,
-                        focusNode: _weightFocusNode,
-                        nextFocusNode: _medicalConditionFocusNode,
-                      ),
-                      SizedBox(height: screenSize.height * 0.025),
-
-                      // Health Condition Dropdown
-                      ValueListenableBuilder<bool>(
-                        valueListenable: _havingSpecificHealthCondition,
-                        builder: (context, hasCondition, _) {
-                          return OptionsDropdown(
-                            havingSpecificHealthCondition: hasCondition,
-                            onSelectingOption: (newValue) {
-                              _havingSpecificHealthCondition.value =
-                                  newValue == 'Yes';
-                            },
-                          );
-                        },
-                      ),
-                      SizedBox(height: screenSize.height * 0.025),
-
-                      // Medical Condition Field (Conditional Validation)
-                      ValueListenableBuilder<bool>(
-                        valueListenable: _havingSpecificHealthCondition,
-                        builder: (context, hasCondition, _) {
-                          return NormalTextField(
-                            textEditingController: _medicalConditionController,
-                            validatorFunction: (value) {
-                              if (hasCondition &&
-                                  (value == null || value.isEmpty)) {
-                                return 'Please enter medical condition';
-                              }
-                              return null;
-                            },
-                            labelText: 'Medical Condition',
-                            hintText: 'Enter medical condition',
-                            textFieldIcon: const Icon(Icons.home),
-                            isMultiline: true,
-                            focusNode: _medicalConditionFocusNode,
-                            isDisabled: !hasCondition,
-                          );
-                        },
-                      ),
-                      SizedBox(height: screenSize.height * 0.025),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          IconButton(
-                            style: const ButtonStyle(
-                              backgroundColor: WidgetStatePropertyAll(
-                                AppPalette.firstColor,
-                              ),
-                            ),
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.add_photo_alternate,
-                              color: Colors.white,
-                            ),
-                          ),
-                          IconButton(
-                            style: const ButtonStyle(
-                              backgroundColor: WidgetStatePropertyAll(
-                                AppPalette.firstColor,
-                              ),
-                            ),
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.add_a_photo,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: screenSize.height * 0.025),
-                      CustomButton(
-                        buttonWidth: double.infinity,
-                        backgroundColor: AppPalette.firstColor,
-                        textColor: Colors.white,
-                        labelText: 'Update Pet',
-                        onClick: () {},
-                      ),
-                      SizedBox(height: screenSize.height * 0.025),
-                      ValueListenableBuilder<File?>(
-                        valueListenable: _imageFile,
-                        builder: (context, imageFile, _) {
-                          if (imageFile == null) {
-                            return CachedNetworkImage(
-                              imageUrl: widget.pet.photoUrl,
-                            );
-                          }
-                          return Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image(
-                                  image: FileImage(imageFile),
-                                  height: 150,
-                                  width: 150,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.black54,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: IconButton(
-                                    icon: const Icon(
-                                      Icons.close,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                    onPressed: () {
-                                      _imageFile.value = null;
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+    return ChangeNotifierProvider(
+      create: (context) => UpdatePetProvider(),
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Update Pet')),
+        body: Consumer<UpdatePetProvider>(
+          builder: (context, provider, child) {
+            return MultiBlocListener(
+              listeners: [
+                BlocListener<PetDetailsCubit, PetDetailsState>(
+                  listener: (context, state) {
+                    switch (state) {
+                      case PetDetailsSuccess(:final petDetails):
+                        provider.initializeWithPetDataFromApi(petDetails);
+                        break;
+                      default:
+                    }
+                  },
                 ),
+                BlocListener<UpdatePetDetailsBloc, UpdatePetDetailsState>(
+                  listener: (context, state) {
+                    switch (state) {
+                      case UpdatePetDetailsLoading _:
+                        OverlayLoader.show(
+                          context,
+                          message: 'Updating pet details...',
+                        );
+                        break;
+                      case UpdatePetDetailsError(:final errorMessage):
+                        OverlayLoader.hide();
+                        CustomSnackBar.showError(
+                          context,
+                          message: errorMessage,
+                        );
+                        break;
+                      case UpdatePetDetailsSuccess(:final response):
+                        OverlayLoader.hide();
+                        CustomSnackBar.showSuccess(
+                          context,
+                          message: response.message,
+                        );
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          HomePage.route(),
+                          (_) => false,
+                        );
+                        break;
+                      default:
+                        OverlayLoader.hide();
+                        break;
+                    }
+                  },
+                ),
+              ],
+              child: BlocBuilder<PetDetailsCubit, PetDetailsState>(
+                builder: (context, state) {
+                  return Form(
+                    key: provider.formKey,
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: screenSize.width * 0.05,
+                          vertical: screenSize.height * 0.05,
+                        ),
+                        child: SingleChildScrollView(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: screenSize.width * 0.85,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // Pet Name Field
+                                NormalTextField(
+                                  textEditingController:
+                                      provider.petNameController,
+                                  validatorFunction: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter pet name';
+                                    }
+                                    return null;
+                                  },
+                                  labelText: "Pet's Name",
+                                  hintText: "Enter your pet's name",
+                                  focusNode: provider.petNameFocusNode,
+                                  nextFocusNode: provider.weightFocusNode,
+                                ),
+                                SizedBox(height: screenSize.height * 0.025),
+
+                                // Age Fields (Years and Months)
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // Year field
+                                    SizedBox(
+                                      width: screenSize.width * 0.3,
+                                      child: NormalTextField(
+                                        textEditingController:
+                                            provider.ageYearsController,
+                                        validatorFunction: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Years';
+                                          }
+                                          return null;
+                                        },
+                                        labelText: 'Age (Years)',
+                                        hintText: 'Years',
+                                        textInputType: TextInputType.number,
+                                        isDisabled: true,
+                                      ),
+                                    ),
+                                    // Month field
+                                    SizedBox(
+                                      width: screenSize.width * 0.3,
+                                      child: NormalTextField(
+                                        textEditingController:
+                                            provider.ageMonthsController,
+                                        validatorFunction: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Months';
+                                          }
+                                          int? months = int.tryParse(value);
+                                          if (months != null &&
+                                              (months < 0 || months > 11)) {
+                                            return '0-11 only';
+                                          }
+                                          return null;
+                                        },
+                                        labelText: 'Age (Months)',
+                                        hintText: 'Months (0-11)',
+                                        textInputType: TextInputType.number,
+                                        isDisabled: true,
+                                      ),
+                                    ),
+                                    // Calendar button
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 23.0),
+                                      child: SizedBox(
+                                        width: screenSize.width * 0.135,
+                                        height: screenSize.height * 0.06,
+                                        child: IconButton(
+                                          style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            backgroundColor:
+                                                AppPalette.firstColor,
+                                          ),
+                                          icon: const Icon(
+                                            Icons.calendar_month,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () =>
+                                              provider.selectBirthDate(context),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: screenSize.height * 0.025),
+
+                                // Gender Dropdown
+                                GenderDropdown(
+                                  selectedGender: provider.selectedGender ?? '',
+                                  onSelectingGender: provider.setSelectedGender,
+                                ),
+                                SizedBox(height: screenSize.height * 0.025),
+
+                                // Weight Field
+                                NormalTextField(
+                                  textEditingController:
+                                      provider.weightController,
+                                  validatorFunction: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter weight';
+                                    }
+                                    final weight = double.tryParse(value);
+                                    if (weight == null || weight <= 0) {
+                                      return 'Please enter valid weight';
+                                    }
+                                    return null;
+                                  },
+                                  labelText: 'Weight',
+                                  hintText: 'Enter weight (in K.G.)',
+                                  textInputType: TextInputType.number,
+                                  focusNode: provider.weightFocusNode,
+                                  nextFocusNode:
+                                      provider.medicalConditionFocusNode,
+                                ),
+                                SizedBox(height: screenSize.height * 0.025),
+
+                                // Health Condition Dropdown
+                                OptionsDropdown(
+                                  havingSpecificHealthCondition:
+                                      provider.havingSpecificHealthCondition,
+                                  onSelectingOption: (newValue) {
+                                    provider.setHavingSpecificHealthCondition(
+                                      newValue == 'Yes',
+                                    );
+
+                                    if (!provider
+                                        .havingSpecificHealthCondition) {
+                                      provider.medicalConditionController.text =
+                                          '';
+                                    }
+                                  },
+                                ),
+                                SizedBox(height: screenSize.height * 0.025),
+
+                                // Medical Condition Field (Conditional Validation)
+                                NormalTextField(
+                                  textEditingController:
+                                      provider.medicalConditionController,
+                                  validatorFunction: (value) {
+                                    if (provider
+                                            .havingSpecificHealthCondition &&
+                                        (value == null || value.isEmpty)) {
+                                      return 'Please enter medical condition';
+                                    }
+                                    return null;
+                                  },
+                                  labelText: 'Medical Condition',
+                                  hintText: 'Enter medical condition',
+                                  textFieldIcon: const Icon(
+                                    Icons.medical_services,
+                                  ),
+                                  isMultiline: true,
+                                  focusNode: provider.medicalConditionFocusNode,
+                                  isDisabled:
+                                      !provider.havingSpecificHealthCondition,
+                                ),
+                                SizedBox(height: screenSize.height * 0.025),
+
+                                // Image Picker Buttons
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    IconButton(
+                                      style: const ButtonStyle(
+                                        backgroundColor: WidgetStatePropertyAll(
+                                          AppPalette.firstColor,
+                                        ),
+                                      ),
+                                      onPressed: () =>
+                                          provider.pickImageFromGallery(),
+                                      icon: const Icon(
+                                        Icons.add_photo_alternate,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      style: const ButtonStyle(
+                                        backgroundColor: WidgetStatePropertyAll(
+                                          AppPalette.firstColor,
+                                        ),
+                                      ),
+                                      onPressed: () =>
+                                          provider.pickImageFromCamera(),
+                                      icon: const Icon(
+                                        Icons.add_a_photo,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: screenSize.height * 0.025),
+
+                                // Update Button
+                                CustomButton(
+                                  buttonWidth: double.infinity,
+                                  backgroundColor: AppPalette.firstColor,
+                                  textColor: Colors.white,
+                                  labelText: 'Update Pet',
+                                  onClick: () {
+                                    final UpdatePetDetails? petDetails =
+                                        provider.validateForm();
+                                    if (petDetails != null) {
+                                      UpdatePetHelper.updatePetDetails(
+                                        context,
+                                        widget.petId,
+                                        petDetails,
+                                      );
+                                    }
+                                  },
+                                ),
+                                SizedBox(height: screenSize.height * 0.025),
+
+                                // Image Preview
+                                PetImagePreview(provider: provider),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

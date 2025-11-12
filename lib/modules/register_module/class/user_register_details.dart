@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:petcure_user_app/core/models/location.dart';
+
 class UserRegisterDetails {
   final String username;
   final String email;
@@ -18,10 +20,4 @@ class UserRegisterDetails {
     required this.password,
     required this.image,
   });
-}
-
-class Location {
-  final double latitude;
-  final double longitude;
-  const Location({required this.latitude, required this.longitude});
 }

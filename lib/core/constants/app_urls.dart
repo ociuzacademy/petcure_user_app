@@ -19,4 +19,11 @@ class AppUrls {
   static const String getPetProductDetailsUrl = '$userUrl/product_details/';
 
   static const String editProfileUrl = '$userUrl/update_profile/';
+
+  static const String getNearbyDoctorsListUrl = '$userUrl/nearby_doctors/';
+
+  static const String updatePetUrl = '$userUrl/update_pet_details/';
+
+  static const String addToCartUrl = '$userUrl/add_to_cart/';
+  static const String buyNowUrl = '$userUrl/buy_now/';
 }

@@ -5,8 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
 
 import 'package:petcure_user_app/core/helpers/app_helpers.dart';
-import 'package:petcure_user_app/core/models/pet.dart';
-import 'package:petcure_user_app/modules/pet_details_module/cubit/pet_details/pet_details_cubit.dart';
+import 'package:petcure_user_app/core/cubit/pet_details/pet_details_cubit.dart';
 import 'package:petcure_user_app/modules/pet_details_module/utils/pet_details_helper.dart';
 import 'package:petcure_user_app/modules/pet_details_module/widgets/detail_card.dart';
 import 'package:petcure_user_app/modules/pet_details_module/widgets/pet_details_error_widget.dart';
@@ -53,6 +52,7 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
       body: BlocBuilder<PetDetailsCubit, PetDetailsState>(
         builder: (context, state) {
           switch (state) {
+            case PetDetailsInitial _:
             case PetDetailsLoading _:
               return const PetDetailsLoadingWidget();
             case PetDetailsError(:final errorMessage):
@@ -62,22 +62,6 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
               );
             case PetDetailsSuccess(:final petDetails):
               final pet = petDetails.pet;
-
-              // Convert the pet from PetDetailsModel to your core Pet model
-              final corePet = Pet(
-                petId: pet.id,
-                name: pet.name,
-                categoryId: pet.category,
-                category: pet.categoryName,
-                subCategoryId: pet.category,
-                subCategory: pet.subCategoryName,
-                birthDate: pet.birthDate,
-                gender: pet.gender,
-                weight: pet.weight,
-                healthConditions: pet.healthCondition,
-                photoUrl: pet.petImage,
-                ownerId: pet.user,
-              );
 
               return SingleChildScrollView(
                 padding: EdgeInsets.symmetric(
@@ -105,7 +89,7 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            UpdatePetPage.route(pet: corePet),
+                            UpdatePetPage.route(petId: widget.petId),
                           );
                         },
                         icon: const Icon(Icons.edit),
@@ -139,7 +123,8 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
                     DetailCard(
                       icon: Icons.transgender,
                       title: 'Gender',
-                      value: pet.gender,
+                      value:
+                          pet.gender[0].toUpperCase() + pet.gender.substring(1),
                     ),
                     DetailCard(
                       icon: Icons.monitor_weight,
@@ -158,8 +143,6 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
                   ],
                 ),
               );
-            default:
-              return const PetDetailsLoadingWidget();
           }
         },
       ),
