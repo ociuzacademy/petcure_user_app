@@ -7,7 +7,7 @@ import 'package:petcure_user_app/modules/payment_module/widgets/u_p_i_payment.da
 class PaymentHelper {
   final BuildContext context;
   final ValueNotifier<String?> selectedMethod;
-  final String orderId;
+  final int orderId;
   final double totalRate;
   const PaymentHelper({
     required this.context,

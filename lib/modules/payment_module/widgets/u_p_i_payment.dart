@@ -6,7 +6,7 @@ import 'package:petcure_user_app/modules/payment_module/widgets/payment_containe
 import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
 
 class UPIPayment extends StatefulWidget {
-  final String orderId;
+  final int orderId;
   final double amount;
   const UPIPayment({super.key, required this.orderId, required this.amount});
 
@@ -25,6 +25,7 @@ class _UPIPaymentState extends State<UPIPayment> {
     _upiPaymentHelper = UPIPaymentHelper(
       context: context,
       formKey: _formKey,
+      orderId: widget.orderId,
       amount: widget.amount,
     );
   }

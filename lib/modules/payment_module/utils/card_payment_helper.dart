@@ -7,7 +7,12 @@ import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 class CardPaymentHelper {
   final BuildContext context;
   final GlobalKey<FormState> formKey;
-  const CardPaymentHelper({required this.context, required this.formKey});
+  final int orderId;
+  const CardPaymentHelper({
+    required this.context,
+    required this.formKey,
+    required this.orderId,
+  });
 
   void cardPayment() {
     if (formKey.currentState!.validate()) {

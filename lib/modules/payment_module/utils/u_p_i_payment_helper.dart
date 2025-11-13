@@ -1,15 +1,19 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 
 class UPIPaymentHelper {
   final BuildContext context;
   final GlobalKey<FormState> formKey;
+  final int orderId;
   final double amount;
 
   const UPIPaymentHelper({
     required this.context,
     required this.formKey,
+    required this.orderId,
     required this.amount,
   });
 

@@ -7,7 +7,7 @@ import 'package:petcure_user_app/modules/payment_module/utils/payment_helper.dar
 import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
 
 class PaymentPage extends StatefulWidget {
-  final String orderId;
+  final int orderId;
   final double totalRate;
   const PaymentPage({
     super.key,
@@ -18,7 +18,7 @@ class PaymentPage extends StatefulWidget {
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 
-  static route({required String orderId, required double totalRate}) =>
+  static route({required int orderId, required double totalRate}) =>
       MaterialPageRoute(
         builder: (context) =>
             PaymentPage(orderId: orderId, totalRate: totalRate),

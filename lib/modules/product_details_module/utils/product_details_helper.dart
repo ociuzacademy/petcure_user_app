@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
-import 'package:petcure_user_app/modules/product_details_module/cubit/product_details_cubit.dart';
+import 'package:petcure_user_app/modules/cart_module/view/cart_page.dart';
 
 class ProductDetailsHelper {
   final BuildContext context;
@@ -25,20 +25,17 @@ class ProductDetailsHelper {
 
   void addToCart() {
     addedToCart.value = true;
-    // You can also add API call here to actually add the product to cart
+    final ProductOrderBloc productOrderBloc = context.read<ProductOrderBloc>();
+    productOrderBloc.add(ProductOrderEvent.productAddingToCart(productId));
   }
 
   void navigateToCart() {
-    // Uncomment and implement when you have a cart page
-    // Navigator.push(context, CartPage.route());
+    Navigator.push(context, CartPage.route());
+  }
 
-    // For now, just show a dialog or snackbar
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Navigate to cart page'),
-        duration: Duration(seconds: 2),
-      ),
-    );
+  void buyNow() {
+    final ProductOrderBloc productOrderBloc = context.read<ProductOrderBloc>();
+    productOrderBloc.add(ProductOrderEvent.buyingProductNow(productId));
   }
 
   // Calculate estimated delivery date

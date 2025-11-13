@@ -10,3 +10,4 @@ export 'package:petcure_user_app/modules/edit_profile_module/bloc/edit_user_prof
 export 'package:petcure_user_app/modules/product_details_module/cubit/product_details_cubit.dart';
 export 'package:petcure_user_app/modules/home_module/cubits/nearby_doctors/nearby_doctors_cubit.dart';
 export 'package:petcure_user_app/modules/update_pet_module/bloc/update_pet_details_bloc.dart';
+export 'package:petcure_user_app/core/bloc/product_order/product_order_bloc.dart';

@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:petcure_user_app/core/models/cart_item.dart';
-import 'package:petcure_user_app/modules/payment_module/view/payment_page.dart';
 
 class CartPageHelper {
   final BuildContext context;
@@ -43,9 +42,9 @@ class CartPageHelper {
   }
 
   void placeOrder() {
-    Navigator.push(
-      context,
-      PaymentPage.route(orderId: 'ORD-001', totalRate: totalAmount.value),
-    );
+    // Navigator.push(
+    //   context,
+    //   PaymentPage.route(orderId: 'ORD-001', totalRate: totalAmount.value),
+    // );
   }
 }

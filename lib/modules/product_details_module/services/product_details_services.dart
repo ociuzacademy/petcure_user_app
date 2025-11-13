@@ -43,7 +43,8 @@ class ProductDetailsServices {
 
         return response;
       } else {
-        throw Exception('Failed to load response');
+        final Map<String, dynamic> errorResponse = jsonDecode(resp.body);
+        throw Exception(errorResponse['error'] ?? 'Unknown error');
       }
     } on TimeoutException catch (e) {
       debugPrint('MenuServices: Request timeout - $e');
@@ -62,13 +63,13 @@ class ProductDetailsServices {
   }
 
   static Future<AddToCartResponseModel> addtoCart({
-    required String userid,
+    required String userId,
     required int productId,
   }) async {
     try {
       final Map<String, dynamic> params = {
-        'user_id': userid,
-        'product_id': productId.toString(),
+        'user_id': userId,
+        'product_id': productId,
       };
 
       final url = Uri.parse(AppUrls.addToCartUrl);
@@ -78,7 +79,7 @@ class ProductDetailsServices {
             url,
             body: jsonEncode(params),
             headers: <String, String>{
-              'Content-Type': 'application/x-www-form-urlencoded',
+              'Content-Type': 'application/json; charset=utf-8',
             },
           )
           .timeout(
@@ -98,7 +99,8 @@ class ProductDetailsServices {
 
         return response;
       } else {
-        throw Exception('Failed to load response');
+        final Map<String, dynamic> errorResponse = jsonDecode(resp.body);
+        throw Exception(errorResponse['error'] ?? 'Unknown error');
       }
     } on TimeoutException catch (e) {
       debugPrint('MenuServices: Request timeout - $e');
@@ -123,7 +125,7 @@ class ProductDetailsServices {
     try {
       final Map<String, dynamic> params = {
         'user_id': userId,
-        'product_id': productId.toString(),
+        'product_id': productId,
       };
 
       final url = Uri.parse(AppUrls.buyNowUrl);
@@ -133,7 +135,7 @@ class ProductDetailsServices {
             url,
             body: jsonEncode(params),
             headers: <String, String>{
-              'Content-Type': 'application/x-www-form-urlencoded',
+              'Content-Type': 'application/json; charset=utf-8',
             },
           )
           .timeout(
@@ -153,7 +155,8 @@ class ProductDetailsServices {
 
         return response;
       } else {
-        throw Exception('Failed to load response');
+        final Map<String, dynamic> errorResponse = jsonDecode(resp.body);
+        throw Exception(errorResponse['error'] ?? 'Unknown error');
       }
     } on TimeoutException catch (e) {
       debugPrint('MenuServices: Request timeout - $e');
