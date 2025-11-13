@@ -55,13 +55,15 @@ extension ProductOrderEventPatterns on ProductOrderEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _ProductAddingToCart value)?  productAddingToCart,TResult Function( _BuyingProductNow value)?  buyingProductNow,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _ProductAddingToCart value)?  productAddingToCart,TResult Function( _BuyingProductNow value)?  buyingProductNow,TResult Function( _UpdatingCartItemQuantity value)?  updatingCartItemQuantity,TResult Function( _MakingPurchase value)?  makingPurchase,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _ProductAddingToCart() when productAddingToCart != null:
 return productAddingToCart(_that);case _BuyingProductNow() when buyingProductNow != null:
-return buyingProductNow(_that);case _:
+return buyingProductNow(_that);case _UpdatingCartItemQuantity() when updatingCartItemQuantity != null:
+return updatingCartItemQuantity(_that);case _MakingPurchase() when makingPurchase != null:
+return makingPurchase(_that);case _:
   return orElse();
 
 }
@@ -79,13 +81,15 @@ return buyingProductNow(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _ProductAddingToCart value)  productAddingToCart,required TResult Function( _BuyingProductNow value)  buyingProductNow,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _ProductAddingToCart value)  productAddingToCart,required TResult Function( _BuyingProductNow value)  buyingProductNow,required TResult Function( _UpdatingCartItemQuantity value)  updatingCartItemQuantity,required TResult Function( _MakingPurchase value)  makingPurchase,}){
 final _that = this;
 switch (_that) {
 case _Started():
 return started(_that);case _ProductAddingToCart():
 return productAddingToCart(_that);case _BuyingProductNow():
-return buyingProductNow(_that);}
+return buyingProductNow(_that);case _UpdatingCartItemQuantity():
+return updatingCartItemQuantity(_that);case _MakingPurchase():
+return makingPurchase(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -99,13 +103,15 @@ return buyingProductNow(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _ProductAddingToCart value)?  productAddingToCart,TResult? Function( _BuyingProductNow value)?  buyingProductNow,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _ProductAddingToCart value)?  productAddingToCart,TResult? Function( _BuyingProductNow value)?  buyingProductNow,TResult? Function( _UpdatingCartItemQuantity value)?  updatingCartItemQuantity,TResult? Function( _MakingPurchase value)?  makingPurchase,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _ProductAddingToCart() when productAddingToCart != null:
 return productAddingToCart(_that);case _BuyingProductNow() when buyingProductNow != null:
-return buyingProductNow(_that);case _:
+return buyingProductNow(_that);case _UpdatingCartItemQuantity() when updatingCartItemQuantity != null:
+return updatingCartItemQuantity(_that);case _MakingPurchase() when makingPurchase != null:
+return makingPurchase(_that);case _:
   return null;
 
 }
@@ -122,12 +128,14 @@ return buyingProductNow(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( int productId)?  productAddingToCart,TResult Function( int productId)?  buyingProductNow,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( int productId)?  productAddingToCart,TResult Function( int productId)?  buyingProductNow,TResult Function( int cartItemId,  int newQuantity)?  updatingCartItemQuantity,TResult Function()?  makingPurchase,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _ProductAddingToCart() when productAddingToCart != null:
 return productAddingToCart(_that.productId);case _BuyingProductNow() when buyingProductNow != null:
-return buyingProductNow(_that.productId);case _:
+return buyingProductNow(_that.productId);case _UpdatingCartItemQuantity() when updatingCartItemQuantity != null:
+return updatingCartItemQuantity(_that.cartItemId,_that.newQuantity);case _MakingPurchase() when makingPurchase != null:
+return makingPurchase();case _:
   return orElse();
 
 }
@@ -145,12 +153,14 @@ return buyingProductNow(_that.productId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( int productId)  productAddingToCart,required TResult Function( int productId)  buyingProductNow,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( int productId)  productAddingToCart,required TResult Function( int productId)  buyingProductNow,required TResult Function( int cartItemId,  int newQuantity)  updatingCartItemQuantity,required TResult Function()  makingPurchase,}) {final _that = this;
 switch (_that) {
 case _Started():
 return started();case _ProductAddingToCart():
 return productAddingToCart(_that.productId);case _BuyingProductNow():
-return buyingProductNow(_that.productId);}
+return buyingProductNow(_that.productId);case _UpdatingCartItemQuantity():
+return updatingCartItemQuantity(_that.cartItemId,_that.newQuantity);case _MakingPurchase():
+return makingPurchase();}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -164,12 +174,14 @@ return buyingProductNow(_that.productId);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( int productId)?  productAddingToCart,TResult? Function( int productId)?  buyingProductNow,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( int productId)?  productAddingToCart,TResult? Function( int productId)?  buyingProductNow,TResult? Function( int cartItemId,  int newQuantity)?  updatingCartItemQuantity,TResult? Function()?  makingPurchase,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _ProductAddingToCart() when productAddingToCart != null:
 return productAddingToCart(_that.productId);case _BuyingProductNow() when buyingProductNow != null:
-return buyingProductNow(_that.productId);case _:
+return buyingProductNow(_that.productId);case _UpdatingCartItemQuantity() when updatingCartItemQuantity != null:
+return updatingCartItemQuantity(_that.cartItemId,_that.newQuantity);case _MakingPurchase() when makingPurchase != null:
+return makingPurchase();case _:
   return null;
 
 }
@@ -342,6 +354,106 @@ as int,
 }
 
 /// @nodoc
+
+
+class _UpdatingCartItemQuantity implements ProductOrderEvent {
+  const _UpdatingCartItemQuantity(this.cartItemId, this.newQuantity);
+  
+
+ final  int cartItemId;
+ final  int newQuantity;
+
+/// Create a copy of ProductOrderEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UpdatingCartItemQuantityCopyWith<_UpdatingCartItemQuantity> get copyWith => __$UpdatingCartItemQuantityCopyWithImpl<_UpdatingCartItemQuantity>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdatingCartItemQuantity&&(identical(other.cartItemId, cartItemId) || other.cartItemId == cartItemId)&&(identical(other.newQuantity, newQuantity) || other.newQuantity == newQuantity));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,cartItemId,newQuantity);
+
+@override
+String toString() {
+  return 'ProductOrderEvent.updatingCartItemQuantity(cartItemId: $cartItemId, newQuantity: $newQuantity)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UpdatingCartItemQuantityCopyWith<$Res> implements $ProductOrderEventCopyWith<$Res> {
+  factory _$UpdatingCartItemQuantityCopyWith(_UpdatingCartItemQuantity value, $Res Function(_UpdatingCartItemQuantity) _then) = __$UpdatingCartItemQuantityCopyWithImpl;
+@useResult
+$Res call({
+ int cartItemId, int newQuantity
+});
+
+
+
+
+}
+/// @nodoc
+class __$UpdatingCartItemQuantityCopyWithImpl<$Res>
+    implements _$UpdatingCartItemQuantityCopyWith<$Res> {
+  __$UpdatingCartItemQuantityCopyWithImpl(this._self, this._then);
+
+  final _UpdatingCartItemQuantity _self;
+  final $Res Function(_UpdatingCartItemQuantity) _then;
+
+/// Create a copy of ProductOrderEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? cartItemId = null,Object? newQuantity = null,}) {
+  return _then(_UpdatingCartItemQuantity(
+null == cartItemId ? _self.cartItemId : cartItemId // ignore: cast_nullable_to_non_nullable
+as int,null == newQuantity ? _self.newQuantity : newQuantity // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _MakingPurchase implements ProductOrderEvent {
+  const _MakingPurchase();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MakingPurchase);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ProductOrderEvent.makingPurchase()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
 mixin _$ProductOrderState {
 
 
@@ -385,7 +497,7 @@ extension ProductOrderStatePatterns on ProductOrderState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ProductOrderInitial value)?  initial,TResult Function( ProductOrderLoading value)?  productOrderLoading,TResult Function( ProductOrderError value)?  productOrderError,TResult Function( ProductAddToCart value)?  productAddToCart,TResult Function( BuyProductNow value)?  buyProductNow,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ProductOrderInitial value)?  initial,TResult Function( ProductOrderLoading value)?  productOrderLoading,TResult Function( ProductOrderError value)?  productOrderError,TResult Function( ProductAddToCart value)?  productAddToCart,TResult Function( BuyProductNow value)?  buyProductNow,TResult Function( CartItemQuantityChanged value)?  cartItemQuantityChanged,TResult Function( PurchaseMade value)?  purchaseMade,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case ProductOrderInitial() when initial != null:
@@ -393,7 +505,9 @@ return initial(_that);case ProductOrderLoading() when productOrderLoading != nul
 return productOrderLoading(_that);case ProductOrderError() when productOrderError != null:
 return productOrderError(_that);case ProductAddToCart() when productAddToCart != null:
 return productAddToCart(_that);case BuyProductNow() when buyProductNow != null:
-return buyProductNow(_that);case _:
+return buyProductNow(_that);case CartItemQuantityChanged() when cartItemQuantityChanged != null:
+return cartItemQuantityChanged(_that);case PurchaseMade() when purchaseMade != null:
+return purchaseMade(_that);case _:
   return orElse();
 
 }
@@ -411,7 +525,7 @@ return buyProductNow(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ProductOrderInitial value)  initial,required TResult Function( ProductOrderLoading value)  productOrderLoading,required TResult Function( ProductOrderError value)  productOrderError,required TResult Function( ProductAddToCart value)  productAddToCart,required TResult Function( BuyProductNow value)  buyProductNow,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ProductOrderInitial value)  initial,required TResult Function( ProductOrderLoading value)  productOrderLoading,required TResult Function( ProductOrderError value)  productOrderError,required TResult Function( ProductAddToCart value)  productAddToCart,required TResult Function( BuyProductNow value)  buyProductNow,required TResult Function( CartItemQuantityChanged value)  cartItemQuantityChanged,required TResult Function( PurchaseMade value)  purchaseMade,}){
 final _that = this;
 switch (_that) {
 case ProductOrderInitial():
@@ -419,7 +533,9 @@ return initial(_that);case ProductOrderLoading():
 return productOrderLoading(_that);case ProductOrderError():
 return productOrderError(_that);case ProductAddToCart():
 return productAddToCart(_that);case BuyProductNow():
-return buyProductNow(_that);}
+return buyProductNow(_that);case CartItemQuantityChanged():
+return cartItemQuantityChanged(_that);case PurchaseMade():
+return purchaseMade(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -433,7 +549,7 @@ return buyProductNow(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ProductOrderInitial value)?  initial,TResult? Function( ProductOrderLoading value)?  productOrderLoading,TResult? Function( ProductOrderError value)?  productOrderError,TResult? Function( ProductAddToCart value)?  productAddToCart,TResult? Function( BuyProductNow value)?  buyProductNow,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ProductOrderInitial value)?  initial,TResult? Function( ProductOrderLoading value)?  productOrderLoading,TResult? Function( ProductOrderError value)?  productOrderError,TResult? Function( ProductAddToCart value)?  productAddToCart,TResult? Function( BuyProductNow value)?  buyProductNow,TResult? Function( CartItemQuantityChanged value)?  cartItemQuantityChanged,TResult? Function( PurchaseMade value)?  purchaseMade,}){
 final _that = this;
 switch (_that) {
 case ProductOrderInitial() when initial != null:
@@ -441,7 +557,9 @@ return initial(_that);case ProductOrderLoading() when productOrderLoading != nul
 return productOrderLoading(_that);case ProductOrderError() when productOrderError != null:
 return productOrderError(_that);case ProductAddToCart() when productAddToCart != null:
 return productAddToCart(_that);case BuyProductNow() when buyProductNow != null:
-return buyProductNow(_that);case _:
+return buyProductNow(_that);case CartItemQuantityChanged() when cartItemQuantityChanged != null:
+return cartItemQuantityChanged(_that);case PurchaseMade() when purchaseMade != null:
+return purchaseMade(_that);case _:
   return null;
 
 }
@@ -458,14 +576,16 @@ return buyProductNow(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function( String message)?  productOrderLoading,TResult Function( String errorMessage)?  productOrderError,TResult Function( AddToCartResponseModel addToCartResponse)?  productAddToCart,TResult Function( BuyNowResponseModel buyNowResponse)?  buyProductNow,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function( String message)?  productOrderLoading,TResult Function( String errorMessage)?  productOrderError,TResult Function( AddToCartResponseModel addToCartResponse)?  productAddToCart,TResult Function( BuyNowResponseModel buyNowResponse)?  buyProductNow,TResult Function( CartItemUpdateQuantityResponseModel response)?  cartItemQuantityChanged,TResult Function( MakePurchaseResponseModel response)?  purchaseMade,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ProductOrderInitial() when initial != null:
 return initial();case ProductOrderLoading() when productOrderLoading != null:
 return productOrderLoading(_that.message);case ProductOrderError() when productOrderError != null:
 return productOrderError(_that.errorMessage);case ProductAddToCart() when productAddToCart != null:
 return productAddToCart(_that.addToCartResponse);case BuyProductNow() when buyProductNow != null:
-return buyProductNow(_that.buyNowResponse);case _:
+return buyProductNow(_that.buyNowResponse);case CartItemQuantityChanged() when cartItemQuantityChanged != null:
+return cartItemQuantityChanged(_that.response);case PurchaseMade() when purchaseMade != null:
+return purchaseMade(_that.response);case _:
   return orElse();
 
 }
@@ -483,14 +603,16 @@ return buyProductNow(_that.buyNowResponse);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function( String message)  productOrderLoading,required TResult Function( String errorMessage)  productOrderError,required TResult Function( AddToCartResponseModel addToCartResponse)  productAddToCart,required TResult Function( BuyNowResponseModel buyNowResponse)  buyProductNow,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function( String message)  productOrderLoading,required TResult Function( String errorMessage)  productOrderError,required TResult Function( AddToCartResponseModel addToCartResponse)  productAddToCart,required TResult Function( BuyNowResponseModel buyNowResponse)  buyProductNow,required TResult Function( CartItemUpdateQuantityResponseModel response)  cartItemQuantityChanged,required TResult Function( MakePurchaseResponseModel response)  purchaseMade,}) {final _that = this;
 switch (_that) {
 case ProductOrderInitial():
 return initial();case ProductOrderLoading():
 return productOrderLoading(_that.message);case ProductOrderError():
 return productOrderError(_that.errorMessage);case ProductAddToCart():
 return productAddToCart(_that.addToCartResponse);case BuyProductNow():
-return buyProductNow(_that.buyNowResponse);}
+return buyProductNow(_that.buyNowResponse);case CartItemQuantityChanged():
+return cartItemQuantityChanged(_that.response);case PurchaseMade():
+return purchaseMade(_that.response);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -504,14 +626,16 @@ return buyProductNow(_that.buyNowResponse);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function( String message)?  productOrderLoading,TResult? Function( String errorMessage)?  productOrderError,TResult? Function( AddToCartResponseModel addToCartResponse)?  productAddToCart,TResult? Function( BuyNowResponseModel buyNowResponse)?  buyProductNow,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function( String message)?  productOrderLoading,TResult? Function( String errorMessage)?  productOrderError,TResult? Function( AddToCartResponseModel addToCartResponse)?  productAddToCart,TResult? Function( BuyNowResponseModel buyNowResponse)?  buyProductNow,TResult? Function( CartItemUpdateQuantityResponseModel response)?  cartItemQuantityChanged,TResult? Function( MakePurchaseResponseModel response)?  purchaseMade,}) {final _that = this;
 switch (_that) {
 case ProductOrderInitial() when initial != null:
 return initial();case ProductOrderLoading() when productOrderLoading != null:
 return productOrderLoading(_that.message);case ProductOrderError() when productOrderError != null:
 return productOrderError(_that.errorMessage);case ProductAddToCart() when productAddToCart != null:
 return productAddToCart(_that.addToCartResponse);case BuyProductNow() when buyProductNow != null:
-return buyProductNow(_that.buyNowResponse);case _:
+return buyProductNow(_that.buyNowResponse);case CartItemQuantityChanged() when cartItemQuantityChanged != null:
+return cartItemQuantityChanged(_that.response);case PurchaseMade() when purchaseMade != null:
+return purchaseMade(_that.response);case _:
   return null;
 
 }
@@ -809,6 +933,138 @@ class _$BuyProductNowCopyWithImpl<$Res>
   return _then(BuyProductNow(
 null == buyNowResponse ? _self.buyNowResponse : buyNowResponse // ignore: cast_nullable_to_non_nullable
 as BuyNowResponseModel,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class CartItemQuantityChanged implements ProductOrderState {
+  const CartItemQuantityChanged(this.response);
+  
+
+ final  CartItemUpdateQuantityResponseModel response;
+
+/// Create a copy of ProductOrderState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CartItemQuantityChangedCopyWith<CartItemQuantityChanged> get copyWith => _$CartItemQuantityChangedCopyWithImpl<CartItemQuantityChanged>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CartItemQuantityChanged&&(identical(other.response, response) || other.response == response));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,response);
+
+@override
+String toString() {
+  return 'ProductOrderState.cartItemQuantityChanged(response: $response)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CartItemQuantityChangedCopyWith<$Res> implements $ProductOrderStateCopyWith<$Res> {
+  factory $CartItemQuantityChangedCopyWith(CartItemQuantityChanged value, $Res Function(CartItemQuantityChanged) _then) = _$CartItemQuantityChangedCopyWithImpl;
+@useResult
+$Res call({
+ CartItemUpdateQuantityResponseModel response
+});
+
+
+
+
+}
+/// @nodoc
+class _$CartItemQuantityChangedCopyWithImpl<$Res>
+    implements $CartItemQuantityChangedCopyWith<$Res> {
+  _$CartItemQuantityChangedCopyWithImpl(this._self, this._then);
+
+  final CartItemQuantityChanged _self;
+  final $Res Function(CartItemQuantityChanged) _then;
+
+/// Create a copy of ProductOrderState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? response = null,}) {
+  return _then(CartItemQuantityChanged(
+null == response ? _self.response : response // ignore: cast_nullable_to_non_nullable
+as CartItemUpdateQuantityResponseModel,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class PurchaseMade implements ProductOrderState {
+  const PurchaseMade(this.response);
+  
+
+ final  MakePurchaseResponseModel response;
+
+/// Create a copy of ProductOrderState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PurchaseMadeCopyWith<PurchaseMade> get copyWith => _$PurchaseMadeCopyWithImpl<PurchaseMade>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PurchaseMade&&(identical(other.response, response) || other.response == response));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,response);
+
+@override
+String toString() {
+  return 'ProductOrderState.purchaseMade(response: $response)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PurchaseMadeCopyWith<$Res> implements $ProductOrderStateCopyWith<$Res> {
+  factory $PurchaseMadeCopyWith(PurchaseMade value, $Res Function(PurchaseMade) _then) = _$PurchaseMadeCopyWithImpl;
+@useResult
+$Res call({
+ MakePurchaseResponseModel response
+});
+
+
+
+
+}
+/// @nodoc
+class _$PurchaseMadeCopyWithImpl<$Res>
+    implements $PurchaseMadeCopyWith<$Res> {
+  _$PurchaseMadeCopyWithImpl(this._self, this._then);
+
+  final PurchaseMade _self;
+  final $Res Function(PurchaseMade) _then;
+
+/// Create a copy of ProductOrderState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? response = null,}) {
+  return _then(PurchaseMade(
+null == response ? _self.response : response // ignore: cast_nullable_to_non_nullable
+as MakePurchaseResponseModel,
   ));
 }
 

@@ -26,4 +26,9 @@ class AppUrls {
 
   static const String addToCartUrl = '$userUrl/add_to_cart/';
   static const String buyNowUrl = '$userUrl/buy_now/';
+
+  static const String getUserCartItemsUrl = '$userUrl/cart_items/';
+  static const String updateCartItemQuantityUrl =
+      '$userUrl/update_cart_quantity/';
+  static const String makePurchaseUrl = '$userUrl/make_purchase/';
 }

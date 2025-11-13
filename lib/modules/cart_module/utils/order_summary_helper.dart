@@ -1,20 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:petcure_user_app/core/models/cart_item.dart';
 
 class OrderSummaryHelper {
-  final List<CartItem> cartItems;
-  const OrderSummaryHelper({required this.cartItems});
-
-  // Calculate estimated delivery date (latest date among all items)
-  DateTime get estimatedDeliveryDate {
-    if (cartItems.isEmpty) return DateTime.now();
-    return cartItems
-        .map((item) => item.deliveryDate)
-        .reduce((a, b) => a.isAfter(b) ? a : b);
-  }
+  const OrderSummaryHelper();
 
   // Format delivery date
-  String formatDeliveryDate(DateTime date) {
+  static String formatDeliveryDate(DateTime date) {
     final today = DateTime.now();
     final tomorrow = DateTime.now().add(const Duration(days: 1));
 

@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
-import 'package:petcure_user_app/core/models/cart_item.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
+import 'package:petcure_user_app/modules/cart_module/models/cart_items_model.dart';
 import 'package:petcure_user_app/modules/cart_module/utils/order_summary_helper.dart';
 import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
 
@@ -23,12 +23,9 @@ class OrderSummary extends StatefulWidget {
 }
 
 class _OrderSummaryState extends State<OrderSummary> {
-  late final OrderSummaryHelper _orderSummaryHelper;
-
   @override
   void initState() {
     super.initState();
-    _orderSummaryHelper = OrderSummaryHelper(cartItems: widget.cartItems);
   }
 
   @override
@@ -62,7 +59,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                 Icon(Icons.local_shipping, size: 16, color: Colors.green[700]),
                 const SizedBox(width: 8),
                 Text(
-                  'Estimated Delivery: ${_orderSummaryHelper.formatDeliveryDate(_orderSummaryHelper.estimatedDeliveryDate)}',
+                  'Estimated Delivery: ${OrderSummaryHelper.formatDeliveryDate(DateTime.now().add(const Duration(days: 5)))}',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -93,18 +90,6 @@ class _OrderSummaryState extends State<OrderSummary> {
             ],
           ),
           const SizedBox(height: 16),
-
-          // Delivery Note
-          Text(
-            'Your order will be delivered in multiple packages if items have different delivery dates.',
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
-              fontStyle: FontStyle.italic,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 12),
 
           // Place Order Button
           CustomButton(

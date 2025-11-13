@@ -13,4 +13,10 @@ sealed class ProductOrderState with _$ProductOrderState {
   const factory ProductOrderState.buyProductNow(
     BuyNowResponseModel buyNowResponse,
   ) = BuyProductNow;
+  const factory ProductOrderState.cartItemQuantityChanged(
+    CartItemUpdateQuantityResponseModel response,
+  ) = CartItemQuantityChanged;
+  const factory ProductOrderState.purchaseMade(
+    MakePurchaseResponseModel response,
+  ) = PurchaseMade;
 }

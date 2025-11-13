@@ -7,4 +7,9 @@ sealed class ProductOrderEvent with _$ProductOrderEvent {
       _ProductAddingToCart;
   const factory ProductOrderEvent.buyingProductNow(int productId) =
       _BuyingProductNow;
+  const factory ProductOrderEvent.updatingCartItemQuantity(
+    int cartItemId,
+    int newQuantity,
+  ) = _UpdatingCartItemQuantity;
+  const factory ProductOrderEvent.makingPurchase() = _MakingPurchase;
 }

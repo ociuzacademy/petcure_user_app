@@ -1,8 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
-import 'package:petcure_user_app/core/models/cart_item.dart';
+import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
+import 'package:petcure_user_app/modules/cart_module/models/cart_items_model.dart';
 import 'package:petcure_user_app/modules/cart_module/typedefs/update_quantity.dart';
 import 'package:petcure_user_app/modules/cart_module/utils/cart_item_helper.dart';
 
@@ -30,8 +31,8 @@ class CartItemWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                item.product.imageURLs.isNotEmpty
-                    ? item.product.imageURLs[0]
+                item.productImages.isNotEmpty
+                    ? '${AppUrls.baseUrl}${item.productImages[0].image}'
                     : 'https://via.placeholder.com/300',
                 width: 80,
                 height: 80,
@@ -54,7 +55,7 @@ class CartItemWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.product.productName,
+                    item.productName,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -64,7 +65,7 @@ class CartItemWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '\u{20B9}${item.productPrice.toStringAsFixed(2)}',
+                    '\u{20B9}${double.parse(item.totalPrice) / item.quantity}',
                     style: const TextStyle(
                       fontSize: 16,
                       color: AppPalette.firstColor,
@@ -83,7 +84,7 @@ class CartItemWidget extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'Delivery: ${CartItemHelper.formatDeliveryDate(item.deliveryDate)}',
+                        'Delivery: ${CartItemHelper.formatDeliveryDate(DateTime.now().add(const Duration(days: 5)))}',
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.green[600],
@@ -134,7 +135,7 @@ class CartItemWidget extends StatelessWidget {
 
                       // Item Total
                       Text(
-                        '\u{20B9}${(item.productPrice * item.quantity).toStringAsFixed(2)}',
+                        '\u{20B9}${item.totalPrice}',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

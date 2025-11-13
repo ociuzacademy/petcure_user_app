@@ -1,12 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:petcure_user_app/core/helpers/fake_data.dart';
-import 'package:petcure_user_app/core/models/cart_item.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
+import 'package:petcure_user_app/modules/cart_module/cubit/cart_items_cubit.dart';
+import 'package:petcure_user_app/modules/cart_module/models/cart_items_model.dart';
 import 'package:petcure_user_app/modules/cart_module/utils/cart_page_helper.dart';
 import 'package:petcure_user_app/modules/cart_module/widgets/cart_item_widget.dart';
 import 'package:petcure_user_app/modules/cart_module/widgets/order_summary.dart';
+import 'package:petcure_user_app/widgets/custom_error_widget.dart';
+import 'package:petcure_user_app/widgets/loaders/list_item_loading_widget.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -19,20 +22,11 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   late final CartPageHelper _cartPageHelper;
-  final ValueNotifier<List<CartItem>> _cartItems =
-      ValueNotifier<List<CartItem>>([]);
-  final ValueNotifier<double> _totalAmount = ValueNotifier<double>(0.0);
 
   @override
   void initState() {
     super.initState();
-    _cartPageHelper = CartPageHelper(
-      context: context,
-      cartItems: _cartItems,
-      totalAmount: _totalAmount,
-    );
-    _cartItems.value = FakeData.generateFakeCartItems(count: 5);
-    _cartPageHelper.calculateTotal();
+    _cartPageHelper = CartPageHelper(context: context);
   }
 
   @override
@@ -43,47 +37,58 @@ class _CartPageState extends State<CartPage> {
         backgroundColor: AppPalette.firstColor,
         foregroundColor: Colors.white,
       ),
-      body: ValueListenableBuilder(
-        valueListenable: _cartItems,
-        builder: (context, cartItems, child) {
-          return Column(
-            children: [
-              // Cart Items List
-              Expanded(
-                child: cartItems.isEmpty
-                    ? const Center(
-                        child: Text(
-                          'Your cart is empty',
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: cartItems.length,
-                        itemBuilder: (context, index) {
-                          final item = cartItems[index];
-                          return CartItemWidget(
-                            item: item,
-                            index: index,
-                            onUpdatingQuantity: _cartPageHelper.updateQuantity,
-                          );
-                        },
-                      ),
-              ),
+      body: BlocBuilder<CartItemsCubit, CartItemsState>(
+        builder: (context, state) {
+          switch (state) {
+            case CartItemsInitial _:
+            case CartItemsLoading _:
+              return const ListItemLoadingWidget(
+                itemCount: 5,
+                useSliver: false,
+              );
+            case CartItemsError(:final errorMessage):
+              return CustomErrorWidget(
+                onRetry: () {},
+                errorMessage: errorMessage,
+              );
+            case UserCartEmpty _:
+              return const Expanded(
+                child: Center(
+                  child: Text(
+                    'Your cart is empty',
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                ),
+              );
+            case UserCartItemsSuccess(:final cartItemsData):
+              final List<CartItem> cartItems = cartItemsData.cartItems;
+              return Column(
+                children: [
+                  // Cart Items List
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: cartItems.length,
+                      itemBuilder: (context, index) {
+                        final item = cartItems[index];
+                        return CartItemWidget(
+                          item: item,
+                          index: item.id,
+                          onUpdatingQuantity: _cartPageHelper.updateQuantity,
+                        );
+                      },
+                    ),
+                  ),
 
-              // Order Summary
-              if (cartItems.isNotEmpty)
-                ValueListenableBuilder(
-                  valueListenable: _totalAmount,
-                  builder: (context, totalAmount, child) {
-                    return OrderSummary(
-                      totalAmount: totalAmount,
+                  // Order Summary
+                  if (cartItems.isNotEmpty)
+                    OrderSummary(
+                      totalAmount: cartItemsData.totalPrice,
                       cartItems: cartItems,
                       placeOrder: _cartPageHelper.placeOrder,
-                    );
-                  },
-                ),
-            ],
-          );
+                    ),
+                ],
+              );
+          }
         },
       ),
     );
