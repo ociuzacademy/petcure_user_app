@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
+import 'package:petcure_user_app/modules/cart_module/helper/cart_helper.dart';
 import 'package:petcure_user_app/modules/cart_module/models/cart_items_model.dart';
 import 'package:petcure_user_app/modules/cart_module/typedefs/update_quantity.dart';
-import 'package:petcure_user_app/modules/cart_module/utils/cart_item_helper.dart';
 
 class CartItemWidget extends StatelessWidget {
   const CartItemWidget({
@@ -84,7 +84,7 @@ class CartItemWidget extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        'Delivery: ${CartItemHelper.formatDeliveryDate(DateTime.now().add(const Duration(days: 5)))}',
+                        'Delivery: ${CartHelper.formatDeliveryDate(DateTime.now().add(const Duration(days: 5)))}',
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.green[600],

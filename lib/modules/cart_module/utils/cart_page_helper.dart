@@ -7,6 +7,12 @@ class CartPageHelper {
   final BuildContext context;
   const CartPageHelper({required this.context});
 
+  void userCartItemsInit() {
+    final CartItemsCubit cartItemsCubit = context.read<CartItemsCubit>();
+
+    cartItemsCubit.getUserCartItems();
+  }
+
   void updateQuantity(int cartItemId, int newQuantity) {
     final ProductOrderBloc productOrderBloc = context.read<ProductOrderBloc>();
     productOrderBloc.add(

@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
+import 'package:petcure_user_app/modules/cart_module/helper/cart_helper.dart';
 import 'package:petcure_user_app/modules/cart_module/models/cart_items_model.dart';
-import 'package:petcure_user_app/modules/cart_module/utils/order_summary_helper.dart';
 import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
 
 class OrderSummary extends StatefulWidget {
@@ -59,7 +59,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                 Icon(Icons.local_shipping, size: 16, color: Colors.green[700]),
                 const SizedBox(width: 8),
                 Text(
-                  'Estimated Delivery: ${OrderSummaryHelper.formatDeliveryDate(DateTime.now().add(const Duration(days: 5)))}',
+                  'Estimated Delivery: ${CartHelper.formatDeliveryDate(DateTime.now().add(const Duration(days: 5)))}',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,

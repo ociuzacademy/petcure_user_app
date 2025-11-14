@@ -88,7 +88,7 @@ class CartServices {
       final url = Uri.parse(AppUrls.updateCartItemQuantityUrl);
 
       final resp = await http
-          .post(
+          .patch(
             url,
             body: jsonEncode(params),
             headers: <String, String>{

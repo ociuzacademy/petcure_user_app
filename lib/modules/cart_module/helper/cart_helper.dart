@@ -1,4 +1,4 @@
-class CartItemHelper {
+class CartHelper {
   // Format delivery date
   static String formatDeliveryDate(DateTime date) {
     final today = DateTime.now();
