@@ -75,7 +75,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 context,
                 PaymentPage.route(
                   orderId: buyNowResponse.orderId,
-                  totalRate: double.parse(buyNowResponse.amountToPay),
+                  totalRate: buyNowResponse.amountToPay,
                 ),
               );
               break;

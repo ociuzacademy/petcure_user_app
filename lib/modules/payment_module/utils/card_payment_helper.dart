@@ -1,32 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 
-import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
-import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
+import 'package:petcure_user_app/modules/payment_module/classes/card_data.dart';
 
 class CardPaymentHelper {
-  final BuildContext context;
-  final GlobalKey<FormState> formKey;
-  final int orderId;
-  const CardPaymentHelper({
-    required this.context,
-    required this.formKey,
-    required this.orderId,
-  });
+  const CardPaymentHelper();
 
-  void cardPayment() {
-    if (formKey.currentState!.validate()) {
-      CustomSnackBar.showSuccess(
-        context,
-        message: 'Card payment completed successfully.',
-      );
-      Navigator.pop(context); // close bottom sheet
-      Navigator.pushAndRemoveUntil(context, HomePage.route(), (route) => false);
-    } else {
-      CustomSnackBar.showError(
-        context,
-        message: 'Please fill all card details',
-      );
-    }
+  static void cardPayment(BuildContext context, CardData cardData) {
+    final PaymentBloc paymentBloc = context.read<PaymentBloc>();
+    paymentBloc.add(PaymentEvent.submittingCardPayment(cardData));
   }
 }

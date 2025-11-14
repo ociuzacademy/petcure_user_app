@@ -1,32 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 
-import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
-import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
+import 'package:petcure_user_app/modules/payment_module/classes/u_p_i_data.dart';
 
 class UPIPaymentHelper {
-  final BuildContext context;
-  final GlobalKey<FormState> formKey;
-  final int orderId;
-  final double amount;
+  const UPIPaymentHelper();
 
-  const UPIPaymentHelper({
-    required this.context,
-    required this.formKey,
-    required this.orderId,
-    required this.amount,
-  });
-
-  void upiPayement() {
-    if (formKey.currentState!.validate()) {
-      CustomSnackBar.showSuccess(
-        context,
-        message: 'UPI payment completed successfully.',
-      );
-      Navigator.pop(context); // close bottom sheet
-      Navigator.pushAndRemoveUntil(context, HomePage.route(), (route) => false);
-    } else {
-      CustomSnackBar.showError(context, message: 'Please fill UPI ID.');
-    }
+  static void upiPayment(BuildContext context, UPIData upiData) {
+    final PaymentBloc paymentBloc = context.read<PaymentBloc>();
+    paymentBloc.add(PaymentEvent.submittingUPIPayment(upiData));
   }
 }

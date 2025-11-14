@@ -12,3 +12,4 @@ export 'package:petcure_user_app/modules/home_module/cubits/nearby_doctors/nearb
 export 'package:petcure_user_app/modules/update_pet_module/bloc/update_pet_details_bloc.dart';
 export 'package:petcure_user_app/core/bloc/product_order/product_order_bloc.dart';
 export 'package:petcure_user_app/modules/cart_module/cubit/cart_items_cubit.dart';
+export 'package:petcure_user_app/modules/payment_module/bloc/payment_bloc.dart';

@@ -1,14 +1,19 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// payment_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:petcure_user_app/core/exports/bloc_exports.dart';
+import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
+import 'package:petcure_user_app/widgets/app_widget_export.dart';
+import 'package:provider/provider.dart';
 
 import 'package:petcure_user_app/core/theme/app_palette.dart';
-import 'package:petcure_user_app/modules/payment_module/utils/payment_helper.dart';
-import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
+import 'package:petcure_user_app/modules/payment_module/enums/payment_method.dart';
+import 'package:petcure_user_app/modules/payment_module/providers/payment_provider.dart';
 
 class PaymentPage extends StatefulWidget {
   final int orderId;
-  final double totalRate;
+  final String totalRate;
   const PaymentPage({
     super.key,
     required this.orderId,
@@ -18,7 +23,7 @@ class PaymentPage extends StatefulWidget {
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 
-  static route({required int orderId, required double totalRate}) =>
+  static route({required int orderId, required String totalRate}) =>
       MaterialPageRoute(
         builder: (context) =>
             PaymentPage(orderId: orderId, totalRate: totalRate),
@@ -26,41 +31,6 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  late final PaymentHelper _paymentHelper;
-  late final ValueNotifier<String?> _selectedMethod;
-  final List<Map<String, String>> methods = [
-    {'name': 'UPI', 'image': 'assets/icons/icons8-google-pay-48.png'},
-    {
-      'name': 'Credit/Debit Cards',
-      'image': 'assets/icons/icons8-credit-card-48.png',
-    },
-  ];
-  late TextEditingController pricecontroller;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedMethod = ValueNotifier<String?>(
-      methods.isNotEmpty ? methods.first['name'] : null,
-    );
-    pricecontroller = TextEditingController(
-      text: widget.totalRate.toStringAsFixed(2),
-    );
-    _paymentHelper = PaymentHelper(
-      context: context,
-      orderId: widget.orderId,
-      totalRate: widget.totalRate,
-      selectedMethod: _selectedMethod,
-    );
-  }
-
-  @override
-  void dispose() {
-    pricecontroller.dispose();
-    _selectedMethod.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
@@ -69,115 +39,139 @@ class _PaymentPageState extends State<PaymentPage> {
       minTextAdapt: true,
     );
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    return ChangeNotifierProvider(
+      create: (context) =>
+          PaymentProvider(orderId: widget.orderId, totalRate: widget.totalRate)
+            ..initializePaymentMethod(),
+      child: Scaffold(
         backgroundColor: Colors.white,
-        title: Text(
-          'Payment Option',
-          style: TextStyle(fontSize: 18.sp, color: Colors.black),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text(
+            'Payment Option',
+            style: TextStyle(fontSize: 18.sp, color: Colors.black),
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.arrow_back, size: 20.sp, color: Colors.black),
+          ),
         ),
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
+        body: BlocListener<PaymentBloc, PaymentState>(
+          listener: (context, state) {
+            switch (state) {
+              case PaymentInitial _:
+              case PaymentLoading _:
+                OverlayLoader.show(context, message: 'Submitting payment...');
+                break;
+              case PaymentError(:final errorMessage):
+                OverlayLoader.hide();
+                CustomSnackBar.showError(context, message: errorMessage);
+                break;
+              case PaymentSuccess(:final response):
+                OverlayLoader.hide();
+                CustomSnackBar.showSuccess(context, message: response.message);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  HomePage.route(),
+                  (_) => false,
+                );
+            }
           },
-          icon: Icon(Icons.arrow_back, size: 20.sp, color: Colors.black),
-        ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: pricecontroller,
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: '₹0',
-              ),
-              style: TextStyle(fontSize: 70.sp),
-              readOnly: true,
-            ),
-            SizedBox(height: 20.h),
-            const Spacer(),
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              child: Padding(
+          child: Consumer<PaymentProvider>(
+            builder: (context, provider, child) {
+              return Padding(
                 padding: EdgeInsets.all(16.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Choose Your transaction method',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
+                    TextField(
+                      controller: provider.priceController,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: '₹0',
                       ),
+                      style: TextStyle(fontSize: 70.sp),
+                      readOnly: true,
                     ),
-                    SizedBox(height: 15.h),
-                    ValueListenableBuilder(
-                      valueListenable: _selectedMethod,
-                      builder: (context, selectedMethod, child) {
-                        return DropdownButtonFormField<String>(
-                          value: selectedMethod,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 10.w,
-                              vertical: 12.h,
-                            ),
-                          ),
-                          items: methods.map((bank) {
-                            return DropdownMenuItem<String>(
-                              value: bank['name'],
-                              child: Row(
-                                children: [
-                                  Image.asset(
-                                    bank['image']!,
-                                    width: 30.w,
-                                    height: 30.h,
-                                  ),
-                                  SizedBox(width: 10.w),
-                                  Text(
-                                    bank['name']!,
-                                    style: TextStyle(fontSize: 14.sp),
-                                  ),
-                                ],
+                    SizedBox(height: 20.h),
+                    const Spacer(),
+                    Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(16.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Choose Your transaction method',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
                               ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              _selectedMethod.value = newValue;
-                            });
-                          },
-                        );
-                      },
-                    ),
-                    SizedBox(height: 20.h),
-
-                    SizedBox(height: 20.h),
-                    CustomButton(
-                      buttonWidth: double.infinity,
-                      backgroundColor: AppPalette.firstColor,
-                      textColor: Colors.white,
-                      labelText: 'Confirm Payment Method',
-                      onClick: _paymentHelper.makePayment,
+                            ),
+                            SizedBox(height: 15.h),
+                            DropdownButtonFormField<PaymentMethod>(
+                              value: provider.selectedMethod,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10.w,
+                                  vertical: 12.h,
+                                ),
+                              ),
+                              items: provider.paymentMethodsForUI.map((
+                                methodData,
+                              ) {
+                                return DropdownMenuItem<PaymentMethod>(
+                                  value: methodData['method'] as PaymentMethod,
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        methodData['image'] as String,
+                                        width: 30.w,
+                                        height: 30.h,
+                                      ),
+                                      SizedBox(width: 10.w),
+                                      Text(
+                                        methodData['name'] as String,
+                                        style: TextStyle(fontSize: 14.sp),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (PaymentMethod? newValue) {
+                                provider.setSelectedMethod(newValue);
+                              },
+                            ),
+                            SizedBox(height: 20.h),
+                            CustomButton(
+                              buttonWidth: double.infinity,
+                              backgroundColor: AppPalette.firstColor,
+                              textColor: Colors.white,
+                              labelText: 'Confirm Payment Method',
+                              onClick: () => provider.makePayment(context),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
-          ],
+              );
+            },
+          ),
         ),
       ),
     );

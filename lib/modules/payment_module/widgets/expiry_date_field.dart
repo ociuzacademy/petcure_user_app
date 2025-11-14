@@ -1,3 +1,4 @@
+// expiry_date_field.dart (remains the same)
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:petcure_user_app/core/typedefs/text_field_validator.dart';
@@ -24,42 +25,34 @@ class _ExpiryDateFieldState extends State<ExpiryDateField> {
       ),
       keyboardType: TextInputType.datetime,
       inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly, // Only digits
-        LengthLimitingTextInputFormatter(5), // Max length: 5 (MM/YY)
-        _ExpiryDateInputFormatter(), // Improved formatter
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(5),
+        _ExpiryDateInputFormatter(),
       ],
       validator: widget.validator ?? _validateExpiryDate,
     );
   }
 
-  // Expiry Date Validation
   String? _validateExpiryDate(String? value) {
     if (value == null || value.isEmpty) {
       return 'Enter expiry date';
     }
-
     final RegExp regex = RegExp(r'^(0[1-9]|1[0-2])\/\d{2}$');
     if (!regex.hasMatch(value)) {
       return 'Invalid format (MM/YY)';
     }
-
     final parts = value.split('/');
     final int month = int.parse(parts[0]);
     final int year = int.parse('20${parts[1]}');
-
     final DateTime now = DateTime.now();
     final DateTime expiryDate = DateTime(year, month + 1, 0);
-
     if (expiryDate.isBefore(now)) {
       return 'Card expired';
     }
-
     return null;
   }
 }
 
-// Input Formatter to add `/` automatically
-// Improved Input Formatter to keep `/` at the correct position
 class _ExpiryDateInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
@@ -67,22 +60,17 @@ class _ExpiryDateInputFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     String text = newValue.text.replaceAll('/', '');
-
     if (text.length > 4) {
-      text = text.substring(0, 4); // Limit to MMYY format
+      text = text.substring(0, 4);
     }
-
     StringBuffer buffer = StringBuffer();
-
     for (int i = 0; i < text.length; i++) {
       if (i == 2) {
-        buffer.write('/'); // Add `/` after the second digit
+        buffer.write('/');
       }
       buffer.write(text[i]);
     }
-
     final formattedText = buffer.toString();
-
     return TextEditingValue(
       text: formattedText,
       selection: TextSelection.collapsed(offset: formattedText.length),

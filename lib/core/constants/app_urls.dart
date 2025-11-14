@@ -31,4 +31,7 @@ class AppUrls {
   static const String updateCartItemQuantityUrl =
       '$userUrl/update_cart_quantity/';
   static const String makePurchaseUrl = '$userUrl/make_purchase/';
+
+  static const String upiPaymentUrl = '$userUrl/upi-payment/';
+  static const String cardPaymentUrl = '$userUrl/card-payment/';
 }

@@ -23,9 +23,9 @@ class PaymentHelper {
       builder: (context) {
         switch (selectedMethod.value) {
           case 'UPI':
-            return UPIPayment(orderId: orderId, amount: totalRate);
+            return const UPIPayment();
           default:
-            return CardPayment(orderId: orderId, amount: totalRate);
+            return const CardPayment();
         }
       },
     );

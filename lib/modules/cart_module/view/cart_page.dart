@@ -65,7 +65,7 @@ class _CartPageState extends State<CartPage> {
                 context,
                 PaymentPage.route(
                   orderId: response.orderId,
-                  totalRate: double.parse(response.amountToPay),
+                  totalRate: response.amountToPay,
                 ),
               );
               break;
