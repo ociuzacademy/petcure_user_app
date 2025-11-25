@@ -115,7 +115,7 @@ class CartServices {
         throw Exception(errorResponse['error'] ?? 'Unknown error');
       }
     } on TimeoutException catch (e) {
-      debugPrint('MenuServices: Request timeout - $e');
+      debugPrint('CartServices: Request timeout - $e');
       throw Exception(
         'Request timeout. Please check your internet connection and try again.',
       );
@@ -166,7 +166,7 @@ class CartServices {
         throw Exception(errorResponse['error'] ?? 'Unknown error');
       }
     } on TimeoutException catch (e) {
-      debugPrint('MenuServices: Request timeout - $e');
+      debugPrint('CartServices: Request timeout - $e');
       throw Exception(
         'Request timeout. Please check your internet connection and try again.',
       );

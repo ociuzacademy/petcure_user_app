@@ -29,8 +29,9 @@ class _PetProductsWidgetState extends State<PetProductsWidget> {
     _petProductsHelper = PetProductsHelper(context: context);
     _categories.value = [const PetCategoryModel(id: 0, petcategory: 'All')];
     _selectedCategoryId.value = 0;
-    _petProductsHelper.petCategoriesInit();
-    _petProductsHelper.petProductsInit();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _petProductsHelper.petCategoriesInit();
+    });
   }
 
   @override
@@ -54,6 +55,7 @@ class _PetProductsWidgetState extends State<PetProductsWidget> {
                 ...petCategories,
               ];
               _categories.value = newCategories;
+              _petProductsHelper.petProductsInit();
               break;
             default:
           }

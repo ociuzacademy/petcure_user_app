@@ -26,7 +26,9 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
   void initState() {
     super.initState();
     _userProfileHelper = UserProfileHelper(context: context);
-    _userProfileHelper.userProfileDataInit();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _userProfileHelper.userProfileDataInit();
+    });
   }
 
   @override

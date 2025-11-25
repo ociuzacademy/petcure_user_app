@@ -47,7 +47,7 @@ class ProductDetailsServices {
         throw Exception(errorResponse['error'] ?? 'Unknown error');
       }
     } on TimeoutException catch (e) {
-      debugPrint('MenuServices: Request timeout - $e');
+      debugPrint('ProductDetailsServices: Request timeout - $e');
       throw Exception(
         'Request timeout. Please check your internet connection and try again.',
       );
@@ -103,7 +103,7 @@ class ProductDetailsServices {
         throw Exception(errorResponse['error'] ?? 'Unknown error');
       }
     } on TimeoutException catch (e) {
-      debugPrint('MenuServices: Request timeout - $e');
+      debugPrint('ProductDetailsServices: Request timeout - $e');
       throw Exception(
         'Request timeout. Please check your internet connection and try again.',
       );
@@ -159,7 +159,7 @@ class ProductDetailsServices {
         throw Exception(errorResponse['error'] ?? 'Unknown error');
       }
     } on TimeoutException catch (e) {
-      debugPrint('MenuServices: Request timeout - $e');
+      debugPrint('ProductDetailsServices: Request timeout - $e');
       throw Exception(
         'Request timeout. Please check your internet connection and try again.',
       );

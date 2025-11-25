@@ -1,24 +1,33 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // card_payment.dart
 import 'package:flutter/material.dart';
-import 'package:petcure_user_app/modules/payment_module/classes/card_data.dart';
-import 'package:petcure_user_app/modules/payment_module/utils/card_payment_helper.dart';
 import 'package:provider/provider.dart';
 
 import 'package:petcure_user_app/core/theme/app_palette.dart';
+import 'package:petcure_user_app/modules/payment_module/classes/card_data.dart';
 import 'package:petcure_user_app/modules/payment_module/providers/payment_provider.dart';
+import 'package:petcure_user_app/modules/payment_module/utils/card_payment_helper.dart';
 import 'package:petcure_user_app/modules/payment_module/widgets/expiry_date_field.dart';
 import 'package:petcure_user_app/modules/payment_module/widgets/payment_container.dart';
 import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
 import 'package:petcure_user_app/widgets/text_fields/normal_text_field.dart';
 
 class CardPayment extends StatelessWidget {
-  const CardPayment({super.key});
+  final int orderId;
+  final String totalRate;
+  const CardPayment({
+    super.key,
+    required this.orderId,
+    required this.totalRate,
+  });
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PaymentProvider>(context, listen: false);
 
     return PaymentContainer(
+      orderId: orderId,
+      totalRate: totalRate,
       paymentForm: Form(
         key: provider.cardFormKey,
         child: Column(

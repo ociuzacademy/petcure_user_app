@@ -42,7 +42,7 @@ class HomeModuleServices {
         throw Exception('Failed to load response');
       }
     } on TimeoutException catch (e) {
-      debugPrint('MenuServices: Request timeout - $e');
+      debugPrint('HomeModuleServices: Request timeout - $e');
       throw Exception(
         'Request timeout. Please check your internet connection and try again.',
       );
@@ -94,7 +94,7 @@ class HomeModuleServices {
         throw Exception('Failed to load response');
       }
     } on TimeoutException catch (e) {
-      debugPrint('MenuServices: Request timeout - $e');
+      debugPrint('HomeModuleServices: Request timeout - $e');
       throw Exception(
         'Request timeout. Please check your internet connection and try again.',
       );

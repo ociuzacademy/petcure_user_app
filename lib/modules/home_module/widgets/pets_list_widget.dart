@@ -20,7 +20,9 @@ class _PetsListWidgetState extends State<PetsListWidget> {
   void initState() {
     super.initState();
     _petListWidgetHelper = PetListWidgetHelper(context: context);
-    _petListWidgetHelper.userPetsInitialize();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _petListWidgetHelper.userPetsInitialize();
+    });
   }
 
   @override

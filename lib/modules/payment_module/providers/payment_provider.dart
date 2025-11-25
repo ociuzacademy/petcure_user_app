@@ -4,9 +4,6 @@ import 'package:petcure_user_app/modules/payment_module/classes/card_data.dart';
 import 'package:petcure_user_app/modules/payment_module/classes/order_data.dart';
 import 'package:petcure_user_app/modules/payment_module/classes/u_p_i_data.dart';
 import 'package:petcure_user_app/modules/payment_module/enums/payment_method.dart';
-import 'package:petcure_user_app/modules/payment_module/widgets/card_payment.dart';
-import 'package:petcure_user_app/modules/payment_module/widgets/u_p_i_payment.dart';
-import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 
 class PaymentProvider with ChangeNotifier {
   // Payment method state using enum
@@ -36,7 +33,7 @@ class PaymentProvider with ChangeNotifier {
     : _orderId = orderId,
       _totalRate = totalRate {
     // Initialize price controller with total rate
-    _priceController.text = totalRate;
+    _priceController.text = double.parse(totalRate).toStringAsFixed(2);
   }
 
   // Getters
@@ -93,30 +90,6 @@ class PaymentProvider with ChangeNotifier {
       _selectedMethod = _paymentMethods.first.keys.first;
     }
     notifyListeners();
-  }
-
-  // Main payment flow
-  void makePayment(BuildContext context) {
-    if (_selectedMethod == null) {
-      CustomSnackBar.showError(
-        context,
-        message: 'Please select a payment method',
-      );
-      return;
-    }
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        switch (_selectedMethod!) {
-          case PaymentMethod.upi:
-            return const UPIPayment();
-          case PaymentMethod.card:
-            return const CardPayment();
-        }
-      },
-    );
   }
 
   // Card payment validation

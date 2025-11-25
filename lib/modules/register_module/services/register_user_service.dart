@@ -61,7 +61,7 @@ class RegisterUserService {
         throw Exception(errorResponse['message'] ?? 'Unknown error');
       }
     } on TimeoutException catch (e) {
-      debugPrint('MenuServices: Request timeout - $e');
+      debugPrint('RegisterUserService: Request timeout - $e');
       throw Exception(
         'Request timeout. Please check your internet connection and try again.',
       );

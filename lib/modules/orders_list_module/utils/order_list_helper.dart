@@ -1,57 +1,64 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:petcure_user_app/core/models/cart_item.dart';
-import 'package:petcure_user_app/core/models/order.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:petcure_user_app/modules/orders_list_module/cubit/orders_list_cubit.dart';
+import 'package:petcure_user_app/modules/orders_list_module/enums/user_order_delivery_status.dart';
+import 'package:petcure_user_app/modules/orders_list_module/models/user_order_list_model.dart';
 
 class OrderListHelper {
+  final BuildContext context;
+  const OrderListHelper({required this.context});
+
+  void orderListInit() {
+    final OrdersListCubit ordersListCubit = context.read<OrdersListCubit>();
+    ordersListCubit.getUserOrdersList();
+  }
+
   // Helper function to get status color
-  Color getStatusColor(OrderDeliveryStatus status) {
+  static Color getStatusColor(UserOrderDeliveryStatus status) {
     switch (status) {
-      case OrderDeliveryStatus.orderPlaced:
+      case UserOrderDeliveryStatus.pending:
         return Colors.orange;
-      case OrderDeliveryStatus.orderOnTheWay:
+      case UserOrderDeliveryStatus.orderPlaced:
         return Colors.blue;
-      case OrderDeliveryStatus.orderDelivered:
+      case UserOrderDeliveryStatus.orderOnTheWay:
+        return Colors.purple;
+      case UserOrderDeliveryStatus.orderDelivered:
         return Colors.green;
-      default:
+      case UserOrderDeliveryStatus.orderCancelled:
         return Colors.red;
     }
   }
 
   // Helper function to get status text
-  String getStatusText(OrderDeliveryStatus status) {
-    switch (status) {
-      case OrderDeliveryStatus.orderPlaced:
-        return 'Order Placed';
-      case OrderDeliveryStatus.orderOnTheWay:
-        return 'On The Way';
-      case OrderDeliveryStatus.orderDelivered:
-        return 'Delivered';
-      default:
-        return 'Order Cancelled';
-    }
+  static String getStatusText(UserOrderDeliveryStatus status) {
+    return status.value.toUpperCase(); // Now we can directly use the enum value
   }
 
   // Helper function to get status icon
-  IconData getStatusIcon(OrderDeliveryStatus status) {
+  static IconData getStatusIcon(UserOrderDeliveryStatus status) {
     switch (status) {
-      case OrderDeliveryStatus.orderPlaced:
+      case UserOrderDeliveryStatus.pending:
+        return Icons.pending;
+      case UserOrderDeliveryStatus.orderPlaced:
         return Icons.shopping_cart;
-      case OrderDeliveryStatus.orderOnTheWay:
+      case UserOrderDeliveryStatus.orderOnTheWay:
         return Icons.local_shipping;
-      case OrderDeliveryStatus.orderDelivered:
+      case UserOrderDeliveryStatus.orderDelivered:
         return Icons.check_circle;
-      default:
+      case UserOrderDeliveryStatus.orderCancelled:
         return Icons.cancel;
     }
   }
 
   // Helper function to format date
-  String formatDate(DateTime date) {
+  static String formatDate(DateTime date) {
     return '${getMonthName(date.month)} ${date.day}, ${date.year}';
   }
 
   // Helper function to get month name
-  String getMonthName(int month) {
+  static String getMonthName(int month) {
     const months = [
       'Jan',
       'Feb',
@@ -70,10 +77,10 @@ class OrderListHelper {
   }
 
   // Helper function to get product names
-  String getProductNames(List<CartItem> products) {
+  static String getProductNames(List<Item> products) {
     if (products.isEmpty) return 'No products';
 
-    final names = products.map((item) => item.product.productName).toList();
+    final names = products.map((item) => item.product.name).toList();
     if (names.length <= 2) {
       return names.join(', ');
     } else {
@@ -82,7 +89,7 @@ class OrderListHelper {
   }
 
   // Format delivery date
-  String formatDeliveryDate(DateTime date) {
+  static String formatDeliveryDate(DateTime date) {
     final today = DateTime.now();
     final tomorrow = DateTime.now().add(const Duration(days: 1));
 
@@ -110,38 +117,6 @@ class OrderListHelper {
         'Dec',
       ];
       return '${months[date.month - 1]} ${date.day}';
-    }
-  }
-
-  // Check if delivery is delayed
-  bool isDeliveryDelayed(Order order) {
-    return order.estimatedDeliveryDate.isBefore(DateTime.now()) &&
-        order.orderDeliveryStatus != OrderDeliveryStatus.orderDelivered;
-  }
-
-  double getDeliveryProgress(OrderDeliveryStatus status) {
-    switch (status) {
-      case OrderDeliveryStatus.orderPlaced:
-        return 0.33;
-      case OrderDeliveryStatus.orderOnTheWay:
-        return 0.66;
-      case OrderDeliveryStatus.orderDelivered:
-        return 1.0;
-      default:
-        return 0;
-    }
-  }
-
-  String getDeliveryStage(OrderDeliveryStatus status, int stage) {
-    switch (stage) {
-      case 1:
-        return 'Ordered';
-      case 2:
-        return 'Shipped';
-      case 3:
-        return 'Delivered';
-      default:
-        return '';
     }
   }
 }

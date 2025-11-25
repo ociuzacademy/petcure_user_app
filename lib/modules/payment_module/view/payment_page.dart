@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
+import 'package:petcure_user_app/modules/payment_module/utils/payment_helper.dart';
 import 'package:petcure_user_app/widgets/app_widget_export.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +32,18 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
+  late final PaymentHelper _paymentHelper;
+
+  @override
+  void initState() {
+    super.initState();
+    _paymentHelper = PaymentHelper(
+      context: context,
+      orderId: widget.orderId,
+      totalRate: widget.totalRate,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
@@ -161,7 +174,8 @@ class _PaymentPageState extends State<PaymentPage> {
                               backgroundColor: AppPalette.firstColor,
                               textColor: Colors.white,
                               labelText: 'Confirm Payment Method',
-                              onClick: () => provider.makePayment(context),
+                              onClick: () =>
+                                  _paymentHelper.makePayment(context),
                             ),
                           ],
                         ),

@@ -20,10 +20,11 @@ class UpdatePetDetailsBloc
   ) async {
     emit(const UpdatePetDetailsState.updatePetDetailsLoading());
     try {
-      final PetUpdateResponseModel response = await UpdatePetServices.addPet(
-        petId: event.petId,
-        petDetails: event.petDetails,
-      );
+      final PetUpdateResponseModel response =
+          await UpdatePetServices.updatePetDetails(
+            petId: event.petId,
+            petDetails: event.petDetails,
+          );
 
       emit(UpdatePetDetailsState.updatePetDetailsSuccess(response));
     } catch (e) {

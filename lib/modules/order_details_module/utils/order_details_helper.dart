@@ -1,63 +1,62 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 
-import 'package:petcure_user_app/core/models/order.dart';
+import 'package:petcure_user_app/modules/order_details_module/models/order_details_model.dart';
 import 'package:petcure_user_app/modules/order_details_module/widgets/q_r_code_widget.dart';
+import 'package:petcure_user_app/modules/orders_list_module/enums/user_order_delivery_status.dart';
+import 'package:petcure_user_app/widgets/app_widget_export.dart';
 
 class OrderDetailsHelper {
   final BuildContext context;
-  final Order order;
-  const OrderDetailsHelper({required this.context, required this.order});
+  final int orderId;
+  const OrderDetailsHelper({required this.context, required this.orderId});
 
   // Helper function to get status color
-  Color getStatusColor(OrderDeliveryStatus status) {
+  static Color getStatusColor(UserOrderDeliveryStatus status) {
     switch (status) {
-      case OrderDeliveryStatus.orderPlaced:
+      case UserOrderDeliveryStatus.pending:
         return Colors.orange;
-      case OrderDeliveryStatus.orderOnTheWay:
+      case UserOrderDeliveryStatus.orderPlaced:
         return Colors.blue;
-      case OrderDeliveryStatus.orderDelivered:
+      case UserOrderDeliveryStatus.orderOnTheWay:
+        return Colors.purple;
+      case UserOrderDeliveryStatus.orderDelivered:
         return Colors.green;
-      default:
+      case UserOrderDeliveryStatus.orderCancelled:
         return Colors.red;
     }
   }
 
   // Helper function to get status text
-  String getStatusText(OrderDeliveryStatus status) {
-    switch (status) {
-      case OrderDeliveryStatus.orderPlaced:
-        return 'Order Placed';
-      case OrderDeliveryStatus.orderOnTheWay:
-        return 'On The Way';
-      case OrderDeliveryStatus.orderDelivered:
-        return 'Delivered';
-      default:
-        return 'Order Cancelled';
-    }
+  static String getStatusText(UserOrderDeliveryStatus status) {
+    return status.value.toUpperCase(); // Now we can directly use the enum value
   }
 
   // Helper function to get status icon
-  IconData getStatusIcon(OrderDeliveryStatus status) {
+  static IconData getStatusIcon(UserOrderDeliveryStatus status) {
     switch (status) {
-      case OrderDeliveryStatus.orderPlaced:
+      case UserOrderDeliveryStatus.pending:
+        return Icons.pending;
+      case UserOrderDeliveryStatus.orderPlaced:
         return Icons.shopping_cart;
-      case OrderDeliveryStatus.orderOnTheWay:
+      case UserOrderDeliveryStatus.orderOnTheWay:
         return Icons.local_shipping;
-      case OrderDeliveryStatus.orderDelivered:
+      case UserOrderDeliveryStatus.orderDelivered:
         return Icons.check_circle;
-      default:
+      case UserOrderDeliveryStatus.orderCancelled:
         return Icons.cancel;
     }
   }
 
   // Helper function to format date
-  String formatDate(DateTime date) {
+  static String formatDate(DateTime date) {
     return '${getMonthName(date.month)} ${date.day}, ${date.year}';
   }
 
   // Helper function to get month name
-  String getMonthName(int month) {
+  static String getMonthName(int month) {
     const months = [
       'Jan',
       'Feb',
@@ -76,7 +75,7 @@ class OrderDetailsHelper {
   }
 
   // Format delivery date
-  String formatDeliveryDate(DateTime date) {
+  static String formatDeliveryDate(DateTime date) {
     final today = DateTime.now();
     final tomorrow = DateTime.now().add(const Duration(days: 1));
 
@@ -107,20 +106,18 @@ class OrderDetailsHelper {
     }
   }
 
-  // Check if delivery is delayed
-  bool isDeliveryDelayed() {
-    return order.estimatedDeliveryDate.isBefore(DateTime.now()) &&
-        order.orderDeliveryStatus != OrderDeliveryStatus.orderDelivered;
-  }
-
   // Get delivery progress value
-  double getDeliveryProgress() {
-    switch (order.orderDeliveryStatus) {
-      case OrderDeliveryStatus.orderPlaced:
+  static double getDeliveryProgress(
+    UserOrderDeliveryStatus orderDeliveryStatus,
+  ) {
+    switch (orderDeliveryStatus) {
+      case UserOrderDeliveryStatus.pending:
+        return 0;
+      case UserOrderDeliveryStatus.orderPlaced:
         return 0.33;
-      case OrderDeliveryStatus.orderOnTheWay:
+      case UserOrderDeliveryStatus.orderOnTheWay:
         return 0.66;
-      case OrderDeliveryStatus.orderDelivered:
+      case UserOrderDeliveryStatus.orderDelivered:
         return 1.0;
       default:
         return 0;
@@ -129,29 +126,59 @@ class OrderDetailsHelper {
 
   // Generate QR code data string from order
   String get _qrCodeData {
-    final data = {
-      'orderId': order.orderId,
-      'orderDate': order.orderDate.toIso8601String(),
-      'estimatedDelivery': order.estimatedDeliveryDate.toIso8601String(),
-      'totalAmount': order.totalRate,
-      'itemCount': order.productsOrdered.length,
-      'status': order.orderDeliveryStatus.toString(),
-      'userId': order.userId,
-    };
+    final data = {'orderId': orderId};
     return data.toString();
   }
 
+  // Fetch order details
+  void orderDetailsInit() {
+    final OrderDetailsCubit orderDetailsCubit = context
+        .read<OrderDetailsCubit>();
+    orderDetailsCubit.getOrderDetails(orderId);
+  }
+
   // Show QR code bottom sheet
-  void showQrCodeBottomSheet() {
+  void showQrCodeBottomSheet(OrderDetailsModel orderDetails) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => QRCodeWidget(
-        order: order,
+        orderId: orderId,
         qrCodeData: _qrCodeData,
         formatDeliveryDate: formatDeliveryDate,
+        items: orderDetails.items,
+        totalRate: orderDetails.totalAmount,
+        estimatedDeliveryDate: orderDetails.estimatedDeliveryDate,
       ),
     );
+  }
+
+  void showReorderDialogueBox() {
+    CustomDialogBox.showCustomDialog(
+      context: context,
+      title: 'Reorder',
+      message: 'Do you wanted to reorder all the items from this order?',
+      onSubmit: _reorder,
+    );
+  }
+
+  void showCancelOrderDialogueBox() {
+    CustomDialogBox.showCustomDialog(
+      context: context,
+      title: 'Cancel Order',
+      message: 'Do you wanted to cancel this order?',
+      onSubmit: _cancelOrder,
+    );
+  }
+
+  void _reorder() {
+    final ReorderBloc reorderBloc = context.read<ReorderBloc>();
+    reorderBloc.add(ReorderEvent.reordering(orderId));
+  }
+
+  void _cancelOrder() {
+    final CancelOrderBloc cancelOrderBloc = context.read<CancelOrderBloc>();
+    cancelOrderBloc.add(CancelOrderEvent.cancellingOrder(orderId));
   }
 }

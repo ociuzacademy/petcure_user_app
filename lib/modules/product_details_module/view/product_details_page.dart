@@ -2,11 +2,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/payment_module/view/payment_page.dart';
 import 'package:petcure_user_app/modules/product_details_module/utils/product_details_helper.dart';
+import 'package:petcure_user_app/modules/product_details_module/widgets/product_image_carousel.dart';
 import 'package:petcure_user_app/widgets/app_widget_export.dart';
 import 'package:petcure_user_app/widgets/loaders/custom_loading_widget.dart';
 
@@ -25,6 +25,8 @@ class ProductDetailsPage extends StatefulWidget {
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   late final ProductDetailsHelper _productDetailsHelper;
   final ValueNotifier<bool> _addedToCart = ValueNotifier<bool>(false);
+  final PageController _pageController = PageController();
+  final ValueNotifier<int> _currentPage = ValueNotifier<int>(0);
 
   @override
   void initState() {
@@ -39,9 +41,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
+  void dispose() {
+    _pageController.dispose();
+    _currentPage.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Details'),
@@ -127,26 +134,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Product Image
-                        Container(
-                          height: screenSize.height * 0.35,
-                          width: double.infinity,
-                          decoration: BoxDecoration(color: Colors.grey[200]),
-                          child: Image.network(
-                            product.images.isNotEmpty
-                                ? '${AppUrls.baseUrl}${product.images[0].image}'
-                                : 'https://via.placeholder.com/300',
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Center(
-                                child: Icon(
-                                  Icons.error_outline,
-                                  size: 50,
-                                  color: Colors.grey,
-                                ),
-                              );
-                            },
-                          ),
+                        // Product Image Carousel
+                        ProductImageCarousel(
+                          productId: widget.productId,
+                          pageController: _pageController,
+                          currentPage: _currentPage,
+                          images: product.images,
                         ),
 
                         // Product Details
@@ -346,8 +339,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   child: ElevatedButton.icon(
                     onPressed: addedToCart
                         ? _productDetailsHelper.navigateToCart
-                        : _productDetailsHelper.addToCart,
-                    // Alternative styling for the Go To Cart button
+                        : _productDetailsHelper.showAddToCartDialogueBox,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: AppPalette.firstColor,
@@ -371,7 +363,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 Expanded(
                   flex: 3,
                   child: ElevatedButton(
-                    onPressed: _productDetailsHelper.buyNow,
+                    onPressed: _productDetailsHelper.showBuyNowDialogueBox,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppPalette.firstColor,
                       foregroundColor: Colors.white,

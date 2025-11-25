@@ -11,7 +11,7 @@ import 'package:petcure_user_app/modules/update_pet_module/class/update_pet_deta
 import 'package:petcure_user_app/modules/update_pet_module/models/pet_update_response_model.dart';
 
 class UpdatePetServices {
-  static Future<PetUpdateResponseModel> addPet({
+  static Future<PetUpdateResponseModel> updatePetDetails({
     required int petId,
     required UpdatePetDetails petDetails,
   }) async {
@@ -85,7 +85,7 @@ class UpdatePetServices {
         throw Exception(errorResponse['message'] ?? 'Unknown error');
       }
     } on TimeoutException catch (e) {
-      debugPrint('MenuServices: Request timeout - $e');
+      debugPrint('UpdatePetServices: Request timeout - $e');
       throw Exception(
         'Request timeout. Please check your internet connection and try again.',
       );

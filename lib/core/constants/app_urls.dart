@@ -34,4 +34,9 @@ class AppUrls {
 
   static const String upiPaymentUrl = '$userUrl/upi-payment/';
   static const String cardPaymentUrl = '$userUrl/card-payment/';
+
+  static const String getUserOrdersListUrl = '$userUrl/orders-list/';
+  static const String getOrderDetailsUrl = '$userUrl/order-details/';
+  static const String reorderUrl = '$userUrl/reorder/';
+  static const String cancelOrderUrl = '$userUrl/cancel-order/';
 }

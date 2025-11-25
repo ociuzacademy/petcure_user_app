@@ -27,7 +27,9 @@ class _DoctorBookingWidgetState extends State<DoctorBookingWidget> {
   void initState() {
     super.initState();
 
-    _doctorBookingWidgetHelper.petsListInit(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _doctorBookingWidgetHelper.petsListInit(context);
+    });
   }
 
   @override

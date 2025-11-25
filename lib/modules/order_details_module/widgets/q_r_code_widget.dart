@@ -1,21 +1,27 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
-import 'package:petcure_user_app/core/models/order.dart';
+import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/core/typedefs/format_date.dart';
+import 'package:petcure_user_app/modules/order_details_module/models/order_details_model.dart';
 import 'package:petcure_user_app/modules/order_details_module/widgets/info_row.dart';
 
 class QRCodeWidget extends StatelessWidget {
-  final Order order;
+  final int orderId;
   final String qrCodeData;
   final FormatDate formatDeliveryDate;
+  final List<Item> items;
+  final String totalRate;
+  final DateTime estimatedDeliveryDate;
   const QRCodeWidget({
     super.key,
-    required this.order,
+    required this.orderId,
     required this.qrCodeData,
     required this.formatDeliveryDate,
+    required this.items,
+    required this.totalRate,
+    required this.estimatedDeliveryDate,
   });
 
   @override
@@ -114,7 +120,7 @@ class QRCodeWidget extends StatelessWidget {
 
                   // Order Info
                   Text(
-                    order.orderId,
+                    'Order ID: #$orderId',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -139,22 +145,13 @@ class QRCodeWidget extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        InfoRow(
-                          label: 'Items',
-                          value: '${order.productsOrdered.length}',
-                        ),
+                        InfoRow(label: 'Items', value: '${items.length}'),
                         const SizedBox(height: 8),
-                        InfoRow(
-                          label: 'Total',
-                          value:
-                              '\u{20B9}${order.totalRate.toStringAsFixed(2)}',
-                        ),
+                        InfoRow(label: 'Total', value: '\u{20B9}$totalRate'),
                         const SizedBox(height: 8),
                         InfoRow(
                           label: 'Est. Delivery',
-                          value: formatDeliveryDate(
-                            order.estimatedDeliveryDate,
-                          ),
+                          value: formatDeliveryDate(estimatedDeliveryDate),
                         ),
                       ],
                     ),
@@ -169,15 +166,6 @@ class QRCodeWidget extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {
-                      // Share functionality can be added here
-                    },
-                    child: const Text('Share QR Code'),
-                  ),
-                ),
-                const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () => Navigator.pop(context),

@@ -1,12 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import 'package:petcure_user_app/core/models/order.dart';
 import 'package:petcure_user_app/core/typedefs/format_date.dart';
-import 'package:petcure_user_app/modules/order_details_module/view/order_details_page.dart';
-import 'package:petcure_user_app/modules/orders_list_module/typedefs/delivery_progress.dart';
-import 'package:petcure_user_app/modules/orders_list_module/typedefs/delivery_stage.dart';
 import 'package:petcure_user_app/core/typedefs/order_delivery_status_color.dart';
+import 'package:petcure_user_app/modules/order_details_module/view/order_details_page.dart';
+import 'package:petcure_user_app/modules/orders_list_module/enums/user_order_delivery_status.dart';
+import 'package:petcure_user_app/modules/orders_list_module/models/user_order_list_model.dart';
 import 'package:petcure_user_app/modules/orders_list_module/typedefs/order_delivery_status_icon.dart';
 import 'package:petcure_user_app/modules/orders_list_module/typedefs/order_delivery_status_text.dart';
 import 'package:petcure_user_app/modules/orders_list_module/typedefs/product_names.dart';
@@ -21,217 +20,157 @@ class OrderListCard extends StatelessWidget {
     required this.formatDate,
     required this.formatDeliveryDate,
     required this.getProductNames,
-    required this.getDeliveryProgress,
-    required this.getDeliveryStage,
-    required this.isDelayed,
   });
 
-  final Order order;
+  final UserOrderListModel order;
   final OrderDeliveryStatusText getStatusText;
   final OrderDeliveryStatusColor getStatusColor;
   final OrderDeliveryStatusIcon getStatusIcon;
   final FormatDate formatDate;
   final FormatDate formatDeliveryDate;
   final ProductNames getProductNames;
-  final DeliveryProgress getDeliveryProgress;
-  final DeliveryStage getDeliveryStage;
-  final bool isDelayed;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () =>
-          Navigator.push(context, OrderDetailsPage.route(order: order)),
-      child: Card(
-        margin: const EdgeInsets.only(bottom: 16),
-        elevation: 2,
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      elevation: 1,
+      child: InkWell(
+        onTap: () =>
+            Navigator.push(context, OrderDetailsPage.route(orderId: order.id)),
+        borderRadius: BorderRadius.circular(8),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Order header with ID and status
+              // Header with Order ID and Status
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: Text(
-                      order.orderId,
+                      'Order #${order.id}',
                       style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                         fontSize: 16,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  Chip(
-                    label: Text(
-                      getStatusText(order.orderDeliveryStatus),
-                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
                     ),
-                    backgroundColor: getStatusColor(order.orderDeliveryStatus),
+                    decoration: BoxDecoration(
+                      color: getStatusColor(
+                        UserOrderDeliveryStatus.fromString(order.status),
+                      ).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: getStatusColor(
+                          UserOrderDeliveryStatus.fromString(order.status),
+                        ).withValues(alpha: 0.3),
+                      ),
+                    ),
+                    child: Text(
+                      getStatusText(
+                        UserOrderDeliveryStatus.fromString(order.status),
+                      ),
+                      style: TextStyle(
+                        color: getStatusColor(
+                          UserOrderDeliveryStatus.fromString(order.status),
+                        ),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 12),
 
-              if (order.orderDeliveryStatus !=
-                  OrderDeliveryStatus.orderCancelled)
-                SizedBox(
-                  child: Column(
-                    children: [
-                      // Order date and status indicator
-                      Row(
-                        children: [
-                          Icon(
-                            getStatusIcon(order.orderDeliveryStatus),
-                            size: 16,
-                            color: getStatusColor(order.orderDeliveryStatus),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            formatDate(order.orderDate),
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      // Estimated Delivery Date
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.local_shipping,
-                            size: 16,
-                            color: isDelayed ? Colors.red : Colors.green,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Est. Delivery: ${formatDeliveryDate(order.estimatedDeliveryDate)}',
-                            style: TextStyle(
-                              color: isDelayed ? Colors.red : Colors.green,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          if (isDelayed) ...[
-                            const SizedBox(width: 4),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.red[50],
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: const Text(
-                                'Delayed',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                    ],
-                  ),
-                ),
-
-              // Number of items
-              Text(
-                '${order.productsOrdered.length} item${order.productsOrdered.length != 1 ? 's' : ''}',
-                style: const TextStyle(fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 8),
-
-              // Product names (show first 2 items with ellipsis if more)
-              Text(
-                getProductNames(order.productsOrdered),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-              ),
-              const SizedBox(height: 12),
-
-              // Delivery progress indicator (for orders not delivered)
-              if (order.orderDeliveryStatus !=
-                  OrderDeliveryStatus.orderDelivered)
-                Column(
-                  children: [
-                    LinearProgressIndicator(
-                      value: getDeliveryProgress(order.orderDeliveryStatus),
-                      backgroundColor: Colors.grey[300],
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        getStatusColor(order.orderDeliveryStatus),
-                      ),
-                      minHeight: 4,
-                      borderRadius: BorderRadius.circular(2),
+              // Product Info
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(6),
                     ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Icon(
+                      Icons.shopping_bag,
+                      size: 20,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          getDeliveryStage(order.orderDeliveryStatus, 1),
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: order.orderDeliveryStatus.index >= 0
-                                ? getStatusColor(order.orderDeliveryStatus)
-                                : Colors.grey,
-                            fontWeight: FontWeight.bold,
+                          getProductNames(order.items),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
+                        const SizedBox(height: 4),
                         Text(
-                          getDeliveryStage(order.orderDeliveryStatus, 2),
+                          '${order.items.length} item${order.items.length != 1 ? 's' : ''}',
                           style: TextStyle(
-                            fontSize: 10,
-                            color: order.orderDeliveryStatus.index >= 1
-                                ? getStatusColor(order.orderDeliveryStatus)
-                                : Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          getDeliveryStage(order.orderDeliveryStatus, 3),
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: order.orderDeliveryStatus.index >= 2
-                                ? getStatusColor(order.orderDeliveryStatus)
-                                : Colors.grey,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            color: Colors.grey[600],
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-
-              // Divider
-              const Divider(height: 1),
+                  ),
+                ],
+              ),
               const SizedBox(height: 12),
 
-              // Total amount
+              // Order Date and Delivery Info
+              Row(
+                children: [
+                  Icon(Icons.calendar_today, size: 14, color: Colors.grey[500]),
+                  const SizedBox(width: 6),
+                  Text(
+                    formatDate(order.orderDate),
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    formatDeliveryDate(order.estimatedDeliveryDate),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.green,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Total Amount
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Total Amount:',
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    'Total:',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    '\u{20B9}${order.totalRate.toStringAsFixed(2)}',
+                    '\u{20B9}${order.totalAmount}',
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
                       fontSize: 16,
+                      fontWeight: FontWeight.bold,
                       color: Colors.blue,
                     ),
                   ),

@@ -89,7 +89,7 @@ class EditProfileServices {
         throw Exception(errorResponse['message'] ?? 'Unknown error');
       }
     } on TimeoutException catch (e) {
-      debugPrint('MenuServices: Request timeout - $e');
+      debugPrint('EditProfileServices: Request timeout - $e');
       throw Exception(
         'Request timeout. Please check your internet connection and try again.',
       );

@@ -41,7 +41,7 @@ class PaymentServices {
             },
           );
 
-      if (resp.statusCode == 201) {
+      if (resp.statusCode == 200) {
         final dynamic decoded = jsonDecode(resp.body);
         final PaymentResponseModel response = PaymentResponseModel.fromJson(
           decoded,
@@ -50,11 +50,11 @@ class PaymentServices {
       } else {
         final Map<String, dynamic> errorResponse = jsonDecode(resp.body);
         throw Exception(
-          'Failed to login: ${errorResponse['message'] ?? 'Unknown error'}',
+          'Failed to make payment: ${errorResponse['message'] ?? 'Unknown error'}',
         );
       }
     } on TimeoutException catch (e) {
-      debugPrint('MenuServices: Request timeout - $e');
+      debugPrint('PaymentServices: Request timeout - $e');
       throw Exception(
         'Request timeout. Please check your internet connection and try again.',
       );
@@ -101,7 +101,7 @@ class PaymentServices {
             },
           );
 
-      if (resp.statusCode == 201) {
+      if (resp.statusCode == 200) {
         final dynamic decoded = jsonDecode(resp.body);
         final PaymentResponseModel response = PaymentResponseModel.fromJson(
           decoded,
@@ -114,7 +114,7 @@ class PaymentServices {
         );
       }
     } on TimeoutException catch (e) {
-      debugPrint('MenuServices: Request timeout - $e');
+      debugPrint('PaymentServices: Request timeout - $e');
       throw Exception(
         'Request timeout. Please check your internet connection and try again.',
       );

@@ -125,7 +125,7 @@ class _CartPageState extends State<CartPage> {
                       OrderSummary(
                         totalAmount: cartItemsData.totalPrice,
                         cartItems: cartItems,
-                        placeOrder: _cartPageHelper.placeOrder,
+                        placeOrder: _cartPageHelper.showPlaceOrderDialogueBox,
                       ),
                   ],
                 );

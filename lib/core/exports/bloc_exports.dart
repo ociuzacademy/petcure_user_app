@@ -13,3 +13,7 @@ export 'package:petcure_user_app/modules/update_pet_module/bloc/update_pet_detai
 export 'package:petcure_user_app/core/bloc/product_order/product_order_bloc.dart';
 export 'package:petcure_user_app/modules/cart_module/cubit/cart_items_cubit.dart';
 export 'package:petcure_user_app/modules/payment_module/bloc/payment_bloc.dart';
+export 'package:petcure_user_app/modules/orders_list_module/cubit/orders_list_cubit.dart';
+export 'package:petcure_user_app/modules/order_details_module/cubit/order_details_cubit.dart';
+export 'package:petcure_user_app/modules/order_details_module/bloc/reorder/reorder_bloc.dart';
+export 'package:petcure_user_app/modules/order_details_module/bloc/cancel_order/cancel_order_bloc.dart';

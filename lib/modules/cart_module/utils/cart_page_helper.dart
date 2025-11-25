@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
+import 'package:petcure_user_app/widgets/app_widget_export.dart';
 
 class CartPageHelper {
   final BuildContext context;
@@ -20,7 +21,17 @@ class CartPageHelper {
     );
   }
 
-  void placeOrder() {
+  void showPlaceOrderDialogueBox() {
+    CustomDialogBox.showCustomDialog(
+      context: context,
+      title: 'Place Order',
+      message:
+          'Do you wanted to place this order with all the current cart items?',
+      onSubmit: _placeOrder,
+    );
+  }
+
+  void _placeOrder() {
     final ProductOrderBloc productOrderBloc = context.read<ProductOrderBloc>();
     productOrderBloc.add(const ProductOrderEvent.makingPurchase());
   }

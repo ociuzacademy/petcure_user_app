@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_product_model.dart'
     hide Image;
+import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/product_details_module/view/product_details_page.dart';
 
 class ProductCard extends StatelessWidget {
@@ -29,23 +31,25 @@ class ProductCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Product image
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  product.images.isNotEmpty
-                      ? '${AppUrls.baseUrl}${product.images[0].image}'
-                      : 'https://via.placeholder.com/300',
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: 100,
-                      height: 100,
-                      color: Colors.grey[200],
-                      child: const Icon(Icons.error),
-                    );
-                  },
+              Hero(
+                tag: 'product-${product.id}',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: CachedNetworkImage(
+                    imageUrl: '${AppUrls.baseUrl}${product.images[0].image}',
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.cover,
+                    progressIndicatorBuilder: (context, url, progress) =>
+                        CircularProgressIndicator(
+                          value: progress.progress,
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                            AppPalette.firstColor,
+                          ),
+                        ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
                 ),
               ),
               const SizedBox(width: 16),

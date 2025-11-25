@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 import 'package:petcure_user_app/modules/cart_module/view/cart_page.dart';
+import 'package:petcure_user_app/widgets/app_widget_export.dart';
 
 class ProductDetailsHelper {
   final BuildContext context;
@@ -23,7 +24,16 @@ class ProductDetailsHelper {
     productDetailsCubit.getPetProductDetails(productId);
   }
 
-  void addToCart() {
+  void showAddToCartDialogueBox() {
+    CustomDialogBox.showCustomDialog(
+      context: context,
+      title: 'Add To Cart',
+      message: 'Do you wanted to add this item to the cart?',
+      onSubmit: _addToCart,
+    );
+  }
+
+  void _addToCart() {
     addedToCart.value = true;
     final ProductOrderBloc productOrderBloc = context.read<ProductOrderBloc>();
     productOrderBloc.add(ProductOrderEvent.productAddingToCart(productId));
@@ -33,7 +43,16 @@ class ProductDetailsHelper {
     Navigator.push(context, CartPage.route());
   }
 
-  void buyNow() {
+  void showBuyNowDialogueBox() {
+    CustomDialogBox.showCustomDialog(
+      context: context,
+      title: 'Buy Now',
+      message: 'Do you wanted to buy this product directly?',
+      onSubmit: _buyNow,
+    );
+  }
+
+  void _buyNow() {
     final ProductOrderBloc productOrderBloc = context.read<ProductOrderBloc>();
     productOrderBloc.add(ProductOrderEvent.buyingProductNow(productId));
   }

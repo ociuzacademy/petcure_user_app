@@ -1,22 +1,27 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // u_p_i_payment.dart
 import 'package:flutter/material.dart';
-import 'package:petcure_user_app/modules/payment_module/classes/u_p_i_data.dart';
-import 'package:petcure_user_app/modules/payment_module/utils/u_p_i_payment_helper.dart';
 import 'package:provider/provider.dart';
 
 import 'package:petcure_user_app/core/theme/app_palette.dart';
+import 'package:petcure_user_app/modules/payment_module/classes/u_p_i_data.dart';
 import 'package:petcure_user_app/modules/payment_module/providers/payment_provider.dart';
+import 'package:petcure_user_app/modules/payment_module/utils/u_p_i_payment_helper.dart';
 import 'package:petcure_user_app/modules/payment_module/widgets/payment_container.dart';
 import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
 
 class UPIPayment extends StatelessWidget {
-  const UPIPayment({super.key});
+  final int orderId;
+  final String totalRate;
+  const UPIPayment({super.key, required this.orderId, required this.totalRate});
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PaymentProvider>(context, listen: false);
 
     return PaymentContainer(
+      orderId: orderId,
+      totalRate: totalRate,
       paymentForm: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
