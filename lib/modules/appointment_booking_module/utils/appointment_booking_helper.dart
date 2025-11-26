@@ -55,7 +55,7 @@ class AppointmentBookingHelper {
       Navigator.pop(context);
     } else {
       final String symptoms = symptomsController.text.trim();
-      if (selectedBookingOption.value == BookingOption.videoConference &&
+      if (selectedBookingOption.value == BookingOption.audioCall &&
           symptoms.isEmpty) {
         CustomSnackBar.showError(
           context,

@@ -165,10 +165,10 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                         ),
                         RadioListTile<BookingOption>(
                           title: Text(
-                            'Video Conference',
+                            'Audio Call',
                             style: TextStyle(fontSize: screenSize.width * 0.04),
                           ),
-                          value: BookingOption.videoConference,
+                          value: BookingOption.audioCall,
                           groupValue: selectedBookingOption,
                           onChanged: (BookingOption? value) {
                             _selectedBookingOption.value = value!;
