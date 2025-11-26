@@ -1,8 +1,9 @@
 // doctor_booking_widget.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
-import 'package:petcure_user_app/core/cubit/pets_list/pets_list_cubit.dart';
+import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 import 'package:petcure_user_app/core/models/location.dart';
 import 'package:petcure_user_app/modules/home_module/providers/doctor_booking_providers.dart';
 import 'package:petcure_user_app/modules/home_module/utils/doctor_booking_widget_helper.dart';
@@ -10,7 +11,6 @@ import 'package:petcure_user_app/modules/home_module/widgets/doctors_list_widget
 import 'package:petcure_user_app/modules/home_module/widgets/find_doctors_button.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/location_input_widget.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/pet_selection_widget.dart';
-import 'package:provider/provider.dart';
 
 class DoctorBookingWidget extends StatefulWidget {
   const DoctorBookingWidget({super.key});
@@ -36,17 +36,34 @@ class _DoctorBookingWidgetState extends State<DoctorBookingWidget> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => DoctorBookingProvider(),
-      child: BlocListener<PetsListCubit, PetsListState>(
-        listener: (context, state) {
-          final provider = context.read<DoctorBookingProvider>();
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<PetsListCubit, PetsListState>(
+            listener: (context, state) {
+              final provider = context.read<DoctorBookingProvider>();
 
-          switch (state) {
-            case UserPetsSuccess(:final userPets):
-              provider.setPetsFromApi(userPets);
-              break;
-            default:
-          }
-        },
+              switch (state) {
+                case UserPetsSuccess(:final userPets):
+                  provider.setPetsFromApi(userPets);
+                  break;
+                default:
+              }
+            },
+          ),
+          BlocListener<NearbyDoctorsCubit, NearbyDoctorsState>(
+            listener: (context, state) {
+              final provider = context.read<DoctorBookingProvider>();
+
+              switch (state) {
+                case NearbyDoctorsSuccess(:final nearbyDoctors):
+                  provider.initializeData(nearbyDoctors);
+                  provider.showDoctors = true;
+                  break;
+                default:
+              }
+            },
+          ),
+        ],
         child: Builder(
           builder: (context) {
             return Padding(
