@@ -11,7 +11,7 @@ import 'package:petcure_user_app/modules/order_details_module/utils/order_detail
 import 'package:petcure_user_app/modules/order_details_module/widgets/order_details_summary_row.dart';
 import 'package:petcure_user_app/modules/order_details_module/widgets/progress_step.dart';
 import 'package:petcure_user_app/modules/order_details_module/widgets/timeline_item.dart';
-import 'package:petcure_user_app/modules/orders_list_module/enums/user_order_delivery_status.dart';
+import 'package:petcure_user_app/core/enums/user_order_delivery_status.dart';
 import 'package:petcure_user_app/modules/payment_module/view/payment_page.dart';
 import 'package:petcure_user_app/widgets/custom_error_widget.dart';
 import 'package:petcure_user_app/widgets/loaders/custom_loading_widget.dart';
@@ -129,8 +129,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   errorMessage: errorMessage,
                 );
               case OrderDetailsSuccess(:final orderDetails):
-                final UserOrderDeliveryStatus status =
-                    UserOrderDeliveryStatus.fromString(orderDetails.status);
+                final UserOrderDeliveryStatus status = orderDetails.status;
                 final isOnTheWay =
                     status == UserOrderDeliveryStatus.orderOnTheWay;
                 return SingleChildScrollView(

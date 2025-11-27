@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:petcure_user_app/core/typedefs/order_delivery_status_color.dart';
-import 'package:petcure_user_app/modules/orders_list_module/enums/user_order_delivery_status.dart';
+import 'package:petcure_user_app/core/enums/user_order_delivery_status.dart';
 
 class ProgressStep extends StatelessWidget {
   final UserOrderDeliveryStatus status;

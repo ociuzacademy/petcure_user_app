@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:petcure_user_app/modules/orders_list_module/cubit/orders_list_cubit.dart';
-import 'package:petcure_user_app/modules/orders_list_module/enums/user_order_delivery_status.dart';
+import 'package:petcure_user_app/core/enums/user_order_delivery_status.dart';
 import 'package:petcure_user_app/modules/orders_list_module/models/user_order_list_model.dart';
 
 class OrderListHelper {

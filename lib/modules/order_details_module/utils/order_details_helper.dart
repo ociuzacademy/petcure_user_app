@@ -1,11 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 
 import 'package:petcure_user_app/modules/order_details_module/models/order_details_model.dart';
 import 'package:petcure_user_app/modules/order_details_module/widgets/q_r_code_widget.dart';
-import 'package:petcure_user_app/modules/orders_list_module/enums/user_order_delivery_status.dart';
+import 'package:petcure_user_app/core/enums/user_order_delivery_status.dart';
 import 'package:petcure_user_app/widgets/app_widget_export.dart';
 
 class OrderDetailsHelper {
@@ -127,7 +129,7 @@ class OrderDetailsHelper {
   // Generate QR code data string from order
   String get _qrCodeData {
     final data = {'orderId': orderId};
-    return data.toString();
+    return jsonEncode(data);
   }
 
   // Fetch order details

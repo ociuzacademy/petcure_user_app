@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:petcure_user_app/core/enums/user_order_delivery_status.dart';
+
 OrderDetailsModel orderDetailsModelFromJson(String str) =>
     OrderDetailsModel.fromJson(json.decode(str));
 
@@ -14,7 +16,7 @@ class OrderDetailsModel {
   final int id;
   final int user;
   final DateTime orderDate;
-  final String status;
+  final UserOrderDeliveryStatus status;
   final String totalAmount;
   final DateTime estimatedDeliveryDate;
   final List<Item> items;
@@ -33,7 +35,7 @@ class OrderDetailsModel {
     int? id,
     int? user,
     DateTime? orderDate,
-    String? status,
+    UserOrderDeliveryStatus? status,
     String? totalAmount,
     DateTime? estimatedDeliveryDate,
     List<Item>? items,
@@ -52,7 +54,7 @@ class OrderDetailsModel {
         id: json['id'],
         user: json['user'],
         orderDate: DateTime.parse(json['order_date']),
-        status: json['status'],
+        status: UserOrderDeliveryStatus.fromString(json['status']),
         totalAmount: json['total_amount'],
         estimatedDeliveryDate: DateTime.parse(json['estimated_delivery_date']),
         items: List<Item>.from(json['items'].map((x) => Item.fromJson(x))),
@@ -62,7 +64,7 @@ class OrderDetailsModel {
     'id': id,
     'user': user,
     'order_date': orderDate.toIso8601String(),
-    'status': status,
+    'status': status.value,
     'total_amount': totalAmount,
     'estimated_delivery_date': estimatedDeliveryDate.toIso8601String(),
     'items': List<dynamic>.from(items.map((x) => x.toJson())),

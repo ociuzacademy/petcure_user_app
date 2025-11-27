@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:petcure_user_app/core/typedefs/format_date.dart';
 import 'package:petcure_user_app/core/typedefs/order_delivery_status_color.dart';
 import 'package:petcure_user_app/modules/order_details_module/view/order_details_page.dart';
-import 'package:petcure_user_app/modules/orders_list_module/enums/user_order_delivery_status.dart';
 import 'package:petcure_user_app/modules/orders_list_module/models/user_order_list_model.dart';
 import 'package:petcure_user_app/modules/orders_list_module/typedefs/order_delivery_status_icon.dart';
 import 'package:petcure_user_app/modules/orders_list_module/typedefs/order_delivery_status_text.dart';
@@ -64,23 +63,19 @@ class OrderListCard extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: getStatusColor(
-                        UserOrderDeliveryStatus.fromString(order.status),
+                        order.status,
                       ).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: getStatusColor(
-                          UserOrderDeliveryStatus.fromString(order.status),
+                          order.status,
                         ).withValues(alpha: 0.3),
                       ),
                     ),
                     child: Text(
-                      getStatusText(
-                        UserOrderDeliveryStatus.fromString(order.status),
-                      ),
+                      getStatusText(order.status),
                       style: TextStyle(
-                        color: getStatusColor(
-                          UserOrderDeliveryStatus.fromString(order.status),
-                        ),
+                        color: getStatusColor(order.status),
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
