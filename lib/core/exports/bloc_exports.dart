@@ -17,3 +17,5 @@ export 'package:petcure_user_app/modules/orders_list_module/cubit/orders_list_cu
 export 'package:petcure_user_app/modules/order_details_module/cubit/order_details_cubit.dart';
 export 'package:petcure_user_app/modules/order_details_module/bloc/reorder/reorder_bloc.dart';
 export 'package:petcure_user_app/modules/order_details_module/bloc/cancel_order/cancel_order_bloc.dart';
+export 'package:petcure_user_app/modules/appointment_booking_module/cubit/slots_cubit.dart';
+export 'package:petcure_user_app/modules/appointment_booking_module/bloc/appointment_booking_bloc.dart';

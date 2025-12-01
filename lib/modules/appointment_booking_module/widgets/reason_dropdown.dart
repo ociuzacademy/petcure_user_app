@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import 'package:petcure_user_app/modules/add_pet_module/typedefs/select_option.dart';
+import 'package:petcure_user_app/core/enums/booking_reason.dart';
 
 class ReasonDropdown extends StatelessWidget {
-  final String? selectedReason;
-  final List<String> reasons;
-  final SelectOption onSelectingReason;
+  final BookingReason? selectedReason;
+  final List<BookingReason> reasons;
+  final Function(BookingReason?) onSelectingReason;
   const ReasonDropdown({
     super.key,
     this.selectedReason,
@@ -16,12 +16,10 @@ class ReasonDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      value: (selectedReason != null && selectedReason!.isNotEmpty)
-          ? selectedReason
-          : null,
-      items: reasons.map((category) {
-        return DropdownMenuItem(value: category, child: Text(category));
+    return DropdownButtonFormField<BookingReason>(
+      value: selectedReason,
+      items: reasons.map((reason) {
+        return DropdownMenuItem(value: reason, child: Text(reason.label));
       }).toList(),
       onChanged: onSelectingReason,
       decoration: const InputDecoration(
@@ -29,7 +27,7 @@ class ReasonDropdown extends StatelessWidget {
         border: OutlineInputBorder(),
       ),
       validator: (value) {
-        if (value == null || value.isEmpty) {
+        if (value == null) {
           return 'Please select a reason';
         }
         return null;

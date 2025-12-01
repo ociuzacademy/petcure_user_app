@@ -1,35 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:petcure_user_app/core/enums/booking_option.dart';
-import 'package:petcure_user_app/core/models/slot_model.dart';
-import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
+import 'package:petcure_user_app/core/enums/booking_reason.dart';
+import 'package:petcure_user_app/core/models/api_models/user_pets_model.dart';
+import 'package:petcure_user_app/modules/appointment_booking_module/classes/appointment_booking_data.dart';
+import 'package:petcure_user_app/modules/appointment_booking_module/model/slots_model.dart';
+import 'package:petcure_user_app/modules/home_module/models/nearby_doctors_model.dart';
 
 class AppointmentBookingProvider extends ChangeNotifier {
   final BuildContext context;
+  final Pet pet;
+  final Doctor doctor;
 
-  AppointmentBookingProvider(this.context);
+  AppointmentBookingProvider(this.context, this.pet, this.doctor);
 
   DateTime? _selectedDate;
-  SlotModel? _selectedTimeSlot;
-  String? _selectedReason;
+  Slot? _selectedTimeSlot;
+  BookingReason? _selectedReason;
   BookingOption _selectedBookingOption = BookingOption.clinicalAppointment;
   final TextEditingController symptomsController = TextEditingController();
 
   DateTime? get selectedDate => _selectedDate;
-  SlotModel? get selectedTimeSlot => _selectedTimeSlot;
-  String? get selectedReason => _selectedReason;
+  Slot? get selectedTimeSlot => _selectedTimeSlot;
+  BookingReason? get selectedReason => _selectedReason;
   BookingOption get selectedBookingOption => _selectedBookingOption;
 
   void selectDate(DateTime date) {
     _selectedDate = date;
+    _selectedTimeSlot = null;
     notifyListeners();
   }
 
-  void selectTimeSlot(SlotModel slot) {
+  void selectTimeSlot(Slot slot) {
     _selectedTimeSlot = slot;
     notifyListeners();
   }
 
-  void selectReason(String reason) {
+  void selectReason(BookingReason reason) {
     _selectedReason = reason;
     notifyListeners();
   }
@@ -45,55 +51,23 @@ class AppointmentBookingProvider extends ChangeNotifier {
     super.dispose();
   }
 
-  void bookAppointment() {
-    if (_selectedBookingOption == BookingOption.clinicalAppointment) {
-      if (_selectedDate == null) {
-        CustomSnackBar.showError(
-          context,
-          message: 'Please select a date for appointment.',
-        );
-        return;
-      }
-
-      if (_selectedReason == null) {
-        CustomSnackBar.showError(
-          context,
-          message: 'Please select reason for the appointment.',
-        );
-        return;
-      }
-
-      if (_selectedTimeSlot == null) {
-        CustomSnackBar.showError(
-          context,
-          message: 'Please select any one of the time slot.',
-        );
-        return;
-      }
-
-      CustomSnackBar.showSuccess(
-        context,
-        message: 'Doctor appointment for your pet booked successfully',
-      );
-
-      Navigator.pop(context);
-    } else {
-      final String symptoms = symptomsController.text.trim();
-      if (_selectedBookingOption == BookingOption.audioCall &&
-          symptoms.isEmpty) {
-        CustomSnackBar.showError(
-          context,
-          message: 'Please enter symptoms of youe pet.',
-        );
-        return;
-      }
-
-      CustomSnackBar.showSuccess(
-        context,
-        message: 'Doctor appointment for your pet booked successfully',
-      );
-
-      Navigator.pop(context);
+  AppointmentBookingData? get appointmentBookingData {
+    if (_selectedDate == null || _selectedTimeSlot == null) {
+      return null;
     }
+
+    if (_selectedBookingOption == BookingOption.audioCall &&
+        symptomsController.text.isEmpty) {
+      return null;
+    }
+    return AppointmentBookingData(
+      bookingOption: _selectedBookingOption,
+      petId: pet.id,
+      doctorId: doctor.id,
+      date: _selectedDate!,
+      slotId: _selectedTimeSlot!.slotId,
+      symptoms: symptomsController.text,
+      reason: _selectedReason,
+    );
   }
 }

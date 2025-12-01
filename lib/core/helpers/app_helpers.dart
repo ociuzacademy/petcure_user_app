@@ -47,12 +47,6 @@ class AppHelpers {
     'Amphibian': ['Frog', 'Toad', 'Salamander', 'Others'],
   };
 
-  static const List<String> bookingReasons = [
-    'Vaccine',
-    'Routine Checkup',
-    'Sickness',
-  ];
-
   static List<SlotModel> generateTimeSlots() {
     final List<SlotModel> slots = [];
 
@@ -90,5 +84,15 @@ class AppHelpers {
     String period = time.hour < 12 ? 'AM' : 'PM';
 
     return '$hour:$minute $period';
+  }
+
+  static TimeOfDay parseTimeString(String timeString) {
+    List<String> parts = timeString.split(':');
+    if (parts.length != 2) {
+      throw FormatException('Invalid time format: $timeString');
+    }
+    int hour = int.parse(parts[0]);
+    int minute = int.parse(parts[1]);
+    return TimeOfDay(hour: hour, minute: minute);
   }
 }

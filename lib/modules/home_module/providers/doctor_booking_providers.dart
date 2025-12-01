@@ -2,10 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
-import 'package:petcure_user_app/core/models/api_models/user_pets_model.dart'
-    hide Pet;
+import 'package:petcure_user_app/core/models/api_models/user_pets_model.dart';
 import 'package:petcure_user_app/core/models/location.dart';
-import 'package:petcure_user_app/core/models/pet.dart';
+
 import 'package:petcure_user_app/modules/home_module/models/nearby_doctors_model.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 
@@ -39,22 +38,7 @@ class DoctorBookingProvider with ChangeNotifier {
   // Method to set pets from API response
   void setPetsFromApi(UserPetsModel userPets) {
     // Convert API pets to local Pet model
-    _pets = userPets.pets.map((apiPet) {
-      return Pet(
-        petId: apiPet.id,
-        ownerId: apiPet.user,
-        name: apiPet.name,
-        birthDate: apiPet.birthDate,
-        categoryId: apiPet.category,
-        category: apiPet.categoryName,
-        subCategoryId: apiPet.subCategory,
-        subCategory: apiPet.subCategoryName,
-        photoUrl: apiPet.petImage, // You might need to add base URL here
-        weight: apiPet.weight,
-        gender: apiPet.gender,
-        healthConditions: apiPet.healthCondition,
-      );
-    }).toList();
+    _pets = userPets.pets;
 
     if (_pets.isNotEmpty) {
       _selectedPet = _pets.first;

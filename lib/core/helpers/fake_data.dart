@@ -7,6 +7,7 @@ import 'package:petcure_user_app/core/models/order.dart';
 import 'package:petcure_user_app/core/models/pet.dart';
 import 'package:petcure_user_app/core/models/product.dart';
 import 'package:petcure_user_app/core/enums/booking_option.dart';
+import 'package:petcure_user_app/core/enums/booking_reason.dart';
 import 'package:petcure_user_app/core/models/slot_model.dart';
 import 'package:petcure_user_app/core/models/booking.dart';
 
@@ -484,7 +485,9 @@ class FakeData {
     final Random random = Random();
     final List<Doctor> doctors = generateFakeDoctors();
     final List<SlotModel> slots = AppHelpers.generateTimeSlots();
-    const List<String> reasons = AppHelpers.bookingReasons;
+    final List<String> reasons = BookingReason.values
+        .map((e) => e.label)
+        .toList();
     const List<BookingOption> bookingOptions = BookingOption.values;
 
     final List<Booking> bookings = [];

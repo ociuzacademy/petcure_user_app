@@ -39,4 +39,7 @@ class AppUrls {
   static const String getOrderDetailsUrl = '$userUrl/order-details/';
   static const String reorderUrl = '$userUrl/reorder/';
   static const String cancelOrderUrl = '$userUrl/cancel-order/';
+
+  static const String viewSlotsListUrl = '$userUrl/view_slots/';
+  static const String bookAppointmentUrl = '$userUrl/book_appointment/';
 }

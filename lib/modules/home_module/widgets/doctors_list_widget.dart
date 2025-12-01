@@ -3,6 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:petcure_user_app/modules/appointment_booking_module/view/appointment_booking_page.dart';
 
 import 'package:petcure_user_app/modules/home_module/cubits/nearby_doctors/nearby_doctors_cubit.dart';
 import 'package:petcure_user_app/modules/home_module/providers/doctor_booking_providers.dart';
@@ -120,13 +122,13 @@ class DoctorsListWidget extends StatelessWidget {
                       ),
                       trailing: ElevatedButton(
                         onPressed: () {
-                          // pushWithoutNavBar(
-                          //   context,
-                          //   AppointmentBookingPage.route(
-                          //     pet: provider.selectedPet!,
-                          //     doctor: doctor,
-                          //   ),
-                          // );
+                          pushWithoutNavBar(
+                            context,
+                            AppointmentBookingPage.route(
+                              pet: provider.selectedPet!,
+                              doctor: doctor,
+                            ),
+                          );
                         },
                         child: const Text('Book'),
                       ),

@@ -2,15 +2,17 @@
 import 'package:flutter/material.dart';
 import 'package:petcure_user_app/core/helpers/app_helpers.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
-import 'package:petcure_user_app/core/models/slot_model.dart';
+import 'package:petcure_user_app/modules/appointment_booking_module/model/slots_model.dart';
 
 class SlotWidget extends StatelessWidget {
-  final SlotModel slot;
+  final Slot slot;
+  final bool availability;
   final bool isSelected;
-  final Function(SlotModel)? onSelect;
+  final VoidCallback onSelect;
   const SlotWidget({
     super.key,
     required this.slot,
+    required this.availability,
     required this.isSelected,
     required this.onSelect,
   });
@@ -18,13 +20,9 @@ class SlotWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String slotTimeRange =
-        '${AppHelpers.formatTimeOfDayTo12Hour(slot.startingTime)} - ${AppHelpers.formatTimeOfDayTo12Hour(slot.endingTime)}';
+        '${AppHelpers.formatTimeOfDayTo12Hour(AppHelpers.parseTimeString(slot.startTime))} - ${AppHelpers.formatTimeOfDayTo12Hour(AppHelpers.parseTimeString(slot.endTime))}';
     return GestureDetector(
-      onTap: () {
-        if (onSelect != null) {
-          onSelect!(slot);
-        }
-      },
+      onTap: availability ? onSelect : null,
       child: Container(
         decoration: BoxDecoration(
           color: isSelected ? AppPalette.firstColor : AppPalette.secondColor,

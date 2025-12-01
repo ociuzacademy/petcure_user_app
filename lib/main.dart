@@ -46,6 +46,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => OrderDetailsCubit()),
         BlocProvider(create: (context) => ReorderBloc()),
         BlocProvider(create: (context) => CancelOrderBloc()),
+        BlocProvider(create: (context) => SlotsCubit()),
+        BlocProvider(create: (context) => AppointmentBookingBloc()),
       ],
       child: MaterialApp(
         title: 'PetCure User',
