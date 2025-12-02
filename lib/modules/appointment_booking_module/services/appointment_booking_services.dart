@@ -69,8 +69,13 @@ class AppointmentBookingServices {
   static Future<AppointmentBookingResponseModel> bookAppointment({
     required AppointmentBookingData appointmentBookingData,
   }) async {
+    debugPrint(
+      'AppointmentBookingServices: Appointment type: ${appointmentBookingData.bookingOption.label}',
+    );
     try {
       final Map<String, dynamic> params = appointmentBookingData.toJson();
+
+      debugPrint('AppointmentBookingServices: Params: $params');
 
       final url = Uri.parse(AppUrls.bookAppointmentUrl);
 

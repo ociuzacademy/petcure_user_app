@@ -52,6 +52,7 @@ class AppointmentBookingHelper {
     BuildContext context,
     AppointmentBookingData data,
   ) {
+    FocusScope.of(context).unfocus();
     final AppointmentBookingBloc appointmentBookingBloc = context
         .read<AppointmentBookingBloc>();
     appointmentBookingBloc.add(

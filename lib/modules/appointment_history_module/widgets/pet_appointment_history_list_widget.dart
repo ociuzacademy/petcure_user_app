@@ -58,7 +58,7 @@ class PetAppointmentHistoryListWidget extends StatelessWidget {
                     leading: Image.asset(
                       AppointmentHistoryHelper.fetchLeadingImage(
                         booking.appointmentType == BookingOption.audioCall
-                            ? booking.appointmentType.value
+                            ? booking.appointmentType.label
                             : booking.reason?.label ?? '',
                       ),
                       width: 40,

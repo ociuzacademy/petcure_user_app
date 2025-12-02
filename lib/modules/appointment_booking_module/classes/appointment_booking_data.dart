@@ -22,17 +22,13 @@ class AppointmentBookingData {
 
   Map<String, dynamic> toJson() {
     return {
-      'booking_option': bookingOption == BookingOption.clinicalAppointment
-          ? 'clinical'
-          : 'audio_call',
+      'appointment_type': bookingOption.label,
       'pet': petId,
       'doctor': doctorId,
       'date':
           "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
       'slot': slotId,
-      'reason': bookingOption == BookingOption.clinicalAppointment
-          ? reason?.label
-          : null,
+      'reason': reason?.label,
       'symptoms': symptomsLabel,
     };
   }
@@ -53,7 +49,7 @@ class AppointmentBookingData {
         label = null;
       }
     } else {
-      label = null;
+      label = symptoms;
     }
     return label;
   }

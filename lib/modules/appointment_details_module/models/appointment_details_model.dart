@@ -144,7 +144,7 @@ class Data {
 
   Map<String, dynamic> toJson() => {
     'id': id,
-    'appointment_type': appointmentType.value,
+    'appointment_type': appointmentType.label,
     'pet': pet,
     'pet_name': petName,
     'doctor': doctor,
