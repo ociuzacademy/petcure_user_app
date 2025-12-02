@@ -266,12 +266,12 @@ $AppointmentHistorySuccessCopyWith<AppointmentHistorySuccess> get copyWith => _$
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppointmentHistorySuccess&&const DeepCollectionEquality().equals(other.petAppointmentHistory, petAppointmentHistory));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppointmentHistorySuccess&&(identical(other.petAppointmentHistory, petAppointmentHistory) || other.petAppointmentHistory == petAppointmentHistory));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(petAppointmentHistory));
+int get hashCode => Object.hash(runtimeType,petAppointmentHistory);
 
 @override
 String toString() {
@@ -303,9 +303,9 @@ class _$AppointmentHistorySuccessCopyWithImpl<$Res>
 
 /// Create a copy of AppointmentHistoryState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? petAppointmentHistory = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? petAppointmentHistory = null,}) {
   return _then(AppointmentHistorySuccess(
-petAppointmentHistory: freezed == petAppointmentHistory ? _self.petAppointmentHistory : petAppointmentHistory // ignore: cast_nullable_to_non_nullable
+petAppointmentHistory: null == petAppointmentHistory ? _self.petAppointmentHistory : petAppointmentHistory // ignore: cast_nullable_to_non_nullable
 as PetAppointmentHistoryModel,
   ));
 }

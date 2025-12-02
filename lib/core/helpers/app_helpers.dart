@@ -95,4 +95,38 @@ class AppHelpers {
     int minute = int.parse(parts[1]);
     return TimeOfDay(hour: hour, minute: minute);
   }
+
+  /// Checks if the current time is within the appointment slot on today's date
+  /// Returns true only if:
+  /// 1. The appointment date is today
+  /// 2. Current time is between slotStart and slotEnd
+  static bool isWithinAppointmentSlot({
+    required DateTime appointmentDate,
+    required String slotStart,
+    required String slotEnd,
+  }) {
+    final now = DateTime.now();
+
+    // Check if appointment is today
+    final isToday =
+        appointmentDate.year == now.year &&
+        appointmentDate.month == now.month &&
+        appointmentDate.day == now.day;
+
+    if (!isToday) return false;
+
+    // Parse slot times
+    final startTime = parseTimeString(slotStart);
+    final endTime = parseTimeString(slotEnd);
+
+    // Convert current time to minutes since midnight
+    final currentMinutes = now.hour * 60 + now.minute;
+
+    // Convert slot times to minutes since midnight
+    final startMinutes = startTime.hour * 60 + startTime.minute;
+    final endMinutes = endTime.hour * 60 + endTime.minute;
+
+    // Check if current time is within the slot
+    return currentMinutes >= startMinutes && currentMinutes <= endMinutes;
+  }
 }

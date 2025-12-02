@@ -44,4 +44,5 @@ class AppUrls {
   static const String bookAppointmentUrl = '$userUrl/book_appointment/';
 
   static const String petAppointmentsUrl = '$userUrl/pet_appointments/';
+  static const String appointmentDetailsUrl = '$userUrl/appointments_detail/';
 }

@@ -21,3 +21,4 @@ export 'package:petcure_user_app/modules/order_details_module/bloc/cancel_order/
 export 'package:petcure_user_app/modules/appointment_booking_module/cubit/slots_cubit.dart';
 export 'package:petcure_user_app/modules/appointment_booking_module/bloc/appointment_booking_bloc.dart';
 export 'package:petcure_user_app/modules/appointment_history_module/cubit/appointment_history_cubit.dart';
+export 'package:petcure_user_app/modules/appointment_details_module/cubit/appointment_details_cubit.dart';

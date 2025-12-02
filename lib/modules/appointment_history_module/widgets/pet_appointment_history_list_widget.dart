@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:petcure_user_app/core/enums/booking_option.dart';
 import 'package:petcure_user_app/core/helpers/app_helpers.dart';
+import 'package:petcure_user_app/modules/appointment_details_module/view/appointment_details_page.dart';
 import 'package:petcure_user_app/modules/appointment_history_module/cubit/appointment_history_cubit.dart';
 import 'package:petcure_user_app/modules/appointment_history_module/utils/appointment_history_helper.dart';
 import 'package:petcure_user_app/widgets/custom_error_widget.dart';
@@ -68,6 +69,12 @@ class PetAppointmentHistoryListWidget extends StatelessWidget {
                     ),
                     subtitle: Text('$startTime - $endTime'),
                     trailing: Text(booking.reason?.label ?? 'No Reason'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        AppointmentDetailsPage.route(bookingId: booking.id),
+                      );
+                    },
                   ),
                 );
               },

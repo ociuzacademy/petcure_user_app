@@ -53,6 +53,7 @@
 	<array>
 		<string>geo</string>
 		<string>https</string>
+		<string>tel</string>
 	</array>
 </dict>
 </plist>
