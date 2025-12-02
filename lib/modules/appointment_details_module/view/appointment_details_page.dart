@@ -51,7 +51,10 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
                 message: 'Loading appointment details...',
               );
             case AppointmentDetailsSuccess(:final data):
-              return AppointmentDetailsView(appointmentData: data.data);
+              return AppointmentDetailsView(
+                bookingId: widget.bookingId,
+                appointmentData: data.data,
+              );
             case AppointmentDetailsError(:final message):
               return CustomErrorWidget(
                 onRetry: _appointmentDetailsHelper.appointmentDetailsInit,

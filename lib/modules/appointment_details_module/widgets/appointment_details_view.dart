@@ -5,12 +5,18 @@ import 'package:petcure_user_app/modules/appointment_details_module/widgets/appo
 import 'package:petcure_user_app/modules/appointment_details_module/widgets/appointment_header_card.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/widgets/appointment_status_chip.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/widgets/doctor_info_card.dart';
+import 'package:petcure_user_app/modules/appointment_details_module/widgets/feedback_complaints_buttons.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/widgets/pet_info_card.dart';
 
 class AppointmentDetailsView extends StatelessWidget {
+  final int bookingId;
   final Data appointmentData;
 
-  const AppointmentDetailsView({super.key, required this.appointmentData});
+  const AppointmentDetailsView({
+    super.key,
+    required this.bookingId,
+    required this.appointmentData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +48,13 @@ class AppointmentDetailsView extends StatelessWidget {
             AppointmentAdditionalInfoSection(appointmentData: appointmentData),
             const SizedBox(height: 20),
           ],
+
+          // Feedback and Complaints Buttons (conditional)
+          FeedbackComplaintsButtons(
+            bookingId: bookingId,
+            appointmentData: appointmentData,
+          ),
+          const SizedBox(height: 20),
 
           // Status Chip
           AppointmentStatusChip(appointmentData: appointmentData),
