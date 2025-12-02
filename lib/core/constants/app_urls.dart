@@ -42,4 +42,6 @@ class AppUrls {
 
   static const String viewSlotsListUrl = '$userUrl/view_slots/';
   static const String bookAppointmentUrl = '$userUrl/book_appointment/';
+
+  static const String petAppointmentsUrl = '$userUrl/pet_appointments/';
 }

@@ -3,7 +3,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:petcure_user_app/core/cubit/pet_sub_category/pet_sub_category_cubit.dart';
 import 'package:petcure_user_app/modules/login_module/view/login_page.dart';
 import 'package:provider/provider.dart';
 

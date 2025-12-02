@@ -1,5 +1,6 @@
 export 'package:petcure_user_app/core/bloc/auth/auth_bloc.dart';
 export 'package:petcure_user_app/core/cubit/pet_category/pet_category_cubit.dart';
+export 'package:petcure_user_app/core/cubit/pet_sub_category/pet_sub_category_cubit.dart';
 export 'package:petcure_user_app/modules/register_module/bloc/register_bloc.dart';
 export 'package:petcure_user_app/core/bloc/pet_operations/pet_operations_bloc.dart';
 export 'package:petcure_user_app/core/cubit/pets_list/pets_list_cubit.dart';
@@ -19,3 +20,4 @@ export 'package:petcure_user_app/modules/order_details_module/bloc/reorder/reord
 export 'package:petcure_user_app/modules/order_details_module/bloc/cancel_order/cancel_order_bloc.dart';
 export 'package:petcure_user_app/modules/appointment_booking_module/cubit/slots_cubit.dart';
 export 'package:petcure_user_app/modules/appointment_booking_module/bloc/appointment_booking_bloc.dart';
+export 'package:petcure_user_app/modules/appointment_history_module/cubit/appointment_history_cubit.dart';

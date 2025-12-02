@@ -222,12 +222,12 @@ _$BookingAppointmentCopyWith<_BookingAppointment> get copyWith => __$BookingAppo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookingAppointment&&const DeepCollectionEquality().equals(other.data, data));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookingAppointment&&(identical(other.data, data) || other.data == data));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(data));
+int get hashCode => Object.hash(runtimeType,data);
 
 @override
 String toString() {
@@ -259,9 +259,9 @@ class __$BookingAppointmentCopyWithImpl<$Res>
 
 /// Create a copy of AppointmentBookingEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? data = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? data = null,}) {
   return _then(_BookingAppointment(
-freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
 as AppointmentBookingData,
   ));
 }
@@ -524,12 +524,12 @@ $AppointmentBookingSuccessCopyWith<AppointmentBookingSuccess> get copyWith => _$
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppointmentBookingSuccess&&const DeepCollectionEquality().equals(other.response, response));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppointmentBookingSuccess&&(identical(other.response, response) || other.response == response));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(response));
+int get hashCode => Object.hash(runtimeType,response);
 
 @override
 String toString() {
@@ -561,9 +561,9 @@ class _$AppointmentBookingSuccessCopyWithImpl<$Res>
 
 /// Create a copy of AppointmentBookingState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? response = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? response = null,}) {
   return _then(AppointmentBookingSuccess(
-freezed == response ? _self.response : response // ignore: cast_nullable_to_non_nullable
+null == response ? _self.response : response // ignore: cast_nullable_to_non_nullable
 as AppointmentBookingResponseModel,
   ));
 }

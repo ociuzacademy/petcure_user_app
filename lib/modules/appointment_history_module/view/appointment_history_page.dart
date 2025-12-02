@@ -1,7 +1,5 @@
 // appointment_history_page.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 import 'package:petcure_user_app/modules/appointment_history_module/utils/appointment_history_helper.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +23,9 @@ class _AppointmentHistoryPageState extends State<AppointmentHistoryPage> {
   void initState() {
     super.initState();
     _appointmentHistoryHelper = AppointmentHistoryHelper(context: context);
-    _appointmentHistoryHelper.userPetsListInit();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _appointmentHistoryHelper.userPetsListInit();
+    });
   }
 
   @override
@@ -34,19 +34,7 @@ class _AppointmentHistoryPageState extends State<AppointmentHistoryPage> {
       create: (context) => AppointmentHistoryProvider(),
       child: Scaffold(
         appBar: AppBar(title: const Text('Booking History')),
-        body: BlocListener<PetsListCubit, PetsListState>(
-          listener: (context, state) {
-            final provider = context.read<AppointmentHistoryProvider>();
-
-            switch (state) {
-              case UserPetsSuccess(:final userPets):
-                provider.setPetsFromApi(userPets);
-                break;
-              default:
-            }
-          },
-          child: const AppointmentHistoryBody(),
-        ),
+        body: const AppointmentHistoryBody(),
       ),
     );
   }

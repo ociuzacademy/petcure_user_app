@@ -1,11 +1,17 @@
 // appointment_history_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-
+import 'package:petcure_user_app/core/enums/booking_option.dart';
 import 'package:petcure_user_app/core/helpers/app_helpers.dart';
+import 'package:petcure_user_app/modules/appointment_history_module/cubit/appointment_history_cubit.dart';
+import 'package:petcure_user_app/modules/appointment_history_module/utils/appointment_history_helper.dart';
+import 'package:petcure_user_app/widgets/custom_error_widget.dart';
+import 'package:petcure_user_app/widgets/loaders/list_item_loading_widget.dart';
+
 import 'package:petcure_user_app/modules/appointment_history_module/providers/appointment_history_provider.dart';
+import 'package:petcure_user_app/modules/appointment_history_module/widgets/empty_appointment_history_widget.dart';
 
 class PetAppointmentHistoryListWidget extends StatelessWidget {
   const PetAppointmentHistoryListWidget({super.key});
@@ -18,26 +24,57 @@ class PetAppointmentHistoryListWidget extends StatelessWidget {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
-    return SliverList.builder(
-      itemCount: provider.bookingHistory.length,
-      itemBuilder: (context, index) {
-        final booking = provider.bookingHistory[index];
-        return Card(
-          child: ListTile(
-            leading: Image.asset(
-              provider.fetchLeadingImage(booking.reasonForBooking),
-              width: 40,
-              height: 40,
-            ),
-            title: Text(
-              '${booking.doctor.name} - ${DateFormat('dd-MM-yyyy').format(booking.bookingDate)}',
-            ),
-            subtitle: Text(
-              '${AppHelpers.formatTimeOfDayTo12Hour(booking.timeSlot.startingTime)} - ${AppHelpers.formatTimeOfDayTo12Hour(booking.timeSlot.endingTime)}',
-            ),
-            trailing: Text(booking.reasonForBooking),
-          ),
-        );
+    return BlocBuilder<AppointmentHistoryCubit, AppointmentHistoryState>(
+      builder: (context, state) {
+        switch (state) {
+          case AppointmentHistoryLoading():
+            return const ListItemLoadingWidget(itemCount: 5, useSliver: true);
+          case AppointmentHistoryError(error: final error):
+            return CustomErrorWidget.sliver(
+              onRetry: () {
+                AppointmentHistoryHelper.getPetHistory(context, provider);
+              },
+              errorMessage: error,
+            );
+          case AppointmentHistorySuccess(
+            petAppointmentHistory: final petAppointmentHistory,
+          ):
+            if (petAppointmentHistory.totalBookings == 0) {
+              return const EmptyAppointmentHistoryWidget();
+            }
+            return SliverList.builder(
+              itemCount: petAppointmentHistory.totalBookings,
+              itemBuilder: (context, index) {
+                final booking = petAppointmentHistory.bookings[index];
+                final String startTime = AppHelpers.formatTimeOfDayTo12Hour(
+                  AppHelpers.parseTimeString(booking.slotStart),
+                );
+                final String endTime = AppHelpers.formatTimeOfDayTo12Hour(
+                  AppHelpers.parseTimeString(booking.slotEnd),
+                );
+                return Card(
+                  child: ListTile(
+                    leading: Image.asset(
+                      AppointmentHistoryHelper.fetchLeadingImage(
+                        booking.appointmentType == BookingOption.audioCall
+                            ? booking.appointmentType.value
+                            : booking.reason?.label ?? '',
+                      ),
+                      width: 40,
+                      height: 40,
+                    ),
+                    title: Text(
+                      '${booking.doctorName} - ${DateFormat('dd-MM-yyyy').format(booking.date)}',
+                    ),
+                    subtitle: Text('$startTime - $endTime'),
+                    trailing: Text(booking.reason?.label ?? 'No Reason'),
+                  ),
+                );
+              },
+            );
+          default:
+            return const SliverToBoxAdapter(child: SizedBox.shrink());
+        }
       },
     );
   }

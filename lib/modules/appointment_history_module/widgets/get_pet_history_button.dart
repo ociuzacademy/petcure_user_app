@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 
 class GetPetHistoryButton extends StatelessWidget {
-  const GetPetHistoryButton({super.key});
+  final VoidCallback onFetchingPetAppointmentHistory;
+  const GetPetHistoryButton({
+    super.key,
+    required this.onFetchingPetAppointmentHistory,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // final provider = context.read<AppointmentHistoryProvider>();
-
     return SliverToBoxAdapter(
       child: SizedBox(
         width: double.infinity,
         child: ElevatedButton(
           onPressed: () {
             try {
-              // provider.getChildVaccineHistory();
+              onFetchingPetAppointmentHistory();
             } catch (e) {
               CustomSnackBar.showError(context, message: e.toString());
             }
