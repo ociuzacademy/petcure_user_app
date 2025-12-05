@@ -48,4 +48,6 @@ class AppUrls {
 
   static const String feedbackUrl = '$userUrl/feedback/';
   static const String complaintUrl = '$userUrl/complaint/';
+
+  static const String chatUrl = '$userUrl/chat/';
 }
