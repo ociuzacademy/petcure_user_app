@@ -8,4 +8,16 @@ class FeedbackData {
     required this.rating,
     required this.feedback,
   });
+
+  Map<String, dynamic> toJson() {
+    return {'appointment': appointment, 'rating': rating, 'feedback': feedback};
+  }
+
+  factory FeedbackData.fromJson(Map<String, dynamic> json) {
+    return FeedbackData(
+      appointment: json['appointment'],
+      rating: json['rating'],
+      feedback: json['feedback'],
+    );
+  }
 }

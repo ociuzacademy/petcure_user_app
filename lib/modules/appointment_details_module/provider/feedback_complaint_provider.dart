@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:petcure_user_app/modules/appointment_details_module/classes/complaint_data.dart';
+import 'package:petcure_user_app/modules/appointment_details_module/classes/feedback_data.dart';
 
 class FeedbackComplaintProvider extends ChangeNotifier {
   final int bookingId;
@@ -37,18 +39,36 @@ class FeedbackComplaintProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Actions
-  Future<bool> submitFeedback(BuildContext context, int bookingId) async {
-    // Simulate API call
-    // In a real app, you would call a repository here
-    await Future.delayed(const Duration(seconds: 1));
-    return true;
+  ComplaintData? getComplaintData() {
+    if (_selectedCategory == null) {
+      return null;
+    }
+
+    if (complaintController.text.trim().isEmpty) {
+      return null;
+    }
+
+    return ComplaintData(
+      appointment: bookingId,
+      category: _selectedCategory!,
+      description: complaintController.text.trim(),
+    );
   }
 
-  Future<bool> submitComplaint(BuildContext context, int bookingId) async {
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 1));
-    return true;
+  FeedbackData? getFeedbackData() {
+    if (_rating == 0) {
+      return null;
+    }
+
+    if (feedbackController.text.trim().isEmpty) {
+      return null;
+    }
+
+    return FeedbackData(
+      appointment: bookingId,
+      rating: _rating,
+      feedback: feedbackController.text.trim(),
+    );
   }
 
   void clearFeedback() {

@@ -65,6 +65,8 @@ class Data {
   final String? symptoms;
   final String? diagnosisAndVerdict;
   final String? notes;
+  final bool hasFeedback;
+  final bool hasComplaint;
 
   Data({
     required this.id,
@@ -83,6 +85,8 @@ class Data {
     this.symptoms,
     this.diagnosisAndVerdict,
     this.notes,
+    required this.hasFeedback,
+    required this.hasComplaint,
   });
 
   Data copyWith({
@@ -102,6 +106,8 @@ class Data {
     String? symptoms,
     String? diagnosisAndVerdict,
     String? notes,
+    bool? hasFeedback,
+    bool? hasComplaint,
   }) => Data(
     id: id ?? this.id,
     appointmentType: appointmentType ?? this.appointmentType,
@@ -119,6 +125,8 @@ class Data {
     symptoms: symptoms ?? this.symptoms,
     diagnosisAndVerdict: diagnosisAndVerdict ?? this.diagnosisAndVerdict,
     notes: notes ?? this.notes,
+    hasFeedback: hasFeedback ?? this.hasFeedback,
+    hasComplaint: hasComplaint ?? this.hasComplaint,
   );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -140,6 +148,8 @@ class Data {
     symptoms: json['symptoms'],
     diagnosisAndVerdict: json['diagnosis_and_verdict'],
     notes: json['notes'],
+    hasFeedback: json['has_feedback'],
+    hasComplaint: json['has_complaint'],
   );
 
   Map<String, dynamic> toJson() => {
@@ -160,5 +170,7 @@ class Data {
     'symptoms': symptoms,
     'diagnosis_and_verdict': diagnosisAndVerdict,
     'notes': notes,
+    'has_feedback': hasFeedback,
+    'has_complaint': hasComplaint,
   };
 }

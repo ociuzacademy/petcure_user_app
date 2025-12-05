@@ -17,12 +17,6 @@ class FeedbackComplaintsButtons extends StatelessWidget {
   });
 
   bool _shouldShowButtons() {
-    // Check if diagnosis and notes are not null
-    if (appointmentData.diagnosisAndVerdict == null ||
-        appointmentData.notes == null) {
-      return false;
-    }
-
     // Check if the booking date has passed
     final now = DateTime.now();
     final bookingDate = appointmentData.date;
@@ -43,6 +37,8 @@ class FeedbackComplaintsButtons extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      enableDrag: false,
+      useSafeArea: true,
       builder: (context) => ChangeNotifierProvider(
         create: (_) => FeedbackComplaintProvider(bookingId: bookingId),
         child: FeedbackFormSheet(bookingId: bookingId),
@@ -55,6 +51,8 @@ class FeedbackComplaintsButtons extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      enableDrag: false,
+      useSafeArea: true,
       builder: (context) => ChangeNotifierProvider(
         create: (_) => FeedbackComplaintProvider(bookingId: bookingId),
         child: ComplaintFormSheet(bookingId: bookingId),
@@ -92,38 +90,43 @@ class FeedbackComplaintsButtons extends StatelessWidget {
             const SizedBox(height: 16),
             Row(
               children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () => _onFeedbackPressed(context),
-                    icon: const Icon(Icons.star_rate, size: 20),
-                    label: const Text('Feedback'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppPalette.firstColor,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                if (!appointmentData.hasFeedback)
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () => _onFeedbackPressed(context),
+                      icon: const Icon(Icons.star_rate, size: 20),
+                      label: const Text('Feedback'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppPalette.firstColor,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 2,
                       ),
-                      elevation: 2,
                     ),
                   ),
-                ),
                 const SizedBox(width: 12),
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () => _onComplaintPressed(context),
-                    icon: const Icon(Icons.report_problem, size: 20),
-                    label: const Text('Complaint'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.orange,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      side: const BorderSide(color: Colors.orange, width: 1.5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                if (!appointmentData.hasComplaint)
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () => _onComplaintPressed(context),
+                      icon: const Icon(Icons.report_problem, size: 20),
+                      label: const Text('Complaint'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.orange,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        side: const BorderSide(
+                          color: Colors.orange,
+                          width: 1.5,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
                   ),
-                ),
               ],
             ),
           ],
