@@ -12,6 +12,7 @@ import 'package:petcure_user_app/modules/home_module/widgets/pet_products_widget
 import 'package:petcure_user_app/modules/home_module/widgets/pets_list_widget.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/user_profile_widget.dart';
 import 'package:petcure_user_app/modules/login_module/view/login_page.dart';
+import 'package:petcure_user_app/modules/nutrition_planner_module/view/nutrition_planner_page.dart';
 import 'package:petcure_user_app/modules/orders_list_module/view/orders_list_page.dart';
 import 'package:petcure_user_app/widgets/loaders/overlay_loader.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
@@ -176,6 +177,20 @@ class _HomePageState extends State<HomePage> {
               ),
               onTap: () {
                 pushWithoutNavBar(context, ChatPage.route());
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.pets, color: AppPalette.firstColor),
+              title: const Text(
+                'AI Nutrition Planner',
+                style: TextStyle(
+                  color: AppPalette.firstColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+              onTap: () {
+                pushWithoutNavBar(context, NutritionPlannerPage.route());
               },
             ),
             ListTile(

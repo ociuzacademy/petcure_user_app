@@ -40,7 +40,7 @@ class UserPetGrid extends StatelessWidget {
         crossAxisCount: 2, // 2 pets per row
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
-        childAspectRatio: 0.7, // Adjust card proportions
+        childAspectRatio: 0.6, // Adjust card proportions
       ),
       itemCount: pets.length,
       itemBuilder: (context, index) {

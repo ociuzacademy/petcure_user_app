@@ -248,7 +248,7 @@ class PetsGridLoadingWidget extends StatelessWidget {
     return GridLoadingWidget(
       itemCount: itemCount,
       crossAxisCount: crossAxisCount,
-      childAspectRatio: 1.0, // Square items for pets
+      childAspectRatio: 0.6, // Square items for pets
       useSliver: useSliver,
       padding: const EdgeInsets.all(8.0),
     );

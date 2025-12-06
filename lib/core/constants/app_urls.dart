@@ -50,4 +50,5 @@ class AppUrls {
   static const String complaintUrl = '$userUrl/complaint/';
 
   static const String chatUrl = '$userUrl/chat/';
+  static const String recommendationUrl = '$userUrl/recommendation/';
 }

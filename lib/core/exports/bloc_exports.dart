@@ -25,3 +25,4 @@ export 'package:petcure_user_app/modules/appointment_details_module/cubit/appoin
 export 'package:petcure_user_app/modules/appointment_details_module/bloc/feedback/feedback_bloc.dart';
 export 'package:petcure_user_app/modules/appointment_details_module/bloc/complaint/complaint_bloc.dart';
 export 'package:petcure_user_app/modules/chat_module/bloc/chat_bloc.dart';
+export 'package:petcure_user_app/modules/nutrition_planner_module/bloc/nutrition_plan_bloc.dart';
