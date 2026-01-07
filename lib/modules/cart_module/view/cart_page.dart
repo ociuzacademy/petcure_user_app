@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 
 import 'package:petcure_user_app/core/theme/app_palette.dart';
-import 'package:petcure_user_app/modules/cart_module/models/cart_items_model.dart';
 import 'package:petcure_user_app/modules/cart_module/utils/cart_page_helper.dart';
 import 'package:petcure_user_app/modules/cart_module/widgets/cart_item_widget.dart';
 import 'package:petcure_user_app/modules/cart_module/widgets/order_summary.dart';
@@ -43,94 +42,97 @@ class _CartPageState extends State<CartPage> {
         backgroundColor: AppPalette.firstColor,
         foregroundColor: Colors.white,
       ),
-      body: BlocListener<ProductOrderBloc, ProductOrderState>(
-        listener: (context, state) {
-          switch (state) {
-            case ProductOrderLoading(:final message):
-              OverlayLoader.show(context, message: message);
-              break;
-            case ProductOrderError(:final errorMessage):
-              OverlayLoader.hide();
-              CustomSnackBar.showError(context, message: errorMessage);
-              break;
-            case CartItemQuantityChanged(:final response):
-              OverlayLoader.hide();
-              CustomSnackBar.showSuccess(context, message: response.message);
-              _cartPageHelper.userCartItemsInit();
-              break;
-            case PurchaseMade(:final response):
-              OverlayLoader.hide();
-              CustomSnackBar.showSuccess(context, message: response.message);
-              Navigator.push(
-                context,
-                PaymentPage.route(
-                  orderId: response.orderId,
-                  totalRate: response.amountToPay,
-                ),
-              );
-              break;
-            default:
-              OverlayLoader.hide();
-              break;
-          }
-        },
-        child: BlocBuilder<CartItemsCubit, CartItemsState>(
-          builder: (context, state) {
+      body: SafeArea(
+        child: BlocListener<ProductOrderBloc, ProductOrderState>(
+          listener: (context, state) {
             switch (state) {
-              case CartItemsInitial _:
-              case CartItemsLoading _:
-                return const ListItemLoadingWidget(
-                  itemCount: 5,
-                  useSliver: false,
+              case ProductOrderLoading(:final message):
+                OverlayLoader.show(context, message: message);
+                break;
+              case ProductOrderError(:final errorMessage):
+                OverlayLoader.hide();
+                CustomSnackBar.showError(context, message: errorMessage);
+                break;
+              case CartItemQuantityChanged(:final response):
+                OverlayLoader.hide();
+                CustomSnackBar.showSuccess(context, message: response.message);
+                _cartPageHelper.userCartItemsInit();
+                break;
+              case PurchaseMade(:final response):
+                OverlayLoader.hide();
+                CustomSnackBar.showSuccess(context, message: response.message);
+                Navigator.push(
+                  context,
+                  PaymentPage.route(
+                    orderId: response.orderId,
+                    totalRate: response.amountToPay,
+                  ),
                 );
-              case CartItemsError(:final errorMessage):
-                return CustomErrorWidget(
-                  onRetry: _cartPageHelper.userCartItemsInit,
-                  errorMessage: errorMessage,
-                );
-              case UserCartEmpty _:
-                return const Column(
-                  children: [
-                    Expanded(
-                      child: Center(
-                        child: Text(
-                          'Your cart is empty',
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              case UserCartItemsSuccess(:final cartItemsData):
-                final List<CartItem> cartItems = cartItemsData.cartItems;
-                return Column(
-                  children: [
-                    // Cart Items List
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: cartItems.length,
-                        itemBuilder: (context, index) {
-                          final item = cartItems[index];
-                          return CartItemWidget(
-                            item: item,
-                            index: item.id,
-                            onUpdatingQuantity: _cartPageHelper.updateQuantity,
-                          );
-                        },
-                      ),
-                    ),
-
-                    // Order Summary
-                    if (cartItems.isNotEmpty)
-                      OrderSummary(
-                        totalAmount: cartItemsData.totalPrice,
-                        cartItems: cartItems,
-                        placeOrder: _cartPageHelper.showPlaceOrderDialogueBox,
-                      ),
-                  ],
-                );
+                break;
+              default:
+                OverlayLoader.hide();
+                break;
             }
           },
+          child: SafeArea(
+            child: BlocBuilder<CartItemsCubit, CartItemsState>(
+              builder: (context, state) {
+                return switch (state) {
+                  CartItemsInitial _ => const ListItemLoadingWidget(
+                    itemCount: 5,
+                    useSliver: false,
+                  ),
+                  CartItemsLoading _ => const ListItemLoadingWidget(
+                    itemCount: 5,
+                    useSliver: false,
+                  ),
+                  CartItemsError(:final errorMessage) => CustomErrorWidget(
+                    onRetry: _cartPageHelper.userCartItemsInit,
+                    errorMessage: errorMessage,
+                  ),
+                  UserCartEmpty _ => const Column(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Your cart is empty',
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  UserCartItemsSuccess(:final cartItemsData) => Column(
+                    children: [
+                      // Cart Items List
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: cartItemsData.cartItems.length,
+                          itemBuilder: (context, index) {
+                            final item = cartItemsData.cartItems[index];
+                            return CartItemWidget(
+                              item: item,
+                              index: item.id,
+                              onUpdatingQuantity:
+                                  _cartPageHelper.updateQuantity,
+                            );
+                          },
+                        ),
+                      ),
+
+                      // Order Summary
+                      if (cartItemsData.cartItems.isNotEmpty)
+                        OrderSummary(
+                          totalAmount: cartItemsData.totalPrice,
+                          cartItems: cartItemsData.cartItems,
+                          placeOrder: _cartPageHelper.showPlaceOrderDialogueBox,
+                        ),
+                    ],
+                  ),
+                };
+              },
+            ),
+          ),
         ),
       ),
     );

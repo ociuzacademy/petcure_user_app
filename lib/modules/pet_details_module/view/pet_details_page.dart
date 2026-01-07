@@ -51,99 +51,102 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
       appBar: AppBar(title: const Text('Pet Details')),
       body: BlocBuilder<PetDetailsCubit, PetDetailsState>(
         builder: (context, state) {
-          switch (state) {
-            case PetDetailsInitial _:
-            case PetDetailsLoading _:
-              return const PetDetailsLoadingWidget();
-            case PetDetailsError(:final errorMessage):
-              return PetDetailsErrorWidget(
-                errorMessage: errorMessage,
-                onRetry: _petDetailsHelper.petDetailsInit,
-              );
-            case PetDetailsSuccess(:final petDetails):
-              final pet = petDetails.pet;
-
-              return SingleChildScrollView(
-                padding: EdgeInsets.symmetric(
-                  horizontal: horizontalPadding,
-                  vertical: verticalSpacing,
-                ),
-                child: Column(
-                  children: [
-                    // Profile Picture
-                    Hero(
-                      tag: 'pet-${pet.id}',
-                      child: CircleAvatar(
-                        radius: avatarRadius,
-                        backgroundImage: CachedNetworkImageProvider(
-                          '${AppUrls.baseUrl}/${pet.petImage}',
+          return switch (state) {
+            PetDetailsInitial _ => const PetDetailsLoadingWidget(),
+            PetDetailsLoading _ => const PetDetailsLoadingWidget(),
+            PetDetailsError(:final errorMessage) => PetDetailsErrorWidget(
+              errorMessage: errorMessage,
+              onRetry: _petDetailsHelper.petDetailsInit,
+            ),
+            PetDetailsSuccess(:final petDetails) => Builder(
+              builder: (context) {
+                final pet = petDetails.pet;
+                return SafeArea(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                      vertical: verticalSpacing,
+                    ),
+                    child: Column(
+                      children: [
+                        // Profile Picture
+                        Hero(
+                          tag: 'pet-${pet.id}',
+                          child: CircleAvatar(
+                            radius: avatarRadius,
+                            backgroundImage: CachedNetworkImageProvider(
+                              '${AppUrls.baseUrl}/${pet.petImage}',
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    SizedBox(height: verticalSpacing),
+                        SizedBox(height: verticalSpacing),
 
-                    // Update Pet Button
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            UpdatePetPage.route(petId: widget.petId),
-                          );
-                        },
-                        icon: const Icon(Icons.edit),
-                        label: const Text('Update Pet Details'),
-                      ),
-                    ),
-                    SizedBox(height: verticalSpacing),
+                        // Update Pet Button
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                UpdatePetPage.route(petId: widget.petId),
+                              );
+                            },
+                            icon: const Icon(Icons.edit),
+                            label: const Text('Update Pet Details'),
+                          ),
+                        ),
+                        SizedBox(height: verticalSpacing),
 
-                    // Pet Details
-                    DetailCard(
-                      icon: Icons.person,
-                      title: 'Name',
-                      value: pet.name,
-                    ),
-                    DetailCard(
-                      icon: Icons.pets,
-                      title: 'Category',
-                      value: pet.categoryName.toString(),
-                    ),
-                    DetailCard(
-                      icon: Icons.pets,
-                      title: 'Sub-Category',
-                      value: pet.subCategoryName.toString(),
-                    ),
-                    DetailCard(
-                      icon: Icons.cake,
-                      title: 'Age',
-                      value:
-                          '${AppHelpers.formatDate(pet.birthDate).toStringAsFixed(1)} Years',
-                    ),
-                    DetailCard(
-                      icon: Icons.transgender,
-                      title: 'Gender',
-                      value:
-                          pet.gender[0].toUpperCase() + pet.gender.substring(1),
-                    ),
-                    DetailCard(
-                      icon: Icons.monitor_weight,
-                      title: 'Weight',
-                      value: '${pet.weight} kg',
-                    ),
-                    if (pet.healthCondition != null &&
-                        pet.healthCondition!.isNotEmpty)
-                      DetailCard(
-                        icon: Icons.medical_services,
-                        title: 'Medical Conditions',
-                        value: pet.healthCondition!,
-                      ),
+                        // Pet Details
+                        DetailCard(
+                          icon: Icons.person,
+                          title: 'Name',
+                          value: pet.name,
+                        ),
+                        DetailCard(
+                          icon: Icons.pets,
+                          title: 'Category',
+                          value: pet.categoryName.toString(),
+                        ),
+                        DetailCard(
+                          icon: Icons.pets,
+                          title: 'Sub-Category',
+                          value: pet.subCategoryName.toString(),
+                        ),
+                        DetailCard(
+                          icon: Icons.cake,
+                          title: 'Age',
+                          value:
+                              '${AppHelpers.formatDate(pet.birthDate).toStringAsFixed(1)} Years',
+                        ),
+                        DetailCard(
+                          icon: Icons.transgender,
+                          title: 'Gender',
+                          value:
+                              pet.gender[0].toUpperCase() +
+                              pet.gender.substring(1),
+                        ),
+                        DetailCard(
+                          icon: Icons.monitor_weight,
+                          title: 'Weight',
+                          value: '${pet.weight} kg',
+                        ),
+                        if (pet.healthCondition != null &&
+                            pet.healthCondition!.isNotEmpty)
+                          DetailCard(
+                            icon: Icons.medical_services,
+                            title: 'Medical Conditions',
+                            value: pet.healthCondition!,
+                          ),
 
-                    SizedBox(height: verticalSpacing),
-                  ],
-                ),
-              );
-          }
+                        SizedBox(height: verticalSpacing),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          };
         },
       ),
     );

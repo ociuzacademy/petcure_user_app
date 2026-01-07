@@ -118,544 +118,555 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         ],
         child: BlocBuilder<OrderDetailsCubit, OrderDetailsState>(
           builder: (context, state) {
-            switch (state) {
-              case OrderDetailsLoading _:
-                return const CustomLoadingWidget(
-                  message: 'Loading order details',
-                );
-              case OrderDetailsError(:final errorMessage):
-                return CustomErrorWidget(
-                  onRetry: _orderDetailsHelper.orderDetailsInit,
-                  errorMessage: errorMessage,
-                );
-              case OrderDetailsSuccess(:final orderDetails):
-                final UserOrderDeliveryStatus status = orderDetails.status;
-                final isOnTheWay =
-                    status == UserOrderDeliveryStatus.orderOnTheWay;
-                return SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Order summary card
-                      Card(
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Order ID and status
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+            return switch (state) {
+              OrderDetailsInitial() => const SizedBox.shrink(),
+              OrderDetailsLoading() => const CustomLoadingWidget(
+                message: 'Loading order details',
+              ),
+              OrderDetailsError(:final errorMessage) => CustomErrorWidget(
+                onRetry: _orderDetailsHelper.orderDetailsInit,
+                errorMessage: errorMessage,
+              ),
+              OrderDetailsSuccess(:final orderDetails) => Builder(
+                builder: (context) {
+                  final UserOrderDeliveryStatus status = orderDetails.status;
+                  final isOnTheWay =
+                      status == UserOrderDeliveryStatus.orderOnTheWay;
+                  return SafeArea(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Order summary card
+                          Card(
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                    child: Text(
-                                      '#//${orderDetails.id}',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  Chip(
-                                    label: Text(
-                                      OrderDetailsHelper.getStatusText(status),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    backgroundColor:
-                                        OrderDetailsHelper.getStatusColor(
-                                          status,
+                                  // Order ID and status
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          '#//${orderDetails.id}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
+                                      ),
+                                      Chip(
+                                        label: Text(
+                                          OrderDetailsHelper.getStatusText(
+                                            status,
+                                          ),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        backgroundColor:
+                                            OrderDetailsHelper.getStatusColor(
+                                              status,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 12),
+
+                                  if (status !=
+                                      UserOrderDeliveryStatus.orderCancelled)
+                                    SizedBox(
+                                      child: Column(
+                                        children: [
+                                          // Order date and status indicator
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                OrderDetailsHelper.getStatusIcon(
+                                                  status,
+                                                ),
+                                                size: 16,
+                                                color:
+                                                    OrderDetailsHelper.getStatusColor(
+                                                      status,
+                                                    ),
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                OrderDetailsHelper.formatDate(
+                                                  orderDetails.orderDate,
+                                                ),
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 8),
+                                          // Estimated Delivery Date
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.local_shipping,
+                                                size: 16,
+                                                color: Colors.green,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Expanded(
+                                                child: Text(
+                                                  status ==
+                                                          UserOrderDeliveryStatus
+                                                              .orderDelivered
+                                                      ? 'Delivered on: ${OrderDetailsHelper.formatDeliveryDate(orderDetails.estimatedDeliveryDate)}'
+                                                      : 'Est. Delivery: ${OrderDetailsHelper.formatDeliveryDate(orderDetails.estimatedDeliveryDate)}',
+                                                  style: const TextStyle(
+                                                    color: Colors.green,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 12),
+                                        ],
+                                      ),
+                                    ),
+
+                                  // Number of items
+                                  Text(
+                                    '${orderDetails.items.length} item${orderDetails.items.length != 1 ? 's' : ''}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 12),
+                            ),
+                          ),
 
-                              if (status !=
-                                  UserOrderDeliveryStatus.orderCancelled)
-                                SizedBox(
-                                  child: Column(
-                                    children: [
-                                      // Order date and status indicator
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            OrderDetailsHelper.getStatusIcon(
-                                              status,
-                                            ),
-                                            size: 16,
-                                            color:
+                          const SizedBox(height: 20),
+
+                          // Delivery Progress (for non-delivered orders)
+                          if (status != UserOrderDeliveryStatus.orderDelivered)
+                            Column(
+                              children: [
+                                Card(
+                                  elevation: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Delivery Progress',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 12),
+                                        LinearProgressIndicator(
+                                          value:
+                                              OrderDetailsHelper.getDeliveryProgress(
+                                                status,
+                                              ),
+                                          backgroundColor: Colors.grey[300],
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
                                                 OrderDetailsHelper.getStatusColor(
                                                   status,
                                                 ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            OrderDetailsHelper.formatDate(
-                                              orderDetails.orderDate,
-                                            ),
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 8),
-                                      // Estimated Delivery Date
-                                      Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.local_shipping,
-                                            size: 16,
-                                            color: Colors.green,
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: Text(
-                                              status ==
-                                                      UserOrderDeliveryStatus
-                                                          .orderDelivered
-                                                  ? 'Delivered on: ${OrderDetailsHelper.formatDeliveryDate(orderDetails.estimatedDeliveryDate)}'
-                                                  : 'Est. Delivery: ${OrderDetailsHelper.formatDeliveryDate(orderDetails.estimatedDeliveryDate)}',
-                                              style: const TextStyle(
-                                                color: Colors.green,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
                                               ),
-                                            ),
+                                          minHeight: 8,
+                                          borderRadius: BorderRadius.circular(
+                                            4,
                                           ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 12),
-                                    ],
+                                        ),
+                                        const SizedBox(height: 12),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            ProgressStep(
+                                              status: status,
+                                              label: 'Ordered',
+                                              step: 1,
+                                              getStatusColor: OrderDetailsHelper
+                                                  .getStatusColor,
+                                            ),
+                                            ProgressStep(
+                                              status: status,
+                                              label: 'Shipped',
+                                              step: 2,
+                                              getStatusColor: OrderDetailsHelper
+                                                  .getStatusColor,
+                                            ),
+                                            ProgressStep(
+                                              status: status,
+                                              label: 'Delivered',
+                                              step: 3,
+                                              getStatusColor: OrderDetailsHelper
+                                                  .getStatusColor,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
+                                const SizedBox(height: 20),
+                              ],
+                            ),
 
-                              // Number of items
-                              Text(
-                                '${orderDetails.items.length} item${orderDetails.items.length != 1 ? 's' : ''}',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
+                          // Products list header
+                          const Text(
+                            'Order Items',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
-                        ),
-                      ),
 
-                      const SizedBox(height: 20),
+                          const SizedBox(height: 12),
 
-                      // Delivery Progress (for non-delivered orders)
-                      if (status != UserOrderDeliveryStatus.orderDelivered)
-                        Column(
-                          children: [
-                            Card(
-                              elevation: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Column(
+                          // Products list with delivery dates
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: orderDetails.items.length,
+                            separatorBuilder: (context, index) =>
+                                const Divider(height: 1),
+                            itemBuilder: (context, index) {
+                              final item = orderDetails.items[index];
+                              return ListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                ),
+                                leading: Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Colors.grey[200],
+                                  ),
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        '${AppUrls.baseUrl}${item.product.images[0].image}',
+                                    height: 100,
+                                    width: 100,
+                                    fit: BoxFit.cover,
+                                    progressIndicatorBuilder:
+                                        (context, url, progress) =>
+                                            CircularProgressIndicator(
+                                              value: progress.progress,
+                                              valueColor:
+                                                  const AlwaysStoppedAnimation<
+                                                    Color
+                                                  >(AppPalette.firstColor),
+                                            ),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
+                                ),
+                                title: Text(
+                                  item.product.name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'Delivery Progress',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 12),
-                                    LinearProgressIndicator(
-                                      value:
-                                          OrderDetailsHelper.getDeliveryProgress(
-                                            status,
-                                          ),
-                                      backgroundColor: Colors.grey[300],
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        OrderDetailsHelper.getStatusColor(
-                                          status,
-                                        ),
-                                      ),
-                                      minHeight: 8,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    const SizedBox(height: 12),
+                                    Text('Qty: ${item.quantity}'),
+                                    const SizedBox(height: 4),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        ProgressStep(
-                                          status: status,
-                                          label: 'Ordered',
-                                          step: 1,
-                                          getStatusColor:
-                                              OrderDetailsHelper.getStatusColor,
+                                        Icon(
+                                          Icons.local_shipping,
+                                          size: 12,
+                                          color: Colors.green[600],
                                         ),
-                                        ProgressStep(
-                                          status: status,
-                                          label: 'Shipped',
-                                          step: 2,
-                                          getStatusColor:
-                                              OrderDetailsHelper.getStatusColor,
-                                        ),
-                                        ProgressStep(
-                                          status: status,
-                                          label: 'Delivered',
-                                          step: 3,
-                                          getStatusColor:
-                                              OrderDetailsHelper.getStatusColor,
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          'Delivery: ${OrderDetailsHelper.formatDeliveryDate(orderDetails.estimatedDeliveryDate)}',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.green[600],
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                          ],
-                        ),
-
-                      // Products list header
-                      const Text(
-                        'Order Items',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      // Products list with delivery dates
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: orderDetails.items.length,
-                        separatorBuilder: (context, index) =>
-                            const Divider(height: 1),
-                        itemBuilder: (context, index) {
-                          final item = orderDetails.items[index];
-                          return ListTile(
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 8,
-                            ),
-                            leading: Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: Colors.grey[200],
-                              ),
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    '${AppUrls.baseUrl}${item.product.images[0].image}',
-                                height: 100,
-                                width: 100,
-                                fit: BoxFit.cover,
-                                progressIndicatorBuilder:
-                                    (
-                                      context,
-                                      url,
-                                      progress,
-                                    ) => CircularProgressIndicator(
-                                      value: progress.progress,
-                                      valueColor:
-                                          const AlwaysStoppedAnimation<Color>(
-                                            AppPalette.firstColor,
-                                          ),
-                                    ),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                              ),
-                            ),
-                            title: Text(
-                              item.product.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Qty: ${item.quantity}'),
-                                const SizedBox(height: 4),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.local_shipping,
-                                      size: 12,
-                                      color: Colors.green[600],
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      'Delivery: ${OrderDetailsHelper.formatDeliveryDate(orderDetails.estimatedDeliveryDate)}',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.green[600],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            trailing: Text(
-                              '\u{20B9}${(item.totalPrice)}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // Order summary
-                      const Text(
-                        'Order Summary',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      Card(
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            children: [
-                              // Subtotal
-                              OrderDetailsSummaryRow(
-                                label: 'Subtotal',
-                                value: '\u{20B9}${orderDetails.totalAmount}',
-                              ),
-                              const SizedBox(height: 8),
-
-                              // Shipping
-                              const OrderDetailsSummaryRow(
-                                label: 'Shipping',
-                                value: '\u{20B9}0.00',
-                              ),
-                              const SizedBox(height: 8),
-
-                              // Tax
-                              OrderDetailsSummaryRow(
-                                label: 'Tax',
-                                value:
-                                    '\u{20B9}${(double.parse(orderDetails.totalAmount) * 0.08).toStringAsFixed(2)}',
-                              ),
-                              const SizedBox(height: 8),
-
-                              // Delivery Info
-                              const OrderDetailsSummaryRow(
-                                label: 'Delivery Type',
-                                value: 'Standard Delivery',
-                              ),
-                              const SizedBox(height: 12),
-
-                              // Divider
-                              const Divider(height: 1),
-                              const SizedBox(height: 12),
-
-                              // Total
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Total',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
+                                trailing: Text(
+                                  '\u{20B9}${(item.totalPrice)}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
                                   ),
-                                  Text(
-                                    '\u{20B9}${(double.parse(orderDetails.totalAmount) * 1.08).toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: Colors.blue,
-                                    ),
+                                ),
+                              );
+                            },
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          // Order summary
+                          const Text(
+                            'Order Summary',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+
+                          const SizedBox(height: 12),
+
+                          Card(
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                children: [
+                                  // Subtotal
+                                  OrderDetailsSummaryRow(
+                                    label: 'Subtotal',
+                                    value:
+                                        '\u{20B9}${orderDetails.totalAmount}',
+                                  ),
+                                  const SizedBox(height: 8),
+
+                                  // Shipping
+                                  const OrderDetailsSummaryRow(
+                                    label: 'Shipping',
+                                    value: '\u{20B9}0.00',
+                                  ),
+                                  const SizedBox(height: 8),
+
+                                  // Tax
+                                  OrderDetailsSummaryRow(
+                                    label: 'Tax',
+                                    value:
+                                        '\u{20B9}${(double.parse(orderDetails.totalAmount) * 0.08).toStringAsFixed(2)}',
+                                  ),
+                                  const SizedBox(height: 8),
+
+                                  // Delivery Info
+                                  const OrderDetailsSummaryRow(
+                                    label: 'Delivery Type',
+                                    value: 'Standard Delivery',
+                                  ),
+                                  const SizedBox(height: 12),
+
+                                  // Divider
+                                  const Divider(height: 1),
+                                  const SizedBox(height: 12),
+
+                                  // Total
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Total',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        '\u{20B9}${(double.parse(orderDetails.totalAmount) * 1.08).toStringAsFixed(2)}',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // Delivery information
-                      const Text(
-                        'Delivery Information',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      Card(
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Shipping Address',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              const Text(
-                                '123 Main Street\nNew York, NY 10001\nUnited States',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              const SizedBox(height: 16),
-
-                              // Delivery Timeline
-                              const Text(
-                                'Delivery Timeline',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              TimelineItem(
-                                title: 'Order Placed',
-                                date: orderDetails.orderDate,
-                                isCompleted: true,
-                                formatDeliveryDate:
-                                    OrderDetailsHelper.formatDeliveryDate,
-                              ),
-                              TimelineItem(
-                                title: 'Estimated Delivery',
-                                date: orderDetails.estimatedDeliveryDate,
-                                isCompleted:
-                                    status ==
-                                    UserOrderDeliveryStatus.orderDelivered,
-                                formatDeliveryDate:
-                                    OrderDetailsHelper.formatDeliveryDate,
-                              ),
-                              if (status ==
-                                  UserOrderDeliveryStatus.orderDelivered)
-                                TimelineItem(
-                                  title: 'Delivered',
-                                  date: orderDetails.estimatedDeliveryDate,
-                                  isCompleted: true,
-                                  formatDeliveryDate:
-                                      OrderDetailsHelper.formatDeliveryDate,
-                                ),
-                              const SizedBox(height: 12),
-
-                              // Tracking information if shipped
-                              if (status ==
-                                      UserOrderDeliveryStatus.orderOnTheWay ||
-                                  status ==
-                                      UserOrderDeliveryStatus.orderDelivered)
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Divider(height: 1),
-                                    const SizedBox(height: 12),
-                                    const Text(
-                                      'Tracking Number',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      'TRK-${widget.orderId}',
-                                      style: const TextStyle(
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // Action buttons based on status
-                      if (status == UserOrderDeliveryStatus.orderPlaced ||
-                          status == UserOrderDeliveryStatus.pending)
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed:
-                                _orderDetailsHelper.showCancelOrderDialogueBox,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
                             ),
-                            child: const Text('Cancel Order'),
                           ),
-                        ),
 
-                      if (isOnTheWay)
-                        Column(
-                          children: [
-                            // QR Code Button
+                          const SizedBox(height: 20),
+
+                          // Delivery information
+                          const Text(
+                            'Delivery Information',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+
+                          const SizedBox(height: 12),
+
+                          Card(
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Shipping Address',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  const Text(
+                                    '123 Main Street\nNew York, NY 10001\nUnited States',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  const SizedBox(height: 16),
+
+                                  // Delivery Timeline
+                                  const Text(
+                                    'Delivery Timeline',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  TimelineItem(
+                                    title: 'Order Placed',
+                                    date: orderDetails.orderDate,
+                                    isCompleted: true,
+                                    formatDeliveryDate:
+                                        OrderDetailsHelper.formatDeliveryDate,
+                                  ),
+                                  TimelineItem(
+                                    title: 'Estimated Delivery',
+                                    date: orderDetails.estimatedDeliveryDate,
+                                    isCompleted:
+                                        status ==
+                                        UserOrderDeliveryStatus.orderDelivered,
+                                    formatDeliveryDate:
+                                        OrderDetailsHelper.formatDeliveryDate,
+                                  ),
+                                  if (status ==
+                                      UserOrderDeliveryStatus.orderDelivered)
+                                    TimelineItem(
+                                      title: 'Delivered',
+                                      date: orderDetails.estimatedDeliveryDate,
+                                      isCompleted: true,
+                                      formatDeliveryDate:
+                                          OrderDetailsHelper.formatDeliveryDate,
+                                    ),
+                                  const SizedBox(height: 12),
+
+                                  // Tracking information if shipped
+                                  if (status ==
+                                          UserOrderDeliveryStatus
+                                              .orderOnTheWay ||
+                                      status ==
+                                          UserOrderDeliveryStatus
+                                              .orderDelivered)
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Divider(height: 1),
+                                        const SizedBox(height: 12),
+                                        const Text(
+                                          'Tracking Number',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          'TRK-${widget.orderId}',
+                                          style: const TextStyle(
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          // Action buttons based on status
+                          if (status == UserOrderDeliveryStatus.orderPlaced ||
+                              status == UserOrderDeliveryStatus.pending)
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: _orderDetailsHelper
+                                    .showCancelOrderDialogueBox,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white,
+                                ),
+                                child: const Text('Cancel Order'),
+                              ),
+                            ),
+
+                          if (isOnTheWay)
+                            Column(
+                              children: [
+                                // QR Code Button
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton.icon(
+                                    onPressed: () => _orderDetailsHelper
+                                        .showQrCodeBottomSheet(orderDetails),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.blue,
+                                      foregroundColor: Colors.white,
+                                    ),
+                                    icon: const Icon(Icons.qr_code),
+                                    label: const Text(
+                                      'Show QR Code for Delivery',
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                              ],
+                            ),
+
+                          if (status == UserOrderDeliveryStatus.orderDelivered)
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
-                                onPressed: () => _orderDetailsHelper
-                                    .showQrCodeBottomSheet(orderDetails),
+                                onPressed:
+                                    _orderDetailsHelper.showReorderDialogueBox,
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
+                                  backgroundColor: AppPalette.firstColor,
                                   foregroundColor: Colors.white,
                                 ),
-                                icon: const Icon(Icons.qr_code),
-                                label: const Text('Show QR Code for Delivery'),
+                                icon: const Icon(Icons.shopping_cart),
+                                label: const Text('Reorder'),
                               ),
                             ),
-                            const SizedBox(height: 12),
-                          ],
-                        ),
 
-                      if (status == UserOrderDeliveryStatus.orderDelivered)
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton.icon(
-                            onPressed:
-                                _orderDetailsHelper.showReorderDialogueBox,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppPalette.firstColor,
-                              foregroundColor: Colors.white,
-                            ),
-                            icon: const Icon(Icons.shopping_cart),
-                            label: const Text('Reorder'),
-                          ),
-                        ),
-
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-                );
-              default:
-                return const SizedBox.shrink();
-            }
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            };
           },
         ),
       ),

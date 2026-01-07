@@ -45,24 +45,20 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
       ),
       body: BlocBuilder<AppointmentDetailsCubit, AppointmentDetailsState>(
         builder: (context, state) {
-          switch (state) {
-            case AppointmentDetailsLoading _:
-              return const CustomLoadingWidget.centered(
-                message: 'Loading appointment details...',
-              );
-            case AppointmentDetailsSuccess(:final data):
-              return AppointmentDetailsView(
-                bookingId: widget.bookingId,
-                appointmentData: data.data,
-              );
-            case AppointmentDetailsError(:final message):
-              return CustomErrorWidget(
-                onRetry: _appointmentDetailsHelper.appointmentDetailsInit,
-                errorMessage: message,
-              );
-            default:
-              return const SizedBox.shrink();
-          }
+          return switch (state) {
+            AppointmentDetailsLoading _ => const CustomLoadingWidget.centered(
+              message: 'Loading appointment details...',
+            ),
+            AppointmentDetailsSuccess(:final data) => AppointmentDetailsView(
+              bookingId: widget.bookingId,
+              appointmentData: data.data,
+            ),
+            AppointmentDetailsError(:final message) => CustomErrorWidget(
+              onRetry: _appointmentDetailsHelper.appointmentDetailsInit,
+              errorMessage: message,
+            ),
+            _ => const SizedBox.shrink(),
+          };
         },
       ),
     );

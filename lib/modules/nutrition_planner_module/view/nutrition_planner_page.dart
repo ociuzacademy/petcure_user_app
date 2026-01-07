@@ -4,9 +4,10 @@ import 'package:petcure_user_app/modules/nutrition_planner_module/bloc/nutrition
 import 'package:petcure_user_app/modules/nutrition_planner_module/classes/nutrition_planner_data.dart';
 import 'package:petcure_user_app/modules/nutrition_planner_module/enums/input_type.dart';
 import 'package:petcure_user_app/modules/nutrition_planner_module/enums/message_type.dart';
-import 'package:petcure_user_app/modules/nutrition_planner_module/models/message.dart';
 import 'package:petcure_user_app/modules/nutrition_planner_module/widgets/nutrition_message_bubble.dart';
 import 'package:petcure_user_app/modules/nutrition_planner_module/widgets/nutrition_input_field.dart';
+import 'package:petcure_user_app/modules/nutrition_planner_module/provider/nutrition_planner_provider.dart';
+import 'package:provider/provider.dart';
 
 class NutritionPlannerPage extends StatefulWidget {
   const NutritionPlannerPage({super.key});
@@ -14,27 +15,27 @@ class NutritionPlannerPage extends StatefulWidget {
   @override
   State<NutritionPlannerPage> createState() => _NutritionPlannerPageState();
 
-  static route() =>
-      MaterialPageRoute(builder: (context) => const NutritionPlannerPage());
+  static route() => MaterialPageRoute(
+    builder: (context) => ChangeNotifierProvider(
+      create: (_) => NutritionPlannerProvider(),
+      child: const NutritionPlannerPage(),
+    ),
+  );
 }
 
 class _NutritionPlannerPageState extends State<NutritionPlannerPage> {
-  final List<Message> _messages = [];
   final ScrollController _scrollController = ScrollController();
-  String? _currentBreed;
-  int? _currentAge;
-  String? _currentHealth;
-  InputType _currentInputType = InputType.breed;
 
   @override
   void initState() {
     super.initState();
     // Add welcome message
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _addBotMessage(
+      final provider = context.read<NutritionPlannerProvider>();
+      provider.addBotMessage(
         "Hello! I'm your Pet Nutrition Assistant. Let me create a personalized nutrition plan for your pet.",
       );
-      _askForBreed();
+      _askForBreed(provider);
     });
   }
 
@@ -51,96 +52,82 @@ class _NutritionPlannerPageState extends State<NutritionPlannerPage> {
   }
 
   void _addUserMessage(String text, {MessageType type = MessageType.text}) {
-    setState(() {
-      _messages.add(
-        Message(
-          text: text,
-          isUser: true,
-          timestamp: DateTime.now(),
-          type: type,
-        ),
-      );
-    });
+    context.read<NutritionPlannerProvider>().addUserMessage(text, type: type);
     _scrollToBottom();
   }
 
   void _addBotMessage(String text, {MessageType type = MessageType.text}) {
-    setState(() {
-      _messages.add(
-        Message(
-          text: text,
-          isUser: false,
-          timestamp: DateTime.now(),
-          type: type,
-        ),
-      );
-    });
+    context.read<NutritionPlannerProvider>().addBotMessage(text, type: type);
     _scrollToBottom();
   }
 
-  void _askForBreed() {
-    _addBotMessage(
+  void _askForBreed(NutritionPlannerProvider provider) {
+    provider.addBotMessage(
       "First, what is your pet's breed?\n(e.g., Golden Retriever, Persian Cat, Beagle, etc.)",
       type: MessageType.breedInput,
     );
-    _currentInputType = InputType.breed;
+    provider.setInputType(InputType.breed);
   }
 
-  void _askForAge() {
-    _addBotMessage(
+  void _askForAge(NutritionPlannerProvider provider) {
+    provider.addBotMessage(
       'Great! How old is your pet (in years)?',
       type: MessageType.ageInput,
     );
-    _currentInputType = InputType.age;
+    provider.setInputType(InputType.age);
   }
 
-  void _askForHealth() {
-    _addBotMessage(
+  void _askForHealth(NutritionPlannerProvider provider) {
+    provider.addBotMessage(
       "Finally, what is your pet's current health condition?\n(e.g., Healthy, Overweight, Underweight, Allergies, Kidney Issues, etc.)",
       type: MessageType.healthInput,
     );
-    _currentInputType = InputType.health;
+    provider.setInputType(InputType.health);
   }
 
   void _handleBreedInput(String breed) {
-    _currentBreed = breed;
+    final provider = context.read<NutritionPlannerProvider>();
+    provider.setBreed(breed);
     _addUserMessage(breed, type: MessageType.breedInput);
-    _askForAge();
+    _askForAge(provider);
   }
 
   void _handleAgeInput(String ageText) {
+    final provider = context.read<NutritionPlannerProvider>();
     final age = int.tryParse(ageText);
     if (age == null || age <= 0) {
-      _addBotMessage(
+      provider.addBotMessage(
         'Please enter a valid age (positive number in years).',
         type: MessageType.ageInput,
       );
+      _scrollToBottom();
       return;
     }
-    _currentAge = age;
+    provider.setAge(age);
     _addUserMessage('$age years', type: MessageType.ageInput);
-    _askForHealth();
+    _askForHealth(provider);
   }
 
   void _handleHealthInput(String health) {
-    _currentHealth = health;
+    final provider = context.read<NutritionPlannerProvider>();
+    provider.setHealth(health);
     _addUserMessage(health, type: MessageType.healthInput);
-    _getRecommendation();
+    _getRecommendation(provider);
   }
 
-  void _getRecommendation() {
-    if (_currentBreed == null ||
-        _currentAge == null ||
-        _currentHealth == null) {
+  void _getRecommendation(NutritionPlannerProvider provider) {
+    if (provider.currentBreed == null ||
+        provider.currentAge == null ||
+        provider.currentHealth == null) {
       return;
     }
 
     _addBotMessage('Generating personalized nutrition plan...');
 
     final nutritionData = NutritionPlannerData(
-      breed: _currentBreed!,
-      age: _currentAge!,
-      health: _currentHealth!,
+      breed: provider.currentBreed!,
+      age: provider.currentAge!,
+      health: provider.currentHealth!,
     );
 
     context.read<NutritionPlanBloc>().add(
@@ -152,30 +139,28 @@ class _NutritionPlannerPageState extends State<NutritionPlannerPage> {
 
   void _handleNewRecommendation(String recommendation) {
     _addBotMessage(recommendation, type: MessageType.recommendation);
-    _currentInputType = InputType.none;
+    context.read<NutritionPlannerProvider>().setInputType(InputType.none);
   }
 
   void _handleError(String message) {
-    _addBotMessage(
+    final provider = context.read<NutritionPlannerProvider>();
+    provider.addBotMessage(
       "I encountered an error: $message\nLet's try again. What is your pet's breed?",
       type: MessageType.breedInput,
     );
-    _currentInputType = InputType.breed;
+    provider.setInputType(InputType.breed);
+    _scrollToBottom();
   }
 
   void _resetConversation() {
-    setState(() {
-      _messages.clear();
-      _currentBreed = null;
-      _currentAge = null;
-      _currentHealth = null;
-      _currentInputType = InputType.breed;
-    });
+    final provider = context.read<NutritionPlannerProvider>();
+    provider.resetConversation();
 
-    _addBotMessage(
+    provider.addBotMessage(
       "Hello! I'm your Pet Nutrition Assistant. Let me create a personalized nutrition plan for your pet.",
     );
-    _askForBreed();
+    _askForBreed(provider);
+    _scrollToBottom();
   }
 
   Widget _buildInputArea() {
@@ -183,13 +168,17 @@ class _NutritionPlannerPageState extends State<NutritionPlannerPage> {
       builder: (context, state) {
         final isLoading = state is NutritionPlanLoading;
 
-        return NutritionInputField(
-          currentInputType: _currentInputType,
-          isLoading: isLoading,
-          onBreedSubmit: _handleBreedInput,
-          onAgeSubmit: _handleAgeInput,
-          onHealthSubmit: _handleHealthInput, // Fixed: was _handleHealthSubmit
-          onReset: _resetConversation,
+        return Consumer<NutritionPlannerProvider>(
+          builder: (context, provider, _) {
+            return NutritionInputField(
+              currentInputType: provider.currentInputType,
+              isLoading: isLoading,
+              onBreedSubmit: _handleBreedInput,
+              onAgeSubmit: _handleAgeInput,
+              onHealthSubmit: _handleHealthInput,
+              onReset: _resetConversation,
+            );
+          },
         );
       },
     );
@@ -253,11 +242,14 @@ class _NutritionPlannerPageState extends State<NutritionPlannerPage> {
   Widget build(BuildContext context) {
     return BlocListener<NutritionPlanBloc, NutritionPlanState>(
       listener: (context, state) {
-        state.whenOrNull(
-          success: (response) =>
-              _handleNewRecommendation(response.recommendation),
-          error: (message) => _handleError(message),
-        );
+        switch (state) {
+          case NutritionPlanSuccess(response: final response):
+            _handleNewRecommendation(response.recommendation);
+          case NutritionPlanError(message: final message):
+            _handleError(message);
+          default:
+            break;
+        }
       },
       child: Scaffold(
         appBar: AppBar(
@@ -271,25 +263,32 @@ class _NutritionPlannerPageState extends State<NutritionPlannerPage> {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: _messages.isEmpty
-                  ? _buildEmptyState()
-                  : ListView.builder(
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: Consumer<NutritionPlannerProvider>(
+                  builder: (context, provider, _) {
+                    if (provider.messages.isEmpty) {
+                      return _buildEmptyState();
+                    }
+                    return ListView.builder(
                       controller: _scrollController,
                       padding: const EdgeInsets.only(bottom: 16),
-                      itemCount: _messages.length,
+                      itemCount: provider.messages.length,
                       itemBuilder: (context, index) {
                         return NutritionMessageBubble(
-                          message: _messages[index],
+                          message: provider.messages[index],
                           showAvatar: true,
                         );
                       },
-                    ),
-            ),
-            _buildInputArea(),
-          ],
+                    );
+                  },
+                ),
+              ),
+              _buildInputArea(),
+            ],
+          ),
         ),
       ),
     );

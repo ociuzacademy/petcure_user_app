@@ -79,253 +79,255 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                 break;
             }
           },
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenSize.width * 0.04,
-              vertical: 16.0,
-            ),
-            child: SingleChildScrollView(
-              child: Consumer<AppointmentBookingProvider>(
-                builder: (context, provider, child) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: 'Pet Name: ',
-                          style: TextStyle(
-                            fontSize: screenSize.width * 0.045,
-                            color: AppPalette.blackColor,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: widget.pet.name,
-                              style: TextStyle(
-                                fontSize: screenSize.width * 0.045,
-                                color: AppPalette.blackColor,
-                                fontWeight: FontWeight.bold,
-                              ),
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: screenSize.width * 0.04,
+                vertical: 16.0,
+              ),
+              child: SingleChildScrollView(
+                child: Consumer<AppointmentBookingProvider>(
+                  builder: (context, provider, child) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: 'Pet Name: ',
+                            style: TextStyle(
+                              fontSize: screenSize.width * 0.045,
+                              color: AppPalette.blackColor,
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: screenSize.height * 0.015),
-                      RichText(
-                        text: TextSpan(
-                          text: 'Category: ',
-                          style: TextStyle(
-                            fontSize: screenSize.width * 0.045,
-                            color: AppPalette.blackColor,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: widget.pet.categoryName,
-                              style: TextStyle(
-                                fontSize: screenSize.width * 0.045,
-                                color: AppPalette.blackColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: ', Sub Category: ',
-                              style: TextStyle(
-                                fontSize: screenSize.width * 0.045,
-                                color: AppPalette.blackColor,
-                              ),
-                            ),
-                            TextSpan(
-                              text: widget.pet.subCategoryName,
-                              style: TextStyle(
-                                fontSize: screenSize.width * 0.045,
-                                color: AppPalette.blackColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: screenSize.height * 0.015),
-                      Text(
-                        'Select Booking Option:',
-                        style: TextStyle(
-                          fontSize: screenSize.width * 0.045,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: screenSize.height * 0.015),
-                      SizedBox(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            RadioListTile<BookingOption>(
-                              title: Text(
-                                'Clinical Appointment',
-                                style: TextStyle(
-                                  fontSize: screenSize.width * 0.04,
-                                ),
-                              ),
-                              value: BookingOption.clinicalAppointment,
-                              groupValue: provider.selectedBookingOption,
-                              onChanged: (BookingOption? value) {
-                                if (value != null) {
-                                  provider.selectBookingOption(value);
-                                }
-                              },
-                            ),
-                            RadioListTile<BookingOption>(
-                              title: Text(
-                                'Audio Call',
-                                style: TextStyle(
-                                  fontSize: screenSize.width * 0.04,
-                                ),
-                              ),
-                              value: BookingOption.audioCall,
-                              groupValue: provider.selectedBookingOption,
-                              onChanged: (BookingOption? value) {
-                                if (value != null) {
-                                  provider.selectBookingOption(value);
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: screenSize.height * 0.02),
-
-                      // Date, Reason, and Slot Selection (Now common for both)
-                      Text(
-                        'Select Date:',
-                        style: TextStyle(
-                          fontSize: screenSize.width * 0.045,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: screenSize.height * 0.015),
-                      SelectDateWidget(
-                        value: provider.selectedDate,
-                        onValueChange: (date) {
-                          provider.selectDate(date);
-                          AppointmentBookingHelper.getSlots(
-                            context,
-                            widget.doctor.id,
-                            date,
-                          );
-                        },
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime.now().add(const Duration(days: 7)),
-                      ),
-                      SizedBox(height: screenSize.height * 0.02),
-                      if (provider.selectedBookingOption !=
-                          BookingOption.audioCall)
-                        SizedBox(
-                          child: Column(
                             children: [
-                              Text(
-                                'Select Reason:',
+                              TextSpan(
+                                text: widget.pet.name,
                                 style: TextStyle(
                                   fontSize: screenSize.width * 0.045,
+                                  color: AppPalette.blackColor,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(height: screenSize.height * 0.015),
-                              ReasonDropdown(
-                                reasons: BookingReason.values,
-                                selectedReason: provider.selectedReason,
-                                onSelectingReason: (value) {
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: screenSize.height * 0.015),
+                        RichText(
+                          text: TextSpan(
+                            text: 'Category: ',
+                            style: TextStyle(
+                              fontSize: screenSize.width * 0.045,
+                              color: AppPalette.blackColor,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: widget.pet.categoryName,
+                                style: TextStyle(
+                                  fontSize: screenSize.width * 0.045,
+                                  color: AppPalette.blackColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: ', Sub Category: ',
+                                style: TextStyle(
+                                  fontSize: screenSize.width * 0.045,
+                                  color: AppPalette.blackColor,
+                                ),
+                              ),
+                              TextSpan(
+                                text: widget.pet.subCategoryName,
+                                style: TextStyle(
+                                  fontSize: screenSize.width * 0.045,
+                                  color: AppPalette.blackColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: screenSize.height * 0.015),
+                        Text(
+                          'Select Booking Option:',
+                          style: TextStyle(
+                            fontSize: screenSize.width * 0.045,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: screenSize.height * 0.015),
+                        SizedBox(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              RadioListTile<BookingOption>(
+                                title: Text(
+                                  'Clinical Appointment',
+                                  style: TextStyle(
+                                    fontSize: screenSize.width * 0.04,
+                                  ),
+                                ),
+                                value: BookingOption.clinicalAppointment,
+                                groupValue: provider.selectedBookingOption,
+                                onChanged: (BookingOption? value) {
                                   if (value != null) {
-                                    provider.selectReason(value);
+                                    provider.selectBookingOption(value);
+                                  }
+                                },
+                              ),
+                              RadioListTile<BookingOption>(
+                                title: Text(
+                                  'Audio Call',
+                                  style: TextStyle(
+                                    fontSize: screenSize.width * 0.04,
+                                  ),
+                                ),
+                                value: BookingOption.audioCall,
+                                groupValue: provider.selectedBookingOption,
+                                onChanged: (BookingOption? value) {
+                                  if (value != null) {
+                                    provider.selectBookingOption(value);
                                   }
                                 },
                               ),
                             ],
                           ),
                         ),
-                      SizedBox(height: screenSize.height * 0.02),
-                      Text(
-                        'Select Time Slot:',
-                        style: TextStyle(
-                          fontSize: screenSize.width * 0.045,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: screenSize.height * 0.015),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxHeight:
-                              screenSize.height * 0.4, // Limit the height
-                        ),
-                        child: BlocBuilder<SlotsCubit, SlotsState>(
-                          builder: (context, state) {
-                            switch (state) {
-                              case SlotsLoading _:
-                                return const CustomLoadingWidget(
-                                  message: 'Loading Slots',
-                                );
-                              case SlotsError(:final message):
-                                return CustomErrorWidget(
-                                  onRetry: () {
-                                    AppointmentBookingHelper.getSlots(
-                                      context,
-                                      widget.doctor.id,
-                                      provider.selectedDate!,
-                                    );
-                                  },
-                                  errorMessage: message,
-                                );
-                              case SlotsSuccess(:final slots):
-                                return SlotsGrid(
-                                  doctor: widget.doctor,
-                                  slots: slots.slots,
-                                  selectedSlot: provider.selectedTimeSlot,
-                                );
-                              default:
-                                return const SizedBox();
-                            }
-                          },
-                        ),
-                      ),
-                      SizedBox(height: screenSize.height * 0.02),
+                        SizedBox(height: screenSize.height * 0.02),
 
-                      // Symptoms Field (common to both booking options)
-                      Text(
-                        'Enter Symptoms:',
-                        style: TextStyle(
-                          fontSize: screenSize.width * 0.045,
-                          fontWeight: FontWeight.bold,
+                        // Date, Reason, and Slot Selection (Now common for both)
+                        Text(
+                          'Select Date:',
+                          style: TextStyle(
+                            fontSize: screenSize.width * 0.045,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: screenSize.height * 0.015),
-                      NormalTextField(
-                        textEditingController: provider.symptomsController,
-                        validatorFunction: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please add symptoms';
-                          }
-                          return null;
-                        },
-                        labelText: 'Symptoms',
-                        hintText: 'Enter symptoms',
-                        isMultiline: true,
-                      ),
-                      SizedBox(height: screenSize.height * 0.03),
-
-                      // Confirm Booking Button
-                      CustomButton(
-                        buttonWidth: double.infinity,
-                        backgroundColor: AppPalette.firstColor,
-                        textColor: AppPalette.whiteColor,
-                        labelText: 'Confirm Booking',
-                        onClick: () =>
-                            AppointmentBookingHelper.showBookAppointmentDialogueBox(
+                        SizedBox(height: screenSize.height * 0.015),
+                        SelectDateWidget(
+                          value: provider.selectedDate,
+                          onValueChange: (date) {
+                            provider.selectDate(date);
+                            AppointmentBookingHelper.getSlots(
                               context,
-                              provider,
+                              widget.doctor.id,
+                              date,
+                            );
+                          },
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime.now().add(const Duration(days: 7)),
+                        ),
+                        SizedBox(height: screenSize.height * 0.02),
+                        if (provider.selectedBookingOption !=
+                            BookingOption.audioCall)
+                          SizedBox(
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Select Reason:',
+                                  style: TextStyle(
+                                    fontSize: screenSize.width * 0.045,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: screenSize.height * 0.015),
+                                ReasonDropdown(
+                                  reasons: BookingReason.values,
+                                  selectedReason: provider.selectedReason,
+                                  onSelectingReason: (value) {
+                                    if (value != null) {
+                                      provider.selectReason(value);
+                                    }
+                                  },
+                                ),
+                              ],
                             ),
-                      ),
-                      SizedBox(height: screenSize.height * 0.02),
-                    ],
-                  );
-                },
+                          ),
+                        SizedBox(height: screenSize.height * 0.02),
+                        Text(
+                          'Select Time Slot:',
+                          style: TextStyle(
+                            fontSize: screenSize.width * 0.045,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: screenSize.height * 0.015),
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight:
+                                screenSize.height * 0.4, // Limit the height
+                          ),
+                          child: BlocBuilder<SlotsCubit, SlotsState>(
+                            builder: (context, state) {
+                              switch (state) {
+                                case SlotsLoading _:
+                                  return const CustomLoadingWidget(
+                                    message: 'Loading Slots',
+                                  );
+                                case SlotsError(:final message):
+                                  return CustomErrorWidget(
+                                    onRetry: () {
+                                      AppointmentBookingHelper.getSlots(
+                                        context,
+                                        widget.doctor.id,
+                                        provider.selectedDate!,
+                                      );
+                                    },
+                                    errorMessage: message,
+                                  );
+                                case SlotsSuccess(:final slots):
+                                  return SlotsGrid(
+                                    doctor: widget.doctor,
+                                    slots: slots.slots,
+                                    selectedSlot: provider.selectedTimeSlot,
+                                  );
+                                default:
+                                  return const SizedBox();
+                              }
+                            },
+                          ),
+                        ),
+                        SizedBox(height: screenSize.height * 0.02),
+
+                        // Symptoms Field (common to both booking options)
+                        Text(
+                          'Enter Symptoms:',
+                          style: TextStyle(
+                            fontSize: screenSize.width * 0.045,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: screenSize.height * 0.015),
+                        NormalTextField(
+                          textEditingController: provider.symptomsController,
+                          validatorFunction: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please add symptoms';
+                            }
+                            return null;
+                          },
+                          labelText: 'Symptoms',
+                          hintText: 'Enter symptoms',
+                          isMultiline: true,
+                        ),
+                        SizedBox(height: screenSize.height * 0.03),
+
+                        // Confirm Booking Button
+                        CustomButton(
+                          buttonWidth: double.infinity,
+                          backgroundColor: AppPalette.firstColor,
+                          textColor: AppPalette.whiteColor,
+                          labelText: 'Confirm Booking',
+                          onClick: () =>
+                              AppointmentBookingHelper.showBookAppointmentDialogueBox(
+                                context,
+                                provider,
+                              ),
+                        ),
+                        SizedBox(height: screenSize.height * 0.02),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),

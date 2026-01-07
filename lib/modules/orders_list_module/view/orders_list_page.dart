@@ -38,16 +38,14 @@ class _OrdersListPageState extends State<OrdersListPage> {
       ),
       body: BlocBuilder<OrdersListCubit, OrdersListState>(
         builder: (context, state) {
-          switch (state) {
-            case OrdersListLoading _:
-              return const ListItemLoadingWidget(itemCount: 5);
-            case OrdersListError(:final errorMessage):
-              return CustomErrorWidget(
-                onRetry: _orderListHelper.orderListInit,
-                errorMessage: errorMessage,
-              );
-            case OrdersListSuccess(:final orders):
-              return ListView.builder(
+          return switch (state) {
+            OrdersListLoading() => const ListItemLoadingWidget(itemCount: 5),
+            OrdersListError(:final errorMessage) => CustomErrorWidget(
+              onRetry: _orderListHelper.orderListInit,
+              errorMessage: errorMessage,
+            ),
+            OrdersListSuccess(:final orders) => SafeArea(
+              child: ListView.builder(
                 padding: const EdgeInsets.all(16),
                 itemCount: orders.length,
                 itemBuilder: (context, index) {
@@ -63,10 +61,10 @@ class _OrdersListPageState extends State<OrdersListPage> {
                     getProductNames: OrderListHelper.getProductNames,
                   );
                 },
-              );
-            default:
-              return const SizedBox.shrink();
-          }
+              ),
+            ),
+            _ => const SizedBox.shrink(),
+          };
         },
       ),
     );

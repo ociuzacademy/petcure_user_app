@@ -5,6 +5,7 @@ import 'package:petcure_user_app/modules/chat_module/model/chat_response_model.d
 import 'package:petcure_user_app/modules/chat_module/model/message.dart';
 import 'package:petcure_user_app/modules/chat_module/widgets/chat_bubble.dart';
 import 'package:petcure_user_app/modules/chat_module/widgets/chat_input.dart';
+import 'package:petcure_user_app/modules/chat_module/widgets/emplty_chat_page.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -18,11 +19,12 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  final List<Message> _messages = [];
+  late final ValueNotifier<List<Message>> _messagesNotifier;
 
   @override
   void initState() {
     super.initState();
+    _messagesNotifier = ValueNotifier<List<Message>>([]);
     context.read<ChatBloc>().add(const ChatEvent.started());
   }
 
@@ -43,11 +45,10 @@ class _ChatPageState extends State<ChatPage> {
     if (text.isEmpty) return;
 
     // Add user message optimistically
-    setState(() {
-      _messages.add(
-        Message(text: text, isUser: true, timestamp: DateTime.now()),
-      );
-    });
+    _messagesNotifier.value = [
+      ..._messagesNotifier.value,
+      Message(text: text, isUser: true, timestamp: DateTime.now()),
+    ];
 
     _textController.clear();
     _scrollToBottom();
@@ -57,55 +58,16 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleNewResponse(ChatResponseModel response) {
-    setState(() {
-      _messages.add(
-        Message(text: response.reply, isUser: false, timestamp: DateTime.now()),
-      );
-    });
+    _messagesNotifier.value = [
+      ..._messagesNotifier.value,
+      Message(text: response.reply, isUser: false, timestamp: DateTime.now()),
+    ];
     _scrollToBottom();
   }
 
   void _handleError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), backgroundColor: Colors.red),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              color: Colors.blue[50],
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.smart_toy, size: 40, color: Colors.blue),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'AI Assistant',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            'Ask me anything! I\'m here to help.',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton.icon(
-            onPressed: () {
-              _textController.text = 'Hello! How can you help me?';
-              _sendMessage();
-            },
-            icon: const Icon(Icons.message),
-            label: const Text('Start Conversation'),
-          ),
-        ],
-      ),
     );
   }
 
@@ -126,31 +88,44 @@ class _ChatPageState extends State<ChatPage> {
             IconButton(icon: const Icon(Icons.more_vert), onPressed: () {}),
           ],
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: _messages.isEmpty
-                  ? _buildEmptyState()
-                  : ListView.builder(
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: ValueListenableBuilder<List<Message>>(
+                  valueListenable: _messagesNotifier,
+                  builder: (context, messages, _) {
+                    if (messages.isEmpty) {
+                      return EmpltyChatPage(
+                        onSendMessage: () {
+                          _textController.text = 'Hello! How can you help me?';
+                          _sendMessage();
+                        },
+                      );
+                    }
+                    return ListView.builder(
                       controller: _scrollController,
                       padding: const EdgeInsets.only(bottom: 16),
-                      itemCount: _messages.length,
+                      itemCount: messages.length,
                       itemBuilder: (context, index) {
-                        return ChatBubble(message: _messages[index]);
+                        return ChatBubble(message: messages[index]);
                       },
-                    ),
-            ),
-            BlocBuilder<ChatBloc, ChatState>(
-              builder: (context, state) {
-                return ChatInput(
-                  controller: _textController,
-                  onSend: _sendMessage,
-                  isLoading: state is ChatLoading,
-                  enabled: state is! ChatLoading,
-                );
-              },
-            ),
-          ],
+                    );
+                  },
+                ),
+              ),
+              BlocBuilder<ChatBloc, ChatState>(
+                builder: (context, state) {
+                  return ChatInput(
+                    controller: _textController,
+                    onSend: _sendMessage,
+                    isLoading: state is ChatLoading,
+                    enabled: state is! ChatLoading,
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -160,6 +135,7 @@ class _ChatPageState extends State<ChatPage> {
   void dispose() {
     _textController.dispose();
     _scrollController.dispose();
+    _messagesNotifier.dispose();
     super.dispose();
   }
 }

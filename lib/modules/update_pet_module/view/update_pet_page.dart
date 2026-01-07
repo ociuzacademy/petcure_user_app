@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
+import 'package:petcure_user_app/widgets/custom_error_widget.dart';
+import 'package:petcure_user_app/widgets/loaders/custom_loading_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'package:petcure_user_app/core/cubit/pet_details/pet_details_cubit.dart';
@@ -90,249 +92,274 @@ class _UpdatePetPageState extends State<UpdatePetPage> {
               ],
               child: BlocBuilder<PetDetailsCubit, PetDetailsState>(
                 builder: (context, state) {
-                  return Form(
-                    key: provider.formKey,
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: screenSize.width * 0.05,
-                          vertical: screenSize.height * 0.05,
-                        ),
-                        child: SingleChildScrollView(
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                              maxWidth: screenSize.width * 0.85,
+                  return switch (state) {
+                    PetDetailsInitial() ||
+                    PetDetailsLoading() => const CustomLoadingWidget(
+                      message: 'Loading pet details...',
+                    ),
+                    PetDetailsError(:final errorMessage) => CustomErrorWidget(
+                      errorMessage: errorMessage,
+                      onRetry: () =>
+                          UpdatePetHelper.petDetailsInit(context, widget.petId),
+                    ),
+                    PetDetailsSuccess() => SafeArea(
+                      child: Form(
+                        key: provider.formKey,
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: screenSize.width * 0.05,
+                              vertical: screenSize.height * 0.05,
                             ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                // Pet Name Field
-                                NormalTextField(
-                                  textEditingController:
-                                      provider.petNameController,
-                                  validatorFunction: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter pet name';
-                                    }
-                                    return null;
-                                  },
-                                  labelText: "Pet's Name",
-                                  hintText: "Enter your pet's name",
-                                  focusNode: provider.petNameFocusNode,
-                                  nextFocusNode: provider.weightFocusNode,
+                            child: SingleChildScrollView(
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: screenSize.width * 0.85,
                                 ),
-                                SizedBox(height: screenSize.height * 0.025),
-
-                                // Age Fields (Years and Months)
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    // Year field
-                                    SizedBox(
-                                      width: screenSize.width * 0.3,
-                                      child: NormalTextField(
-                                        textEditingController:
-                                            provider.ageYearsController,
-                                        validatorFunction: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Years';
-                                          }
-                                          return null;
-                                        },
-                                        labelText: 'Age (Years)',
-                                        hintText: 'Years',
-                                        textInputType: TextInputType.number,
-                                        isDisabled: true,
-                                      ),
+                                    // Pet Name Field
+                                    NormalTextField(
+                                      textEditingController:
+                                          provider.petNameController,
+                                      validatorFunction: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter pet name';
+                                        }
+                                        return null;
+                                      },
+                                      labelText: "Pet's Name",
+                                      hintText: "Enter your pet's name",
+                                      focusNode: provider.petNameFocusNode,
+                                      nextFocusNode: provider.weightFocusNode,
                                     ),
-                                    // Month field
-                                    SizedBox(
-                                      width: screenSize.width * 0.3,
-                                      child: NormalTextField(
-                                        textEditingController:
-                                            provider.ageMonthsController,
-                                        validatorFunction: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Months';
-                                          }
-                                          int? months = int.tryParse(value);
-                                          if (months != null &&
-                                              (months < 0 || months > 11)) {
-                                            return '0-11 only';
-                                          }
-                                          return null;
-                                        },
-                                        labelText: 'Age (Months)',
-                                        hintText: 'Months (0-11)',
-                                        textInputType: TextInputType.number,
-                                        isDisabled: true,
-                                      ),
-                                    ),
-                                    // Calendar button
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 23.0),
-                                      child: SizedBox(
-                                        width: screenSize.width * 0.135,
-                                        height: screenSize.height * 0.06,
-                                        child: IconButton(
-                                          style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                            ),
-                                            backgroundColor:
-                                                AppPalette.firstColor,
+                                    SizedBox(height: screenSize.height * 0.025),
+
+                                    // Age Fields (Years and Months)
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // Year field
+                                        SizedBox(
+                                          width: screenSize.width * 0.3,
+                                          child: NormalTextField(
+                                            textEditingController:
+                                                provider.ageYearsController,
+                                            validatorFunction: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Years';
+                                              }
+                                              return null;
+                                            },
+                                            labelText: 'Age (Years)',
+                                            hintText: 'Years',
+                                            textInputType: TextInputType.number,
+                                            isDisabled: true,
                                           ),
-                                          icon: const Icon(
-                                            Icons.calendar_month,
-                                            color: Colors.white,
+                                        ),
+                                        // Month field
+                                        SizedBox(
+                                          width: screenSize.width * 0.3,
+                                          child: NormalTextField(
+                                            textEditingController:
+                                                provider.ageMonthsController,
+                                            validatorFunction: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Months';
+                                              }
+                                              int? months = int.tryParse(value);
+                                              if (months != null &&
+                                                  (months < 0 || months > 11)) {
+                                                return '0-11 only';
+                                              }
+                                              return null;
+                                            },
+                                            labelText: 'Age (Months)',
+                                            hintText: 'Months (0-11)',
+                                            textInputType: TextInputType.number,
+                                            isDisabled: true,
+                                          ),
+                                        ),
+                                        // Calendar button
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 23.0,
+                                          ),
+                                          child: SizedBox(
+                                            width: screenSize.width * 0.135,
+                                            height: screenSize.height * 0.06,
+                                            child: IconButton(
+                                              style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                                backgroundColor:
+                                                    AppPalette.firstColor,
+                                              ),
+                                              icon: const Icon(
+                                                Icons.calendar_month,
+                                                color: Colors.white,
+                                              ),
+                                              onPressed: () => provider
+                                                  .selectBirthDate(context),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: screenSize.height * 0.025),
+
+                                    // Gender Dropdown
+                                    GenderDropdown(
+                                      selectedGender:
+                                          provider.selectedGender ?? '',
+                                      onSelectingGender:
+                                          provider.setSelectedGender,
+                                    ),
+                                    SizedBox(height: screenSize.height * 0.025),
+
+                                    // Weight Field
+                                    NormalTextField(
+                                      textEditingController:
+                                          provider.weightController,
+                                      validatorFunction: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter weight';
+                                        }
+                                        final weight = double.tryParse(value);
+                                        if (weight == null || weight <= 0) {
+                                          return 'Please enter valid weight';
+                                        }
+                                        return null;
+                                      },
+                                      labelText: 'Weight',
+                                      hintText: 'Enter weight (in K.G.)',
+                                      textInputType: TextInputType.number,
+                                      focusNode: provider.weightFocusNode,
+                                      nextFocusNode:
+                                          provider.medicalConditionFocusNode,
+                                    ),
+                                    SizedBox(height: screenSize.height * 0.025),
+
+                                    // Health Condition Dropdown
+                                    OptionsDropdown(
+                                      havingSpecificHealthCondition: provider
+                                          .havingSpecificHealthCondition,
+                                      onSelectingOption: (newValue) {
+                                        provider
+                                            .setHavingSpecificHealthCondition(
+                                              newValue == 'Yes',
+                                            );
+
+                                        if (!provider
+                                            .havingSpecificHealthCondition) {
+                                          provider
+                                                  .medicalConditionController
+                                                  .text =
+                                              '';
+                                        }
+                                      },
+                                    ),
+                                    SizedBox(height: screenSize.height * 0.025),
+
+                                    // Medical Condition Field (Conditional Validation)
+                                    NormalTextField(
+                                      textEditingController:
+                                          provider.medicalConditionController,
+                                      validatorFunction: (value) {
+                                        if (provider
+                                                .havingSpecificHealthCondition &&
+                                            (value == null || value.isEmpty)) {
+                                          return 'Please enter medical condition';
+                                        }
+                                        return null;
+                                      },
+                                      labelText: 'Medical Condition',
+                                      hintText: 'Enter medical condition',
+                                      textFieldIcon: const Icon(
+                                        Icons.medical_services,
+                                      ),
+                                      isMultiline: true,
+                                      focusNode:
+                                          provider.medicalConditionFocusNode,
+                                      isDisabled: !provider
+                                          .havingSpecificHealthCondition,
+                                    ),
+                                    SizedBox(height: screenSize.height * 0.025),
+
+                                    // Image Picker Buttons
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        IconButton(
+                                          style: const ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                                  AppPalette.firstColor,
+                                                ),
                                           ),
                                           onPressed: () =>
-                                              provider.selectBirthDate(context),
+                                              provider.pickImageFromGallery(),
+                                          icon: const Icon(
+                                            Icons.add_photo_alternate,
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                      ),
+                                        IconButton(
+                                          style: const ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                                  AppPalette.firstColor,
+                                                ),
+                                          ),
+                                          onPressed: () =>
+                                              provider.pickImageFromCamera(),
+                                          icon: const Icon(
+                                            Icons.add_a_photo,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                    SizedBox(height: screenSize.height * 0.025),
+
+                                    // Update Button
+                                    CustomButton(
+                                      buttonWidth: double.infinity,
+                                      backgroundColor: AppPalette.firstColor,
+                                      textColor: Colors.white,
+                                      labelText: 'Update Pet',
+                                      onClick: () {
+                                        final UpdatePetDetails? petDetails =
+                                            provider.validateForm();
+                                        if (petDetails != null) {
+                                          UpdatePetHelper.updatePetDetails(
+                                            context,
+                                            widget.petId,
+                                            petDetails,
+                                          );
+                                        }
+                                      },
+                                    ),
+                                    SizedBox(height: screenSize.height * 0.025),
+
+                                    // Image Preview
+                                    PetImagePreview(provider: provider),
                                   ],
                                 ),
-                                SizedBox(height: screenSize.height * 0.025),
-
-                                // Gender Dropdown
-                                GenderDropdown(
-                                  selectedGender: provider.selectedGender ?? '',
-                                  onSelectingGender: provider.setSelectedGender,
-                                ),
-                                SizedBox(height: screenSize.height * 0.025),
-
-                                // Weight Field
-                                NormalTextField(
-                                  textEditingController:
-                                      provider.weightController,
-                                  validatorFunction: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter weight';
-                                    }
-                                    final weight = double.tryParse(value);
-                                    if (weight == null || weight <= 0) {
-                                      return 'Please enter valid weight';
-                                    }
-                                    return null;
-                                  },
-                                  labelText: 'Weight',
-                                  hintText: 'Enter weight (in K.G.)',
-                                  textInputType: TextInputType.number,
-                                  focusNode: provider.weightFocusNode,
-                                  nextFocusNode:
-                                      provider.medicalConditionFocusNode,
-                                ),
-                                SizedBox(height: screenSize.height * 0.025),
-
-                                // Health Condition Dropdown
-                                OptionsDropdown(
-                                  havingSpecificHealthCondition:
-                                      provider.havingSpecificHealthCondition,
-                                  onSelectingOption: (newValue) {
-                                    provider.setHavingSpecificHealthCondition(
-                                      newValue == 'Yes',
-                                    );
-
-                                    if (!provider
-                                        .havingSpecificHealthCondition) {
-                                      provider.medicalConditionController.text =
-                                          '';
-                                    }
-                                  },
-                                ),
-                                SizedBox(height: screenSize.height * 0.025),
-
-                                // Medical Condition Field (Conditional Validation)
-                                NormalTextField(
-                                  textEditingController:
-                                      provider.medicalConditionController,
-                                  validatorFunction: (value) {
-                                    if (provider
-                                            .havingSpecificHealthCondition &&
-                                        (value == null || value.isEmpty)) {
-                                      return 'Please enter medical condition';
-                                    }
-                                    return null;
-                                  },
-                                  labelText: 'Medical Condition',
-                                  hintText: 'Enter medical condition',
-                                  textFieldIcon: const Icon(
-                                    Icons.medical_services,
-                                  ),
-                                  isMultiline: true,
-                                  focusNode: provider.medicalConditionFocusNode,
-                                  isDisabled:
-                                      !provider.havingSpecificHealthCondition,
-                                ),
-                                SizedBox(height: screenSize.height * 0.025),
-
-                                // Image Picker Buttons
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    IconButton(
-                                      style: const ButtonStyle(
-                                        backgroundColor: WidgetStatePropertyAll(
-                                          AppPalette.firstColor,
-                                        ),
-                                      ),
-                                      onPressed: () =>
-                                          provider.pickImageFromGallery(),
-                                      icon: const Icon(
-                                        Icons.add_photo_alternate,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      style: const ButtonStyle(
-                                        backgroundColor: WidgetStatePropertyAll(
-                                          AppPalette.firstColor,
-                                        ),
-                                      ),
-                                      onPressed: () =>
-                                          provider.pickImageFromCamera(),
-                                      icon: const Icon(
-                                        Icons.add_a_photo,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: screenSize.height * 0.025),
-
-                                // Update Button
-                                CustomButton(
-                                  buttonWidth: double.infinity,
-                                  backgroundColor: AppPalette.firstColor,
-                                  textColor: Colors.white,
-                                  labelText: 'Update Pet',
-                                  onClick: () {
-                                    final UpdatePetDetails? petDetails =
-                                        provider.validateForm();
-                                    if (petDetails != null) {
-                                      UpdatePetHelper.updatePetDetails(
-                                        context,
-                                        widget.petId,
-                                        petDetails,
-                                      );
-                                    }
-                                  },
-                                ),
-                                SizedBox(height: screenSize.height * 0.025),
-
-                                // Image Preview
-                                PetImagePreview(provider: provider),
-                              ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  );
+                  };
                 },
               ),
             );

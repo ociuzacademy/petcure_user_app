@@ -93,223 +93,217 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         },
         child: BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
           builder: (context, state) {
-            switch (state) {
-              case ProductDetailsInitial _:
-              case ProductDetailsLoading _:
-                return const CustomLoadingWidget.centered(
-                  message: 'Loading product details...',
-                );
-              case ProductDetailsError(:final errorMessage):
-                return SafeArea(
-                  child: Expanded(
-                    child: Center(
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'Error loading product details: $errorMessage',
-                                style: const TextStyle(color: Colors.red),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 16),
-                              ElevatedButton(
-                                onPressed: () {
-                                  _productDetailsHelper.productDetailsInit();
-                                },
-                                child: const Text('Retry'),
-                              ),
-                            ],
-                          ),
+            return switch (state) {
+              ProductDetailsInitial _ => const SizedBox.shrink(),
+              ProductDetailsLoading _ => const CustomLoadingWidget.centered(
+                message: 'Loading product details...',
+              ),
+              ProductDetailsError(:final errorMessage) => SafeArea(
+                child: Expanded(
+                  child: Center(
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'Error loading product details: $errorMessage',
+                              style: const TextStyle(color: Colors.red),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: () {
+                                _productDetailsHelper.productDetailsInit();
+                              },
+                              child: const Text('Retry'),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                );
-              case ProductDetailsSuccess(:final product):
-                return SafeArea(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Product Image Carousel
-                        ProductImageCarousel(
-                          productId: widget.productId,
-                          pageController: _pageController,
-                          currentPage: _currentPage,
-                          images: product.images,
-                        ),
+                ),
+              ),
+              ProductDetailsSuccess(:final product) => SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Product Image Carousel
+                      ProductImageCarousel(
+                        productId: widget.productId,
+                        pageController: _pageController,
+                        currentPage: _currentPage,
+                        images: product.images,
+                      ),
 
-                        // Product Details
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Product Name
-                              Text(
-                                product.name,
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                      // Product Details
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Product Name
+                            Text(
+                              product.name,
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
                               ),
-                              const SizedBox(height: 8),
+                            ),
+                            const SizedBox(height: 8),
 
-                              // Price
-                              Text(
-                                '\u{20B9}${product.price}',
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppPalette.firstColor,
-                                ),
+                            // Price
+                            Text(
+                              '\u{20B9}${product.price}',
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: AppPalette.firstColor,
                               ),
-                              const SizedBox(height: 8),
+                            ),
+                            const SizedBox(height: 8),
 
-                              // Estimated Delivery Date
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.green[50],
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.green[100]!),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.local_shipping,
-                                      size: 16,
+                            // Estimated Delivery Date
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.green[50],
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.green[100]!),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.local_shipping,
+                                    size: 16,
+                                    color: Colors.green[700],
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    'Delivery by ${_productDetailsHelper.formattedDeliveryDate}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
                                       color: Colors.green[700],
                                     ),
-                                    const SizedBox(width: 6),
-                                    Text(
-                                      'Delivery by ${_productDetailsHelper.formattedDeliveryDate}',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.green[700],
-                                      ),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      '(in 5 days)',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.green[600],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-
-                              // Category Chips
-                              Wrap(
-                                spacing: 8,
-                                runSpacing: 8,
-                                children: [
-                                  Chip(
-                                    label: Text(
-                                      product.productcategoryName,
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                    backgroundColor: Colors.green[50],
                                   ),
-                                  Chip(
-                                    label: Text(
-                                      product.petcategoryName,
-                                      style: const TextStyle(fontSize: 14),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '(in 5 days)',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.green[600],
                                     ),
-                                    backgroundColor: Colors.orange[50],
-                                  ),
-                                  Chip(
-                                    label: Text(
-                                      product.petsubcategoryName,
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                    backgroundColor: Colors.blue[50],
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 16),
+                            ),
+                            const SizedBox(height: 16),
 
-                              // Delivery Info Section
-                              Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[50],
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.grey[300]!),
+                            // Category Chips
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: [
+                                Chip(
+                                  label: Text(
+                                    product.productcategoryName,
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                  backgroundColor: Colors.green[50],
                                 ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Row(
-                                      children: [
-                                        Icon(
-                                          Icons.info_outline,
-                                          size: 18,
+                                Chip(
+                                  label: Text(
+                                    product.petcategoryName,
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                  backgroundColor: Colors.orange[50],
+                                ),
+                                Chip(
+                                  label: Text(
+                                    product.petsubcategoryName,
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                  backgroundColor: Colors.blue[50],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+
+                            // Delivery Info Section
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[50],
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.grey[300]!),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.info_outline,
+                                        size: 18,
+                                        color: Colors.blue,
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        'Delivery Information',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
                                           color: Colors.blue,
                                         ),
-                                        SizedBox(width: 8),
-                                        Text(
-                                          'Delivery Information',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blue,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      '• This item will be delivered within  5 days\n'
-                                      '• Free delivery on all orders\n'
-                                      '• Easy returns within 7 days',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        height: 1.4,
-                                        color: Colors.grey[700],
                                       ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    '• This item will be delivered within  5 days\n'
+                                    '• Free delivery on all orders\n'
+                                    '• Easy returns within 7 days',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      height: 1.4,
+                                      color: Colors.grey[700],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 16),
+                            ),
+                            const SizedBox(height: 16),
 
-                              // Description
-                              const Text(
-                                'Description:',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            // Description
+                            const Text(
+                              'Description:',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
-                              const SizedBox(height: 8),
-                              Text(
-                                product.description,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  height: 1.5,
-                                ),
-                                textAlign: TextAlign.justify,
-                              ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              product.description,
+                              style: const TextStyle(fontSize: 16, height: 1.5),
+                              textAlign: TextAlign.justify,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                );
-            }
+                ),
+              ),
+            };
           },
         ),
       ),

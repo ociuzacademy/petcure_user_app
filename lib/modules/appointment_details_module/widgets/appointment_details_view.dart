@@ -20,45 +20,49 @@ class AppointmentDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Appointment Header Card
-          AppointmentHeaderCard(appointmentData: appointmentData),
-          const SizedBox(height: 20),
-
-          // Appointment Details
-          AppointmentDetailsSection(appointmentData: appointmentData),
-          const SizedBox(height: 20),
-
-          // Doctor Information
-          DoctorInfoCard(appointmentData: appointmentData),
-          const SizedBox(height: 20),
-
-          // Pet Information
-          PetInfoCard(appointmentData: appointmentData),
-          const SizedBox(height: 20),
-
-          // Additional Information (if available)
-          if (appointmentData.symptoms != null ||
-              appointmentData.diagnosisAndVerdict != null ||
-              appointmentData.notes != null) ...[
-            AppointmentAdditionalInfoSection(appointmentData: appointmentData),
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Appointment Header Card
+            AppointmentHeaderCard(appointmentData: appointmentData),
             const SizedBox(height: 20),
+
+            // Appointment Details
+            AppointmentDetailsSection(appointmentData: appointmentData),
+            const SizedBox(height: 20),
+
+            // Doctor Information
+            DoctorInfoCard(appointmentData: appointmentData),
+            const SizedBox(height: 20),
+
+            // Pet Information
+            PetInfoCard(appointmentData: appointmentData),
+            const SizedBox(height: 20),
+
+            // Additional Information (if available)
+            if (appointmentData.symptoms != null ||
+                appointmentData.diagnosisAndVerdict != null ||
+                appointmentData.notes != null) ...[
+              AppointmentAdditionalInfoSection(
+                appointmentData: appointmentData,
+              ),
+              const SizedBox(height: 20),
+            ],
+
+            // Feedback and Complaints Buttons (conditional)
+            FeedbackComplaintsButtons(
+              bookingId: bookingId,
+              appointmentData: appointmentData,
+            ),
+            const SizedBox(height: 20),
+
+            // Status Chip
+            AppointmentStatusChip(appointmentData: appointmentData),
           ],
-
-          // Feedback and Complaints Buttons (conditional)
-          FeedbackComplaintsButtons(
-            bookingId: bookingId,
-            appointmentData: appointmentData,
-          ),
-          const SizedBox(height: 20),
-
-          // Status Chip
-          AppointmentStatusChip(appointmentData: appointmentData),
-        ],
+        ),
       ),
     );
   }

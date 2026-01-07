@@ -42,35 +42,40 @@ class AppointmentHistoryBody extends StatelessWidget {
               },
             ),
           ],
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: CustomScrollView(
-              slivers: [
-                const SliverToBoxAdapter(
-                  child: Text(
-                    'Select Pet:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: CustomScrollView(
+                slivers: [
+                  const SliverToBoxAdapter(
+                    child: Text(
+                      'Select Pet:',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 8)),
-                const UserPetSelectionWidget(),
-                const SliverToBoxAdapter(child: SizedBox(height: 16)),
-                GetPetHistoryButton(
-                  onFetchingPetAppointmentHistory: () {
-                    AppointmentHistoryHelper.getPetHistory(context, provider);
-                  },
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 16)),
-                provider.showHistory
-                    ? const PetAppointmentHistoryHeader()
-                    : const SliverToBoxAdapter(child: SizedBox()),
-                provider.showHistory
-                    ? HistorySpacingWidget(context: context)
-                    : const SliverToBoxAdapter(child: SizedBox()),
-                provider.showHistory
-                    ? const PetAppointmentHistoryListWidget()
-                    : const SliverToBoxAdapter(child: SizedBox()),
-              ],
+                  const SliverToBoxAdapter(child: SizedBox(height: 8)),
+                  const UserPetSelectionWidget(),
+                  const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                  GetPetHistoryButton(
+                    onFetchingPetAppointmentHistory: () {
+                      AppointmentHistoryHelper.getPetHistory(context, provider);
+                    },
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                  provider.showHistory
+                      ? const PetAppointmentHistoryHeader()
+                      : const SliverToBoxAdapter(child: SizedBox()),
+                  provider.showHistory
+                      ? HistorySpacingWidget(context: context)
+                      : const SliverToBoxAdapter(child: SizedBox()),
+                  provider.showHistory
+                      ? const PetAppointmentHistoryListWidget()
+                      : const SliverToBoxAdapter(child: SizedBox()),
+                ],
+              ),
             ),
           ),
         );

@@ -94,20 +94,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ],
               child: BlocBuilder<UserProfileCubit, UserProfileState>(
                 builder: (context, state) {
-                  switch (state) {
-                    case UserProfileInitial _:
-                    case UserProfileLoading _:
-                      return const CustomLoadingWidget.centered(
-                        message: 'Loading profile...',
-                        indicatorSize: 40.0,
-                      );
-                    case UserProfileError(:final errorMessage):
-                      return CustomErrorWidget(
-                        onRetry: _editProfileHelper.userProfileDataInit,
-                        errorMessage: errorMessage,
-                      );
-                    case UserPrfoileDataSuccess _:
-                      return Form(
+                  return switch (state) {
+                    UserProfileInitial _ => const CustomLoadingWidget.centered(
+                      message: 'Loading profile...',
+                      indicatorSize: 40.0,
+                    ),
+                    UserProfileLoading _ => const CustomLoadingWidget.centered(
+                      message: 'Loading profile...',
+                      indicatorSize: 40.0,
+                    ),
+                    UserProfileError(:final errorMessage) => CustomErrorWidget(
+                      onRetry: _editProfileHelper.userProfileDataInit,
+                      errorMessage: errorMessage,
+                    ),
+                    UserPrfoileDataSuccess _ => SafeArea(
+                      child: Form(
                         key: provider.formKey,
                         child: Center(
                           child: Padding(
@@ -343,8 +344,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             ),
                           ),
                         ),
-                      );
-                  }
+                      ),
+                    ),
+                  };
                 },
               ),
             );

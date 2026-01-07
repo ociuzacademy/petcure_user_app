@@ -95,93 +95,96 @@ class _PaymentPageState extends State<PaymentPage> {
           },
           child: Consumer<PaymentProvider>(
             builder: (context, provider, child) {
-              return Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextField(
-                      controller: provider.priceController,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: '₹0',
+              return SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextField(
+                        controller: provider.priceController,
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: '₹0',
+                        ),
+                        style: TextStyle(fontSize: 70.sp),
+                        readOnly: true,
                       ),
-                      style: TextStyle(fontSize: 70.sp),
-                      readOnly: true,
-                    ),
-                    SizedBox(height: 20.h),
-                    const Spacer(),
-                    Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(16.w),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Choose Your transaction method',
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            SizedBox(height: 15.h),
-                            DropdownButtonFormField<PaymentMethod>(
-                              value: provider.selectedMethod,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 10.w,
-                                  vertical: 12.h,
+                      SizedBox(height: 20.h),
+                      const Spacer(),
+                      Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(16.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Choose Your transaction method',
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
                                 ),
                               ),
-                              items: provider.paymentMethodsForUI.map((
-                                methodData,
-                              ) {
-                                return DropdownMenuItem<PaymentMethod>(
-                                  value: methodData['method'] as PaymentMethod,
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        methodData['image'] as String,
-                                        width: 30.w,
-                                        height: 30.h,
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      Text(
-                                        methodData['name'] as String,
-                                        style: TextStyle(fontSize: 14.sp),
-                                      ),
-                                    ],
+                              SizedBox(height: 15.h),
+                              DropdownButtonFormField<PaymentMethod>(
+                                value: provider.selectedMethod,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.r),
                                   ),
-                                );
-                              }).toList(),
-                              onChanged: (PaymentMethod? newValue) {
-                                provider.setSelectedMethod(newValue);
-                              },
-                            ),
-                            SizedBox(height: 20.h),
-                            CustomButton(
-                              buttonWidth: double.infinity,
-                              backgroundColor: AppPalette.firstColor,
-                              textColor: Colors.white,
-                              labelText: 'Confirm Payment Method',
-                              onClick: () =>
-                                  _paymentHelper.makePayment(context),
-                            ),
-                          ],
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10.w,
+                                    vertical: 12.h,
+                                  ),
+                                ),
+                                items: provider.paymentMethodsForUI.map((
+                                  methodData,
+                                ) {
+                                  return DropdownMenuItem<PaymentMethod>(
+                                    value:
+                                        methodData['method'] as PaymentMethod,
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          methodData['image'] as String,
+                                          width: 30.w,
+                                          height: 30.h,
+                                        ),
+                                        SizedBox(width: 10.w),
+                                        Text(
+                                          methodData['name'] as String,
+                                          style: TextStyle(fontSize: 14.sp),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (PaymentMethod? newValue) {
+                                  provider.setSelectedMethod(newValue);
+                                },
+                              ),
+                              SizedBox(height: 20.h),
+                              CustomButton(
+                                buttonWidth: double.infinity,
+                                backgroundColor: AppPalette.firstColor,
+                                textColor: Colors.white,
+                                labelText: 'Confirm Payment Method',
+                                onClick: () =>
+                                    _paymentHelper.makePayment(context),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
