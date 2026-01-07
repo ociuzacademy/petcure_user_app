@@ -53,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: AppPalette.firstColor,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           switch (state) {
@@ -77,36 +78,91 @@ class _LoginPageState extends State<LoginPage> {
               break;
           }
         },
-        child: SafeArea(
-          child: Form(
-            key: _formKey,
-            child: Center(
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenSize.width * 0.05,
-                  vertical: screenSize.height * 0.05,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Header Section with Gradient
+              Container(
+                height: screenSize.height * 0.35,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [AppPalette.firstColor, AppPalette.darkFirstColor],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 ),
-                constraints: BoxConstraints(maxWidth: screenSize.width * 0.85),
-                child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 40),
+                    const CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.white24,
+                      backgroundImage: AssetImage('assets/icons/icon.png'),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Welcome Back',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Log in to your account',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.85),
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Form Section in a "Card"
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 32,
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 10,
+                      offset: Offset(0, -5),
+                    ),
+                  ],
+                ),
+                constraints: BoxConstraints(
+                  minHeight: screenSize.height * 0.65,
+                ),
+                child: Form(
+                  key: _formKey,
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      const SizedBox(height: 10),
                       NormalTextField(
                         textEditingController: _emailController,
                         validatorFunction: (value) {
-                          // add email validation
                           if (value == null || value.isEmpty) {
                             return 'Please enter your email';
                           }
-
                           bool emailValid = RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                           ).hasMatch(value);
                           if (!emailValid) {
                             return 'Please enter a valid email';
                           }
-
                           return null;
                         },
                         labelText: 'Email',
@@ -116,14 +172,13 @@ class _LoginPageState extends State<LoginPage> {
                         focusNode: _emailFocusNode,
                         nextFocusNode: _passwordFocusNode,
                       ),
-                      SizedBox(height: screenSize.height * 0.025),
+                      const SizedBox(height: 24),
                       NormalTextField(
                         textEditingController: _passwordController,
                         validatorFunction: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter password';
                           }
-
                           if (value.length < 3) {
                             return 'Password must be at least 3 characters';
                           }
@@ -131,12 +186,28 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         labelText: 'Password',
                         hintText: 'Enter your password',
-                        textFieldIcon: const Icon(Icons.password),
+                        textFieldIcon: const Icon(Icons.password_outlined),
                         textInputType: TextInputType.visiblePassword,
                         isPassword: true,
                         focusNode: _passwordFocusNode,
                       ),
-                      SizedBox(height: screenSize.height * 0.025),
+                      const SizedBox(height: 12),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            // Forgot password logic
+                          },
+                          child: const Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                              color: AppPalette.greyColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
                       CustomButton(
                         buttonWidth: double.infinity,
                         backgroundColor: AppPalette.firstColor,
@@ -144,28 +215,41 @@ class _LoginPageState extends State<LoginPage> {
                         labelText: 'Login',
                         onClick: _loginHelper.login,
                       ),
+                      const SizedBox(height: 32),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Don't have an account? ",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: AppPalette.black87Color,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => Navigator.pushReplacement(
+                              context,
+                              RegisterPage.route(),
+                            ),
+                            child: const Text(
+                              'Create Account',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: AppPalette.firstColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),
-      persistentFooterButtons: [
-        InkWell(
-          onTap: () => Navigator.pushReplacement(context, RegisterPage.route()),
-          child: const Text(
-            'Create Account',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: AppPalette.firstColor,
-            ),
-          ),
-        ),
-      ],
-      persistentFooterAlignment: AlignmentDirectional.center,
     );
   }
 }
