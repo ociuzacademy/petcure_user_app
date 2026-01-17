@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:petcure_user_app/core/typedefs/text_field_validator.dart';
 import 'package:petcure_user_app/core/typedefs/updating_text_field_content.dart';
@@ -18,6 +19,8 @@ class NormalTextField extends StatefulWidget {
   final FocusNode? nextFocusNode;
   final TextInputAction? textInputAction;
   final UpdatingTextFieldContent? onChange;
+  final List<TextInputFormatter>? inputFormatters;
+  final int? maxLength;
   const NormalTextField({
     super.key,
     required this.textEditingController,
@@ -33,6 +36,8 @@ class NormalTextField extends StatefulWidget {
     this.nextFocusNode,
     this.textInputAction,
     this.onChange,
+    this.inputFormatters,
+    this.maxLength,
   });
 
   @override
@@ -53,7 +58,10 @@ class _NormalTextFieldState extends State<NormalTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.labelText, style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          widget.labelText,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 4),
         TextFormField(
           controller: widget.textEditingController,
@@ -100,6 +108,9 @@ class _NormalTextFieldState extends State<NormalTextField> {
           maxLines: widget.isMultiline ? 3 : 1,
           obscureText: isObscured,
           onChanged: widget.onChange,
+          inputFormatters: widget.inputFormatters,
+          maxLength: widget.maxLength,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
       ],
     );

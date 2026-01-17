@@ -2,6 +2,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_user_app/core/enums/payment_purpose.dart';
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/payment_module/view/payment_page.dart';
@@ -82,6 +83,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 context,
                 PaymentPage.route(
                   orderId: buyNowResponse.orderId,
+                  paymentPurpose: PaymentPurpose.order,
                   totalRate: buyNowResponse.amountToPay,
                 ),
               );

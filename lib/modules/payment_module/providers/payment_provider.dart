@@ -1,5 +1,6 @@
 // payment_provider.dart
 import 'package:flutter/material.dart';
+import 'package:petcure_user_app/core/enums/payment_purpose.dart';
 import 'package:petcure_user_app/modules/payment_module/classes/card_data.dart';
 import 'package:petcure_user_app/modules/payment_module/classes/order_data.dart';
 import 'package:petcure_user_app/modules/payment_module/classes/u_p_i_data.dart';
@@ -26,12 +27,20 @@ class PaymentProvider with ChangeNotifier {
   final TextEditingController _upiController = TextEditingController();
 
   // Order details
-  final int _orderId;
+  final int? _orderId;
+  final int? _appointmentId;
+  final PaymentPurpose _paymentPurpose;
   final String _totalRate;
 
-  PaymentProvider({required int orderId, required String totalRate})
-    : _orderId = orderId,
-      _totalRate = totalRate {
+  PaymentProvider({
+    int? orderId,
+    required String totalRate,
+    int? appointmentId,
+    required PaymentPurpose paymentPurpose,
+  }) : _orderId = orderId,
+       _totalRate = totalRate,
+       _appointmentId = appointmentId,
+       _paymentPurpose = paymentPurpose {
     // Initialize price controller with total rate
     _priceController.text = double.parse(totalRate).toStringAsFixed(2);
   }
@@ -47,7 +56,9 @@ class PaymentProvider with ChangeNotifier {
   TextEditingController get expiryDateController => _expiryDateController;
   TextEditingController get cvvController => _cvvController;
   TextEditingController get upiController => _upiController;
-  int get orderId => _orderId;
+  int? get orderId => _orderId;
+  int? get appointmentId => _appointmentId;
+  PaymentPurpose get paymentPurpose => _paymentPurpose;
   String get totalRate => _totalRate;
 
   // Get payment methods for UI (converts enum to display name)
@@ -96,11 +107,16 @@ class PaymentProvider with ChangeNotifier {
   CardData? validateCardPayment() {
     if (_cardFormKey.currentState!.validate()) {
       final String cardHolderName = _cardNameController.text.trim();
-      final String cardNumber = _cardNumberController.text.trim();
+      final String cardNumber = _cardNumberController.text.replaceAll(' ', '');
       final String expiryDate = _expiryDateController.text.trim();
       final String cvvNumber = _cvvController.text.trim();
       return CardData(
-        orderData: OrderData(orderId: orderId, amount: _totalRate),
+        orderData: OrderData(
+          orderId: orderId,
+          appointmentId: appointmentId,
+          paymentPurpose: paymentPurpose,
+          amount: _totalRate,
+        ),
         cardHolderName: cardHolderName,
         cardNumber: cardNumber,
         expiryDate: expiryDate,
@@ -116,7 +132,12 @@ class PaymentProvider with ChangeNotifier {
     if (_upiFormKey.currentState!.validate()) {
       final String upiId = _upiController.text.trim();
       return UPIData(
-        orderData: OrderData(orderId: orderId, amount: _totalRate),
+        orderData: OrderData(
+          orderId: orderId,
+          appointmentId: appointmentId,
+          paymentPurpose: paymentPurpose,
+          amount: _totalRate,
+        ),
         upiId: upiId,
       );
     } else {

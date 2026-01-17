@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:petcure_user_app/core/enums/payment_purpose.dart';
 import 'package:petcure_user_app/modules/payment_module/classes/card_data.dart';
 import 'package:petcure_user_app/modules/payment_module/classes/u_p_i_data.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +19,16 @@ class PaymentServices {
   }) async {
     try {
       Map<String, dynamic> params = {
-        'order': upiData.orderData.orderId,
         'amount': upiData.orderData.amount,
         'user': userId,
         'upi_id': upiData.upiId,
       };
+
+      if (upiData.orderData.paymentPurpose == PaymentPurpose.order) {
+        params['order_id'] = upiData.orderData.orderId;
+      } else {
+        params['appointment_id'] = upiData.orderData.appointmentId;
+      }
 
       final resp = await http
           .post(
@@ -76,13 +82,18 @@ class PaymentServices {
     try {
       Map<String, dynamic> params = {
         'user': userId,
-        'order': cardData.orderData.orderId,
         'amount': cardData.orderData.amount,
         'card_holder_name': cardData.cardHolderName,
         'card_number': cardData.cardNumber,
         'expiry_date': cardData.expiryDate,
         'cvv': cardData.cvvNumber,
       };
+
+      if (cardData.orderData.paymentPurpose == PaymentPurpose.order) {
+        params['order_id'] = cardData.orderData.orderId;
+      } else {
+        params['appointment_id'] = cardData.orderData.appointmentId;
+      }
 
       final resp = await http
           .post(

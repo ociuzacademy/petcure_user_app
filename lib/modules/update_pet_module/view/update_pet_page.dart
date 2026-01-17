@@ -237,7 +237,7 @@ class _UpdatePetPageState extends State<UpdatePetPage> {
                                         }
                                         return null;
                                       },
-                                      labelText: 'Weight',
+                                      labelText: 'Weight (in K.G.)',
                                       hintText: 'Enter weight (in K.G.)',
                                       textInputType: TextInputType.number,
                                       focusNode: provider.weightFocusNode,

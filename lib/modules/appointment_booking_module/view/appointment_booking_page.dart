@@ -1,12 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_user_app/core/enums/payment_purpose.dart';
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 
 import 'package:petcure_user_app/core/models/api_models/user_pets_model.dart';
 import 'package:petcure_user_app/modules/appointment_booking_module/utils/appointment_booking_helper.dart';
 import 'package:petcure_user_app/modules/home_module/models/nearby_doctors_model.dart';
-import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
+import 'package:petcure_user_app/modules/payment_module/view/payment_page.dart';
 import 'package:petcure_user_app/widgets/app_widget_export.dart';
 import 'package:petcure_user_app/widgets/custom_error_widget.dart';
 import 'package:petcure_user_app/widgets/loaders/custom_loading_widget.dart';
@@ -40,11 +41,13 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
   @override
   void initState() {
     super.initState();
-    AppointmentBookingHelper.getSlots(
-      context,
-      widget.doctor.id,
-      DateTime.now(),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppointmentBookingHelper.getSlots(
+        context,
+        widget.doctor.id,
+        DateTime.now(),
+      );
+    });
   }
 
   @override
@@ -66,7 +69,11 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                 CustomSnackBar.showSuccess(context, message: response.message);
                 Navigator.pushAndRemoveUntil(
                   context,
-                  HomePage.route(),
+                  PaymentPage.route(
+                    appointmentId: response.data.id,
+                    paymentPurpose: PaymentPurpose.appointment,
+                    totalRate: '100.00',
+                  ),
                   (route) => false,
                 );
                 break;

@@ -162,7 +162,8 @@ class _LoginPageState extends State<LoginPage> {
                               return 'Please enter your email';
                             }
                             bool emailValid = RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                              r'^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\.[a-z]{2,24}$',
+                              caseSensitive: false,
                             ).hasMatch(value);
                             if (!emailValid) {
                               return 'Please enter a valid email';
@@ -183,8 +184,22 @@ class _LoginPageState extends State<LoginPage> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter password';
                             }
-                            if (value.length < 3) {
-                              return 'Password must be at least 3 characters';
+                            if (value.length < 8) {
+                              return 'Password must be at least 8 characters';
+                            }
+                            if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                              return 'Password must contain at least one uppercase letter';
+                            }
+                            if (!RegExp(r'[a-z]').hasMatch(value)) {
+                              return 'Password must contain at least one lowercase letter';
+                            }
+                            if (!RegExp(r'[0-9]').hasMatch(value)) {
+                              return 'Password must contain at least one number';
+                            }
+                            if (!RegExp(
+                              r'[!@#$%^&*(),.?":{}|<>]',
+                            ).hasMatch(value)) {
+                              return 'Password must contain at least one special character';
                             }
                             return null;
                           },

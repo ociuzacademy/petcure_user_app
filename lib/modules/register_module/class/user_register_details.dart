@@ -10,7 +10,7 @@ class UserRegisterDetails {
   final String address;
   final Location location;
   final String password;
-  final File image;
+  final File? image;
   const UserRegisterDetails({
     required this.username,
     required this.email,
@@ -18,6 +18,6 @@ class UserRegisterDetails {
     required this.address,
     required this.location,
     required this.password,
-    required this.image,
+    this.image,
   });
 }

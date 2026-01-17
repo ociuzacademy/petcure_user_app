@@ -29,15 +29,19 @@ class RegisterUserService {
       request.fields['longitude'] = userRegisterDetails.location.longitude
           .toString();
 
-      var imageStream = http.ByteStream(userRegisterDetails.image.openRead());
-      var imageLength = await userRegisterDetails.image.length();
-      var multipartFile = http.MultipartFile(
-        'image',
-        imageStream,
-        imageLength,
-        filename: userRegisterDetails.image.path.split('/').last,
-      );
-      request.files.add(multipartFile);
+      if (userRegisterDetails.image != null) {
+        var imageStream = http.ByteStream(
+          userRegisterDetails.image!.openRead(),
+        );
+        var imageLength = await userRegisterDetails.image!.length();
+        var multipartFile = http.MultipartFile(
+          'image',
+          imageStream,
+          imageLength,
+          filename: userRegisterDetails.image!.path.split('/').last,
+        );
+        request.files.add(multipartFile);
+      }
 
       // Send request
       final resp = await request.send().timeout(

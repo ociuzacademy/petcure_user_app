@@ -4,15 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import 'package:petcure_user_app/core/enums/payment_purpose.dart';
 import 'package:petcure_user_app/modules/payment_module/providers/payment_provider.dart';
 
 class PaymentContainer extends StatelessWidget {
-  final int orderId;
+  final int? orderId;
+  final int? appointmentId;
+  final PaymentPurpose paymentPurpose;
   final String totalRate;
   final Widget paymentForm;
   const PaymentContainer({
     super.key,
-    required this.orderId,
+    this.orderId,
+    this.appointmentId,
+    required this.paymentPurpose,
     required this.totalRate,
     required this.paymentForm,
   });
@@ -20,8 +25,12 @@ class PaymentContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) =>
-          PaymentProvider(orderId: orderId, totalRate: totalRate),
+      create: (context) => PaymentProvider(
+        orderId: orderId,
+        appointmentId: appointmentId,
+        paymentPurpose: paymentPurpose,
+        totalRate: totalRate,
+      ),
       child: Padding(
         padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,

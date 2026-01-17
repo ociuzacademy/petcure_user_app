@@ -1,23 +1,29 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // card_payment.dart
 import 'package:flutter/material.dart';
+import 'package:petcure_user_app/core/enums/payment_purpose.dart';
 import 'package:provider/provider.dart';
 
 import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/payment_module/classes/card_data.dart';
 import 'package:petcure_user_app/modules/payment_module/providers/payment_provider.dart';
 import 'package:petcure_user_app/modules/payment_module/utils/card_payment_helper.dart';
+import 'package:petcure_user_app/modules/payment_module/widgets/card_number_field.dart';
 import 'package:petcure_user_app/modules/payment_module/widgets/expiry_date_field.dart';
 import 'package:petcure_user_app/modules/payment_module/widgets/payment_container.dart';
 import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
 import 'package:petcure_user_app/widgets/text_fields/normal_text_field.dart';
 
 class CardPayment extends StatelessWidget {
-  final int orderId;
+  final int? orderId;
+  final int? appointmentId;
+  final PaymentPurpose paymentPurpose;
   final String totalRate;
   const CardPayment({
     super.key,
-    required this.orderId,
+    this.orderId,
+    this.appointmentId,
+    required this.paymentPurpose,
     required this.totalRate,
   });
 
@@ -27,6 +33,8 @@ class CardPayment extends StatelessWidget {
 
     return PaymentContainer(
       orderId: orderId,
+      appointmentId: appointmentId,
+      paymentPurpose: paymentPurpose,
       totalRate: totalRate,
       paymentForm: Form(
         key: provider.cardFormKey,
@@ -52,20 +60,18 @@ class CardPayment extends StatelessWidget {
               onChange: provider.formatCardName,
             ),
             const SizedBox(height: 16),
-            NormalTextField(
-              textEditingController: provider.cardNumberController,
-              validatorFunction: (value) {
+            CardNumberField(
+              controller: provider.cardNumberController,
+              validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter the card number';
                 }
-                if (value.length != 16) {
-                  return 'Card number must have only 16 digits';
+                // Checking for 19 because it includes 3 spaces (XXXX XXXX XXXX XXXX)
+                if (value.replaceAll(' ', '').length != 16) {
+                  return 'Card number must have exactly 16 digits';
                 }
                 return null;
               },
-              labelText: 'Card Number',
-              hintText: "Enter card's number",
-              textInputType: TextInputType.number,
             ),
             const SizedBox(height: 16),
             Row(

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:petcure_user_app/core/enums/payment_purpose.dart';
 import 'package:petcure_user_app/modules/payment_module/enums/payment_method.dart';
 import 'package:petcure_user_app/modules/payment_module/providers/payment_provider.dart';
 
@@ -10,11 +11,15 @@ import 'package:provider/provider.dart';
 
 class PaymentHelper {
   final BuildContext context;
-  final int orderId;
+  final int? orderId;
+  final int? appointmentId;
+  final PaymentPurpose paymentPurpose;
   final String totalRate;
   const PaymentHelper({
     required this.context,
-    required this.orderId,
+    this.orderId,
+    this.appointmentId,
+    required this.paymentPurpose,
     required this.totalRate,
   });
 
@@ -44,9 +49,19 @@ class PaymentHelper {
             builder: (context) {
               switch (paymentProvider.selectedMethod!) {
                 case PaymentMethod.upi:
-                  return UPIPayment(orderId: orderId, totalRate: totalRate);
+                  return UPIPayment(
+                    orderId: orderId,
+                    appointmentId: appointmentId,
+                    paymentPurpose: paymentPurpose,
+                    totalRate: totalRate,
+                  );
                 case PaymentMethod.card:
-                  return CardPayment(orderId: orderId, totalRate: totalRate);
+                  return CardPayment(
+                    orderId: orderId,
+                    appointmentId: appointmentId,
+                    paymentPurpose: paymentPurpose,
+                    totalRate: totalRate,
+                  );
               }
             },
           ),

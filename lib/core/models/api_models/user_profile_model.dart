@@ -17,7 +17,7 @@ class UserProfileModel {
   final String address;
   final String password;
   final String phone;
-  final String image;
+  final String? image;
   final String latitude;
   final String longitude;
   final int numberOfPets;
@@ -29,7 +29,7 @@ class UserProfileModel {
     required this.address,
     required this.password,
     required this.phone,
-    required this.image,
+    this.image,
     required this.latitude,
     required this.longitude,
     required this.numberOfPets,

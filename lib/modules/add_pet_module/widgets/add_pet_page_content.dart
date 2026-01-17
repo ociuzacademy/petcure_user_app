@@ -240,7 +240,7 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
                         NormalTextField(
                           textEditingController: provider.weightController,
                           validatorFunction: provider.validateWeight,
-                          labelText: 'Weight',
+                          labelText: 'Weight (in K.G.)',
                           hintText: 'Enter weight (in K.G.)',
                           textInputType: TextInputType.number,
                           focusNode: provider.weightFocusNode,

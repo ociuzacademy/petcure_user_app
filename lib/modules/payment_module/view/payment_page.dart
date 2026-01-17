@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
+import 'package:petcure_user_app/core/enums/payment_purpose.dart';
 import 'package:petcure_user_app/modules/payment_module/utils/payment_helper.dart';
 import 'package:petcure_user_app/widgets/app_widget_export.dart';
 import 'package:provider/provider.dart';
@@ -13,22 +14,34 @@ import 'package:petcure_user_app/modules/payment_module/enums/payment_method.dar
 import 'package:petcure_user_app/modules/payment_module/providers/payment_provider.dart';
 
 class PaymentPage extends StatefulWidget {
-  final int orderId;
+  final int? orderId;
+  final int? appointmentId;
+  final PaymentPurpose paymentPurpose;
   final String totalRate;
   const PaymentPage({
     super.key,
-    required this.orderId,
+    this.orderId,
+    this.appointmentId,
+    required this.paymentPurpose,
     required this.totalRate,
   });
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 
-  static route({required int orderId, required String totalRate}) =>
-      MaterialPageRoute(
-        builder: (context) =>
-            PaymentPage(orderId: orderId, totalRate: totalRate),
-      );
+  static route({
+    int? orderId,
+    int? appointmentId,
+    required PaymentPurpose paymentPurpose,
+    required String totalRate,
+  }) => MaterialPageRoute(
+    builder: (context) => PaymentPage(
+      orderId: orderId,
+      appointmentId: appointmentId,
+      paymentPurpose: paymentPurpose,
+      totalRate: totalRate,
+    ),
+  );
 }
 
 class _PaymentPageState extends State<PaymentPage> {
@@ -40,6 +53,8 @@ class _PaymentPageState extends State<PaymentPage> {
     _paymentHelper = PaymentHelper(
       context: context,
       orderId: widget.orderId,
+      appointmentId: widget.appointmentId,
+      paymentPurpose: widget.paymentPurpose,
       totalRate: widget.totalRate,
     );
   }
@@ -53,9 +68,12 @@ class _PaymentPageState extends State<PaymentPage> {
     );
 
     return ChangeNotifierProvider(
-      create: (context) =>
-          PaymentProvider(orderId: widget.orderId, totalRate: widget.totalRate)
-            ..initializePaymentMethod(),
+      create: (context) => PaymentProvider(
+        orderId: widget.orderId,
+        appointmentId: widget.appointmentId,
+        paymentPurpose: widget.paymentPurpose,
+        totalRate: widget.totalRate,
+      )..initializePaymentMethod(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
