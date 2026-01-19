@@ -391,14 +391,15 @@ extension PaymentStatePatterns on PaymentState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( PaymentInitial value)?  initial,TResult Function( PaymentLoading value)?  paymentLoading,TResult Function( PaymentError value)?  paymentError,TResult Function( PaymentSuccess value)?  paymentSuccess,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( PaymentInitial value)?  initial,TResult Function( PaymentLoading value)?  paymentLoading,TResult Function( PaymentError value)?  paymentError,TResult Function( UpiPaymentSuccess value)?  upiPaymentSuccess,TResult Function( CardPaymentSuccess value)?  cardPaymentSuccess,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case PaymentInitial() when initial != null:
 return initial(_that);case PaymentLoading() when paymentLoading != null:
 return paymentLoading(_that);case PaymentError() when paymentError != null:
-return paymentError(_that);case PaymentSuccess() when paymentSuccess != null:
-return paymentSuccess(_that);case _:
+return paymentError(_that);case UpiPaymentSuccess() when upiPaymentSuccess != null:
+return upiPaymentSuccess(_that);case CardPaymentSuccess() when cardPaymentSuccess != null:
+return cardPaymentSuccess(_that);case _:
   return orElse();
 
 }
@@ -416,14 +417,15 @@ return paymentSuccess(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( PaymentInitial value)  initial,required TResult Function( PaymentLoading value)  paymentLoading,required TResult Function( PaymentError value)  paymentError,required TResult Function( PaymentSuccess value)  paymentSuccess,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( PaymentInitial value)  initial,required TResult Function( PaymentLoading value)  paymentLoading,required TResult Function( PaymentError value)  paymentError,required TResult Function( UpiPaymentSuccess value)  upiPaymentSuccess,required TResult Function( CardPaymentSuccess value)  cardPaymentSuccess,}){
 final _that = this;
 switch (_that) {
 case PaymentInitial():
 return initial(_that);case PaymentLoading():
 return paymentLoading(_that);case PaymentError():
-return paymentError(_that);case PaymentSuccess():
-return paymentSuccess(_that);}
+return paymentError(_that);case UpiPaymentSuccess():
+return upiPaymentSuccess(_that);case CardPaymentSuccess():
+return cardPaymentSuccess(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -437,14 +439,15 @@ return paymentSuccess(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( PaymentInitial value)?  initial,TResult? Function( PaymentLoading value)?  paymentLoading,TResult? Function( PaymentError value)?  paymentError,TResult? Function( PaymentSuccess value)?  paymentSuccess,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( PaymentInitial value)?  initial,TResult? Function( PaymentLoading value)?  paymentLoading,TResult? Function( PaymentError value)?  paymentError,TResult? Function( UpiPaymentSuccess value)?  upiPaymentSuccess,TResult? Function( CardPaymentSuccess value)?  cardPaymentSuccess,}){
 final _that = this;
 switch (_that) {
 case PaymentInitial() when initial != null:
 return initial(_that);case PaymentLoading() when paymentLoading != null:
 return paymentLoading(_that);case PaymentError() when paymentError != null:
-return paymentError(_that);case PaymentSuccess() when paymentSuccess != null:
-return paymentSuccess(_that);case _:
+return paymentError(_that);case UpiPaymentSuccess() when upiPaymentSuccess != null:
+return upiPaymentSuccess(_that);case CardPaymentSuccess() when cardPaymentSuccess != null:
+return cardPaymentSuccess(_that);case _:
   return null;
 
 }
@@ -461,13 +464,14 @@ return paymentSuccess(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  paymentLoading,TResult Function( String errorMessage)?  paymentError,TResult Function( PaymentResponseModel response)?  paymentSuccess,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  paymentLoading,TResult Function( String errorMessage)?  paymentError,TResult Function( UpiPaymentResponseModel response)?  upiPaymentSuccess,TResult Function( CardPaymentResponseModel response)?  cardPaymentSuccess,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case PaymentInitial() when initial != null:
 return initial();case PaymentLoading() when paymentLoading != null:
 return paymentLoading();case PaymentError() when paymentError != null:
-return paymentError(_that.errorMessage);case PaymentSuccess() when paymentSuccess != null:
-return paymentSuccess(_that.response);case _:
+return paymentError(_that.errorMessage);case UpiPaymentSuccess() when upiPaymentSuccess != null:
+return upiPaymentSuccess(_that.response);case CardPaymentSuccess() when cardPaymentSuccess != null:
+return cardPaymentSuccess(_that.response);case _:
   return orElse();
 
 }
@@ -485,13 +489,14 @@ return paymentSuccess(_that.response);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  paymentLoading,required TResult Function( String errorMessage)  paymentError,required TResult Function( PaymentResponseModel response)  paymentSuccess,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  paymentLoading,required TResult Function( String errorMessage)  paymentError,required TResult Function( UpiPaymentResponseModel response)  upiPaymentSuccess,required TResult Function( CardPaymentResponseModel response)  cardPaymentSuccess,}) {final _that = this;
 switch (_that) {
 case PaymentInitial():
 return initial();case PaymentLoading():
 return paymentLoading();case PaymentError():
-return paymentError(_that.errorMessage);case PaymentSuccess():
-return paymentSuccess(_that.response);}
+return paymentError(_that.errorMessage);case UpiPaymentSuccess():
+return upiPaymentSuccess(_that.response);case CardPaymentSuccess():
+return cardPaymentSuccess(_that.response);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -505,13 +510,14 @@ return paymentSuccess(_that.response);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  paymentLoading,TResult? Function( String errorMessage)?  paymentError,TResult? Function( PaymentResponseModel response)?  paymentSuccess,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  paymentLoading,TResult? Function( String errorMessage)?  paymentError,TResult? Function( UpiPaymentResponseModel response)?  upiPaymentSuccess,TResult? Function( CardPaymentResponseModel response)?  cardPaymentSuccess,}) {final _that = this;
 switch (_that) {
 case PaymentInitial() when initial != null:
 return initial();case PaymentLoading() when paymentLoading != null:
 return paymentLoading();case PaymentError() when paymentError != null:
-return paymentError(_that.errorMessage);case PaymentSuccess() when paymentSuccess != null:
-return paymentSuccess(_that.response);case _:
+return paymentError(_that.errorMessage);case UpiPaymentSuccess() when upiPaymentSuccess != null:
+return upiPaymentSuccess(_that.response);case CardPaymentSuccess() when cardPaymentSuccess != null:
+return cardPaymentSuccess(_that.response);case _:
   return null;
 
 }
@@ -652,43 +658,43 @@ as String,
 /// @nodoc
 
 
-class PaymentSuccess implements PaymentState {
-  const PaymentSuccess(this.response);
+class UpiPaymentSuccess implements PaymentState {
+  const UpiPaymentSuccess(this.response);
   
 
- final  PaymentResponseModel response;
+ final  UpiPaymentResponseModel response;
 
 /// Create a copy of PaymentState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$PaymentSuccessCopyWith<PaymentSuccess> get copyWith => _$PaymentSuccessCopyWithImpl<PaymentSuccess>(this, _$identity);
+$UpiPaymentSuccessCopyWith<UpiPaymentSuccess> get copyWith => _$UpiPaymentSuccessCopyWithImpl<UpiPaymentSuccess>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentSuccess&&(identical(other.response, response) || other.response == response));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpiPaymentSuccess&&const DeepCollectionEquality().equals(other.response, response));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,response);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(response));
 
 @override
 String toString() {
-  return 'PaymentState.paymentSuccess(response: $response)';
+  return 'PaymentState.upiPaymentSuccess(response: $response)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $PaymentSuccessCopyWith<$Res> implements $PaymentStateCopyWith<$Res> {
-  factory $PaymentSuccessCopyWith(PaymentSuccess value, $Res Function(PaymentSuccess) _then) = _$PaymentSuccessCopyWithImpl;
+abstract mixin class $UpiPaymentSuccessCopyWith<$Res> implements $PaymentStateCopyWith<$Res> {
+  factory $UpiPaymentSuccessCopyWith(UpiPaymentSuccess value, $Res Function(UpiPaymentSuccess) _then) = _$UpiPaymentSuccessCopyWithImpl;
 @useResult
 $Res call({
- PaymentResponseModel response
+ UpiPaymentResponseModel response
 });
 
 
@@ -696,19 +702,85 @@ $Res call({
 
 }
 /// @nodoc
-class _$PaymentSuccessCopyWithImpl<$Res>
-    implements $PaymentSuccessCopyWith<$Res> {
-  _$PaymentSuccessCopyWithImpl(this._self, this._then);
+class _$UpiPaymentSuccessCopyWithImpl<$Res>
+    implements $UpiPaymentSuccessCopyWith<$Res> {
+  _$UpiPaymentSuccessCopyWithImpl(this._self, this._then);
 
-  final PaymentSuccess _self;
-  final $Res Function(PaymentSuccess) _then;
+  final UpiPaymentSuccess _self;
+  final $Res Function(UpiPaymentSuccess) _then;
 
 /// Create a copy of PaymentState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? response = null,}) {
-  return _then(PaymentSuccess(
-null == response ? _self.response : response // ignore: cast_nullable_to_non_nullable
-as PaymentResponseModel,
+@pragma('vm:prefer-inline') $Res call({Object? response = freezed,}) {
+  return _then(UpiPaymentSuccess(
+freezed == response ? _self.response : response // ignore: cast_nullable_to_non_nullable
+as UpiPaymentResponseModel,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class CardPaymentSuccess implements PaymentState {
+  const CardPaymentSuccess(this.response);
+  
+
+ final  CardPaymentResponseModel response;
+
+/// Create a copy of PaymentState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CardPaymentSuccessCopyWith<CardPaymentSuccess> get copyWith => _$CardPaymentSuccessCopyWithImpl<CardPaymentSuccess>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CardPaymentSuccess&&const DeepCollectionEquality().equals(other.response, response));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(response));
+
+@override
+String toString() {
+  return 'PaymentState.cardPaymentSuccess(response: $response)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CardPaymentSuccessCopyWith<$Res> implements $PaymentStateCopyWith<$Res> {
+  factory $CardPaymentSuccessCopyWith(CardPaymentSuccess value, $Res Function(CardPaymentSuccess) _then) = _$CardPaymentSuccessCopyWithImpl;
+@useResult
+$Res call({
+ CardPaymentResponseModel response
+});
+
+
+
+
+}
+/// @nodoc
+class _$CardPaymentSuccessCopyWithImpl<$Res>
+    implements $CardPaymentSuccessCopyWith<$Res> {
+  _$CardPaymentSuccessCopyWithImpl(this._self, this._then);
+
+  final CardPaymentSuccess _self;
+  final $Res Function(CardPaymentSuccess) _then;
+
+/// Create a copy of PaymentState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? response = freezed,}) {
+  return _then(CardPaymentSuccess(
+freezed == response ? _self.response : response // ignore: cast_nullable_to_non_nullable
+as CardPaymentResponseModel,
   ));
 }
 

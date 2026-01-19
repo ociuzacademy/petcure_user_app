@@ -93,7 +93,6 @@ class _PaymentPageState extends State<PaymentPage> {
         body: BlocListener<PaymentBloc, PaymentState>(
           listener: (context, state) {
             switch (state) {
-              case PaymentInitial _:
               case PaymentLoading _:
                 OverlayLoader.show(context, message: 'Submitting payment...');
                 break;
@@ -101,7 +100,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 OverlayLoader.hide();
                 CustomSnackBar.showError(context, message: errorMessage);
                 break;
-              case PaymentSuccess(:final response):
+              case UpiPaymentSuccess(:final response):
                 OverlayLoader.hide();
                 CustomSnackBar.showSuccess(context, message: response.message);
                 Navigator.pushAndRemoveUntil(
@@ -109,6 +108,19 @@ class _PaymentPageState extends State<PaymentPage> {
                   HomePage.route(),
                   (_) => false,
                 );
+                break;
+              case CardPaymentSuccess(:final response):
+                OverlayLoader.hide();
+                CustomSnackBar.showSuccess(context, message: response.message);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  HomePage.route(),
+                  (_) => false,
+                );
+                break;
+              default:
+                OverlayLoader.hide();
+                break;
             }
           },
           child: Consumer<PaymentProvider>(

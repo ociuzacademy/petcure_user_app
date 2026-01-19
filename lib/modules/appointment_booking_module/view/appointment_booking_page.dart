@@ -56,7 +56,8 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
     final screenSize = MediaQuery.of(context).size;
     return ChangeNotifierProvider(
       create: (_) =>
-          AppointmentBookingProvider(context, widget.pet, widget.doctor),
+          AppointmentBookingProvider(context, widget.pet, widget.doctor)
+            ..selectDate(DateTime.now()),
       child: Scaffold(
         appBar: AppBar(title: Text(widget.doctor.fullName)),
         body: BlocListener<AppointmentBookingBloc, AppointmentBookingState>(

@@ -1,6 +1,6 @@
 enum BookingReason {
   vaccine('Vaccine'),
-  routineCheckup('Routine Checkup'),
+  routineCheckup('Routine checkup'),
   sickness('Sickness');
 
   final String label;

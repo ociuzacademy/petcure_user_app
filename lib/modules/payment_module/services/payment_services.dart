@@ -10,10 +10,11 @@ import 'package:http/http.dart' as http;
 
 import 'package:petcure_user_app/core/constants/app_constants.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
-import 'package:petcure_user_app/modules/payment_module/models/payment_response_model.dart';
+import 'package:petcure_user_app/modules/payment_module/models/card_payment_response_model.dart';
+import 'package:petcure_user_app/modules/payment_module/models/upi_payment_response_model.dart';
 
 class PaymentServices {
-  static Future<PaymentResponseModel> submitUpiPayment({
+  static Future<UpiPaymentResponseModel> submitUpiPayment({
     required String userId,
     required UPIData upiData,
   }) async {
@@ -21,13 +22,13 @@ class PaymentServices {
       Map<String, dynamic> params = {
         'amount': upiData.orderData.amount,
         'user': userId,
-        'upi_id': upiData.upiId,
+        'upiid': upiData.upiId,
       };
 
       if (upiData.orderData.paymentPurpose == PaymentPurpose.order) {
-        params['order_id'] = upiData.orderData.orderId;
+        params['orderid'] = upiData.orderData.orderId;
       } else {
-        params['appointment_id'] = upiData.orderData.appointmentId;
+        params['appointmentid'] = upiData.orderData.appointmentId;
       }
 
       final resp = await http
@@ -49,14 +50,13 @@ class PaymentServices {
 
       if (resp.statusCode == 200) {
         final dynamic decoded = jsonDecode(resp.body);
-        final PaymentResponseModel response = PaymentResponseModel.fromJson(
-          decoded,
-        );
+        final UpiPaymentResponseModel response =
+            UpiPaymentResponseModel.fromJson(decoded);
         return response;
       } else {
         final Map<String, dynamic> errorResponse = jsonDecode(resp.body);
         throw Exception(
-          'Failed to make payment: ${errorResponse['message'] ?? 'Unknown error'}',
+          'Failed to make payment: ${errorResponse['detail'] ?? 'Unknown error'}',
         );
       }
     } on TimeoutException catch (e) {
@@ -75,7 +75,7 @@ class PaymentServices {
     }
   }
 
-  static Future<PaymentResponseModel> submitCardPayment({
+  static Future<CardPaymentResponseModel> submitCardPayment({
     required String userId,
     required CardData cardData,
   }) async {
@@ -83,16 +83,16 @@ class PaymentServices {
       Map<String, dynamic> params = {
         'user': userId,
         'amount': cardData.orderData.amount,
-        'card_holder_name': cardData.cardHolderName,
-        'card_number': cardData.cardNumber,
-        'expiry_date': cardData.expiryDate,
-        'cvv': cardData.cvvNumber,
+        'cardholdername': cardData.cardHolderName,
+        'cardnumber': cardData.cardNumber,
+        'expirydate': cardData.expiryDate,
+        'cvvnumber': cardData.cvvNumber,
       };
 
       if (cardData.orderData.paymentPurpose == PaymentPurpose.order) {
-        params['order_id'] = cardData.orderData.orderId;
+        params['orderid'] = cardData.orderData.orderId;
       } else {
-        params['appointment_id'] = cardData.orderData.appointmentId;
+        params['appointmentid'] = cardData.orderData.appointmentId;
       }
 
       final resp = await http
@@ -114,14 +114,13 @@ class PaymentServices {
 
       if (resp.statusCode == 200) {
         final dynamic decoded = jsonDecode(resp.body);
-        final PaymentResponseModel response = PaymentResponseModel.fromJson(
-          decoded,
-        );
+        final CardPaymentResponseModel response =
+            CardPaymentResponseModel.fromJson(decoded);
         return response;
       } else {
         final Map<String, dynamic> errorResponse = jsonDecode(resp.body);
         throw Exception(
-          'Failed to login: ${errorResponse['message'] ?? 'Unknown error'}',
+          'Failed to make payment: ${errorResponse['error'] ?? 'Unknown error'}',
         );
       }
     } on TimeoutException catch (e) {
