@@ -222,12 +222,12 @@ _$GettingNutritionPlanCopyWith<_GettingNutritionPlan> get copyWith => __$Getting
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GettingNutritionPlan&&const DeepCollectionEquality().equals(other.nutritionPlannerData, nutritionPlannerData));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GettingNutritionPlan&&(identical(other.nutritionPlannerData, nutritionPlannerData) || other.nutritionPlannerData == nutritionPlannerData));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(nutritionPlannerData));
+int get hashCode => Object.hash(runtimeType,nutritionPlannerData);
 
 @override
 String toString() {
@@ -259,9 +259,9 @@ class __$GettingNutritionPlanCopyWithImpl<$Res>
 
 /// Create a copy of NutritionPlanEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? nutritionPlannerData = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? nutritionPlannerData = null,}) {
   return _then(_GettingNutritionPlan(
-nutritionPlannerData: freezed == nutritionPlannerData ? _self.nutritionPlannerData : nutritionPlannerData // ignore: cast_nullable_to_non_nullable
+nutritionPlannerData: null == nutritionPlannerData ? _self.nutritionPlannerData : nutritionPlannerData // ignore: cast_nullable_to_non_nullable
 as NutritionPlannerData,
   ));
 }
@@ -524,12 +524,12 @@ $NutritionPlanSuccessCopyWith<NutritionPlanSuccess> get copyWith => _$NutritionP
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NutritionPlanSuccess&&const DeepCollectionEquality().equals(other.response, response));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NutritionPlanSuccess&&(identical(other.response, response) || other.response == response));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(response));
+int get hashCode => Object.hash(runtimeType,response);
 
 @override
 String toString() {
@@ -561,9 +561,9 @@ class _$NutritionPlanSuccessCopyWithImpl<$Res>
 
 /// Create a copy of NutritionPlanState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? response = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? response = null,}) {
   return _then(NutritionPlanSuccess(
-response: freezed == response ? _self.response : response // ignore: cast_nullable_to_non_nullable
+response: null == response ? _self.response : response // ignore: cast_nullable_to_non_nullable
 as NutritionPlannerResponseModel,
   ));
 }

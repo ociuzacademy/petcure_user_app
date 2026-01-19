@@ -27,6 +27,12 @@ class PetOperationsBloc extends Bloc<PetOperationsEvent, PetOperationsState> {
         debugPrint('First pet');
       } else {
         userId = await AuthStorageFunctions.getUserId();
+        if (userId.isEmpty) {
+          emit(
+            const PetOperationsState.petOperationsError('User ID not found'),
+          );
+          return;
+        }
         debugPrint('Not first pet');
       }
 

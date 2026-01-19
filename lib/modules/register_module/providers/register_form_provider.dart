@@ -112,12 +112,12 @@ class RegisterFormProvider with ChangeNotifier {
       latitudeController.text = position.latitude.toStringAsFixed(6);
       longitudeController.text = position.longitude.toStringAsFixed(6);
 
-      if (!context.mounted) return;
-      CustomSnackBar.showSuccess(
-        context,
-        message:
-            'Location fetched: ${position.latitude.toStringAsFixed(4)}, ${position.longitude.toStringAsFixed(4)}',
-      );
+      // if (!context.mounted) return;
+      // CustomSnackBar.showSuccess(
+      //   context,
+      //   message:
+      //       'Location fetched: ${position.latitude.toStringAsFixed(4)}, ${position.longitude.toStringAsFixed(4)}',
+      // );
     } catch (e) {
       if (context.mounted) {
         CustomSnackBar.showError(
@@ -234,7 +234,7 @@ class RegisterFormProvider with ChangeNotifier {
         longitude: double.parse(longitudeController.text.trim()),
       ),
       password: passwordController.text.trim(),
-      image: profileImage!,
+      image: profileImage,
     );
   }
 

@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                 screen: const DoctorBookingWidget(),
                 item: ItemConfig(
                   icon: const Icon(Icons.local_hospital),
-                  title: 'Hospital',
+                  title: 'Doctors',
                 ),
               ),
               PersistentTabConfig(

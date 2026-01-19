@@ -76,7 +76,9 @@ class EditProfileProvider with ChangeNotifier {
     addressController.text = userProfileData.address;
     latitudeController.text = userProfileData.latitude;
     longitudeController.text = userProfileData.longitude;
-    _initialProfileImageUrl = '${AppUrls.baseUrl}${userProfileData.image}';
+    _initialProfileImageUrl = userProfileData.image != null
+        ? '${AppUrls.baseUrl}${userProfileData.image}'
+        : null;
 
     notifyListeners();
   }

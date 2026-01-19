@@ -12,6 +12,7 @@ import 'package:petcure_user_app/widgets/app_widget_export.dart';
 import 'package:petcure_user_app/widgets/custom_error_widget.dart';
 import 'package:petcure_user_app/widgets/loaders/custom_loading_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/core/enums/booking_option.dart';
@@ -249,6 +250,51 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                               ],
                             ),
                           ),
+                        SizedBox(height: screenSize.height * 0.015),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RichText(
+                                text: TextSpan(
+                                  text: 'Doctor Contact: ',
+                                  style: TextStyle(
+                                    fontSize: screenSize.width * 0.045,
+                                    color: AppPalette.blackColor,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: widget.doctor.phoneNumber,
+                                      style: TextStyle(
+                                        fontSize: screenSize.width * 0.045,
+                                        color: AppPalette.blackColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                final url = 'tel:${widget.doctor.phoneNumber}';
+                                if (await canLaunchUrlString(url)) {
+                                  await launchUrlString(url);
+                                } else {
+                                  if (context.mounted) {
+                                    CustomSnackBar.showError(
+                                      context,
+                                      message: 'Could not launch phone dialer',
+                                    );
+                                  }
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.phone,
+                                color: AppPalette.firstColor,
+                              ),
+                            ),
+                          ],
+                        ),
                         SizedBox(height: screenSize.height * 0.02),
                         Text(
                           'Select Time Slot:',

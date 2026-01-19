@@ -16,7 +16,7 @@ class FeedbackComplaintsButtons extends StatelessWidget {
     required this.appointmentData,
   });
 
-  bool _shouldShowButtons() {
+  bool get _shouldShowButtons {
     // Check if the booking date has passed
     final now = DateTime.now();
     final bookingDate = appointmentData.date;
@@ -62,7 +62,7 @@ class FeedbackComplaintsButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!_shouldShowButtons()) {
+    if (!_shouldShowButtons) {
       return const SizedBox.shrink();
     }
 

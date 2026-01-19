@@ -22,7 +22,10 @@ class _AddPetPageState extends State<AddPetPage> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => AddPetFormProvider(),
-      child: AddPetPageContent(userId: widget.userId),
+      child: AddPetPageContent(
+        userId: widget.userId,
+        isLoggedIn: widget.isLoggedIn,
+      ),
     );
   }
 }

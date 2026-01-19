@@ -59,7 +59,9 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                       child: CircleAvatar(
                         radius: 60,
                         backgroundImage: CachedNetworkImageProvider(
-                          '${AppUrls.baseUrl}${userProfileData.image}',
+                          userProfileData.image != null
+                              ? '${AppUrls.baseUrl}${userProfileData.image}'
+                              : 'https://i.pravatar.cc/300',
                         ),
                       ),
                     ),

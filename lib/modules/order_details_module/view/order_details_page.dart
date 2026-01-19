@@ -362,8 +362,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                     color: Colors.grey[200],
                                   ),
                                   child: CachedNetworkImage(
-                                    imageUrl:
-                                        '${AppUrls.baseUrl}${item.product.images[0].image}',
+                                    imageUrl: (item.product.images.isNotEmpty)
+                                        ? '${AppUrls.baseUrl}${item.product.images[0].image}'
+                                        : 'https://via.placeholder.com/300',
                                     height: 100,
                                     width: 100,
                                     fit: BoxFit.cover,

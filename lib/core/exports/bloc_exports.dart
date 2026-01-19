@@ -26,3 +26,4 @@ export 'package:petcure_user_app/modules/appointment_details_module/bloc/feedbac
 export 'package:petcure_user_app/modules/appointment_details_module/bloc/complaint/complaint_bloc.dart';
 export 'package:petcure_user_app/modules/chat_module/bloc/chat_bloc.dart';
 export 'package:petcure_user_app/modules/nutrition_planner_module/bloc/nutrition_plan_bloc.dart';
+export 'package:petcure_user_app/modules/pet_details_module/bloc/delete_pet_bloc.dart';

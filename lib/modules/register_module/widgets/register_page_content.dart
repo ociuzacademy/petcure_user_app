@@ -3,17 +3,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_user_app/modules/register_module/typedefs/register_method.dart';
 import 'package:provider/provider.dart';
 
 import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/add_pet_module/view/add_pet_page.dart';
 import 'package:petcure_user_app/modules/login_module/view/login_page.dart';
 import 'package:petcure_user_app/modules/register_module/bloc/register_bloc.dart';
-import 'package:petcure_user_app/modules/register_module/class/user_register_details.dart';
 import 'package:petcure_user_app/modules/register_module/providers/register_form_provider.dart';
 import 'package:petcure_user_app/widgets/app_widget_export.dart';
-
-typedef RegisterMethod = void Function(UserRegisterDetails userDetails);
 
 class RegisterPageContent extends StatelessWidget {
   final RegisterMethod onUserRegister;
@@ -313,12 +311,7 @@ class RegisterPageContent extends StatelessWidget {
                           textColor: Colors.white,
                           labelText: 'Register Now',
                           onClick: () {
-                            final userDetails = registerProvider.validateForm(
-                              context,
-                            );
-                            if (userDetails != null) {
-                              onUserRegister(userDetails);
-                            }
+                            onUserRegister(registerProvider);
                           },
                         ),
                         const SizedBox(height: 32),

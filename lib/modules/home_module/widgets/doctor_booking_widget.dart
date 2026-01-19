@@ -86,7 +86,7 @@ class _DoctorBookingWidgetState extends State<DoctorBookingWidget> {
                   const SliverToBoxAdapter(child: SizedBox(height: 16)),
                   FindDoctorsButton(
                     onClickingFindButton: () {
-                      debugPrint('Fetching locations...');
+                      debugPrint('Fetching nearby doctors...');
                       final DoctorBookingProvider provider =
                           Provider.of<DoctorBookingProvider>(
                             context,
@@ -100,7 +100,7 @@ class _DoctorBookingWidgetState extends State<DoctorBookingWidget> {
                           location,
                         );
                       } else {
-                        debugPrint('Location empty');
+                        debugPrint('Nearby doctors list empty');
                       }
                     },
                   ),
@@ -120,7 +120,7 @@ class _DoctorBookingWidgetState extends State<DoctorBookingWidget> {
                           location,
                         );
                       } else {
-                        debugPrint('Location empty');
+                        debugPrint('Nearby doctors list empty');
                       }
                     },
                   ),

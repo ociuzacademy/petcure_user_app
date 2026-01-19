@@ -25,9 +25,15 @@ class SlotWidget extends StatelessWidget {
       onTap: availability ? onSelect : null,
       child: Container(
         decoration: BoxDecoration(
-          color: isSelected ? AppPalette.firstColor : AppPalette.secondColor,
+          color: isSelected
+              ? AppPalette.firstColor
+              : availability
+              ? AppPalette.secondColor
+              : AppPalette.grey200Color,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppPalette.firstColor),
+          border: Border.all(
+            color: availability ? AppPalette.firstColor : AppPalette.greyColor,
+          ),
         ),
         alignment: Alignment.center,
         padding: const EdgeInsets.all(8),
@@ -36,7 +42,11 @@ class SlotWidget extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: isSelected ? AppPalette.whiteColor : AppPalette.blackColor,
+            color: isSelected
+                ? AppPalette.whiteColor
+                : availability
+                ? AppPalette.blackColor
+                : AppPalette.greyColor,
           ),
         ),
       ),

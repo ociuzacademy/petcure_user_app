@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
 import 'package:petcure_user_app/modules/login_module/view/login_page.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +14,9 @@ import 'package:petcure_user_app/modules/add_pet_module/utils/add_pet_helper.dar
 import 'package:petcure_user_app/widgets/app_widget_export.dart';
 
 class AddPetPageContent extends StatefulWidget {
+  final bool isLoggedIn;
   final String? userId;
-  const AddPetPageContent({super.key, this.userId});
+  const AddPetPageContent({super.key, this.userId, required this.isLoggedIn});
 
   @override
   State<AddPetPageContent> createState() => _AddPetPageContentState();
@@ -54,11 +56,19 @@ class _AddPetPageContentState extends State<AddPetPageContent> {
             case AddPetSuccess(:final response):
               OverlayLoader.hide();
               CustomSnackBar.showSuccess(context, message: response.message);
-              Navigator.pushAndRemoveUntil(
-                context,
-                LoginPage.route(),
-                (_) => false,
-              );
+              if (widget.isLoggedIn) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  HomePage.route(),
+                  (_) => false,
+                );
+              } else {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  LoginPage.route(),
+                  (_) => false,
+                );
+              }
               break;
             default:
               OverlayLoader.hide();

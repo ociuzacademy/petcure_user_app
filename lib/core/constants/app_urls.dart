@@ -1,5 +1,5 @@
 class AppUrls {
-  static const String baseUrl = 'https://k75h4jwq-8001.inc1.devtunnels.ms';
+  static const String baseUrl = 'https://n926wmtj-8001.inc1.devtunnels.ms/';
   static const String userUrl = '$baseUrl/user';
 
   static const String loginUrl = '$userUrl/login/';
@@ -9,6 +9,7 @@ class AppUrls {
   static const String getPetSubCategoryListUrl =
       '$userUrl/view_pet_subcategory/';
   static const String addPetUrl = '$userUrl/add_pet/';
+  static const String deletePetUrl = '$userUrl/delete_pet/';
 
   static const String getUserPetsUrl = '$userUrl/user_pets/';
   static const String getPetDetailsUrl = '$userUrl/pet_details/';

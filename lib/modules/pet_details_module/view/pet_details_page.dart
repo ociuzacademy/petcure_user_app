@@ -3,14 +3,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
+import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 
 import 'package:petcure_user_app/core/helpers/app_helpers.dart';
-import 'package:petcure_user_app/core/cubit/pet_details/pet_details_cubit.dart';
+import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
 import 'package:petcure_user_app/modules/pet_details_module/utils/pet_details_helper.dart';
 import 'package:petcure_user_app/modules/pet_details_module/widgets/detail_card.dart';
 import 'package:petcure_user_app/modules/pet_details_module/widgets/pet_details_error_widget.dart';
 import 'package:petcure_user_app/modules/pet_details_module/widgets/pet_details_loading_widget.dart';
 import 'package:petcure_user_app/modules/update_pet_module/view/update_pet_page.dart';
+import 'package:petcure_user_app/widgets/loaders/overlay_loader.dart';
+import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 
 class PetDetailsPage extends StatefulWidget {
   final int petId;
@@ -49,105 +52,150 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Pet Details')),
-      body: BlocBuilder<PetDetailsCubit, PetDetailsState>(
-        builder: (context, state) {
-          return switch (state) {
-            PetDetailsInitial _ => const PetDetailsLoadingWidget(),
-            PetDetailsLoading _ => const PetDetailsLoadingWidget(),
-            PetDetailsError(:final errorMessage) => PetDetailsErrorWidget(
-              errorMessage: errorMessage,
-              onRetry: _petDetailsHelper.petDetailsInit,
-            ),
-            PetDetailsSuccess(:final petDetails) => Builder(
-              builder: (context) {
-                final pet = petDetails.pet;
-                return SafeArea(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: horizontalPadding,
-                      vertical: verticalSpacing,
-                    ),
-                    child: Column(
-                      children: [
-                        // Profile Picture
-                        Hero(
-                          tag: 'pet-${pet.id}',
-                          child: CircleAvatar(
-                            radius: avatarRadius,
-                            backgroundImage: CachedNetworkImageProvider(
-                              '${AppUrls.baseUrl}/${pet.petImage}',
+      body: BlocListener<DeletePetBloc, DeletePetState>(
+        listener: (context, state) {
+          switch (state) {
+            case DeletePetLoading():
+              OverlayLoader.show(context, message: 'Deleting pet...');
+              break;
+            case DeletePetSuccess(:final response):
+              OverlayLoader.hide();
+              CustomSnackBar.showSuccess(context, message: response.message);
+              Navigator.pushAndRemoveUntil(
+                context,
+                HomePage.route(),
+                (_) => false,
+              );
+              break;
+            case DeletePetError(:final message):
+              OverlayLoader.hide();
+              CustomSnackBar.showError(context, message: message);
+              break;
+            default:
+              OverlayLoader.hide();
+              break;
+          }
+        },
+        child: BlocBuilder<PetDetailsCubit, PetDetailsState>(
+          builder: (context, state) {
+            return switch (state) {
+              PetDetailsInitial _ => const PetDetailsLoadingWidget(),
+              PetDetailsLoading _ => const PetDetailsLoadingWidget(),
+              PetDetailsError(:final errorMessage) => PetDetailsErrorWidget(
+                errorMessage: errorMessage,
+                onRetry: _petDetailsHelper.petDetailsInit,
+              ),
+              PetDetailsSuccess(:final petDetails) => Builder(
+                builder: (context) {
+                  final pet = petDetails.pet;
+                  return SafeArea(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: horizontalPadding,
+                        vertical: verticalSpacing,
+                      ),
+                      child: Column(
+                        children: [
+                          // Profile Picture
+                          Hero(
+                            tag: 'pet-${pet.id}',
+                            child: CircleAvatar(
+                              radius: avatarRadius,
+                              backgroundImage: CachedNetworkImageProvider(
+                                '${AppUrls.baseUrl}/${pet.petImage}',
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: verticalSpacing),
+                          SizedBox(height: verticalSpacing),
 
-                        // Update Pet Button
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                UpdatePetPage.route(petId: widget.petId),
-                              );
-                            },
-                            icon: const Icon(Icons.edit),
-                            label: const Text('Update Pet Details'),
+                          // Update Pet Button
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      UpdatePetPage.route(petId: widget.petId),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.edit),
+                                  label: const Text('Update Pet Details'),
+                                ),
+                                ElevatedButton.icon(
+                                  onPressed:
+                                      _petDetailsHelper.showDeletePetDialog,
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                  label: const Text(
+                                    'Delete Pet',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(height: verticalSpacing),
+                          SizedBox(height: verticalSpacing),
 
-                        // Pet Details
-                        DetailCard(
-                          icon: Icons.person,
-                          title: 'Name',
-                          value: pet.name,
-                        ),
-                        DetailCard(
-                          icon: Icons.pets,
-                          title: 'Category',
-                          value: pet.categoryName.toString(),
-                        ),
-                        DetailCard(
-                          icon: Icons.pets,
-                          title: 'Sub-Category',
-                          value: pet.subCategoryName.toString(),
-                        ),
-                        DetailCard(
-                          icon: Icons.cake,
-                          title: 'Age',
-                          value:
-                              '${AppHelpers.formatDate(pet.birthDate).toStringAsFixed(1)} Years',
-                        ),
-                        DetailCard(
-                          icon: Icons.transgender,
-                          title: 'Gender',
-                          value:
-                              pet.gender[0].toUpperCase() +
-                              pet.gender.substring(1),
-                        ),
-                        DetailCard(
-                          icon: Icons.monitor_weight,
-                          title: 'Weight',
-                          value: '${pet.weight} kg',
-                        ),
-                        if (pet.healthCondition != null &&
-                            pet.healthCondition!.isNotEmpty)
+                          // Pet Details
                           DetailCard(
-                            icon: Icons.medical_services,
-                            title: 'Medical Conditions',
-                            value: pet.healthCondition!,
+                            icon: Icons.person,
+                            title: 'Name',
+                            value: pet.name,
                           ),
+                          DetailCard(
+                            icon: Icons.pets,
+                            title: 'Category',
+                            value: pet.categoryName.toString(),
+                          ),
+                          DetailCard(
+                            icon: Icons.pets,
+                            title: 'Sub-Category',
+                            value: pet.subCategoryName.toString(),
+                          ),
+                          DetailCard(
+                            icon: Icons.cake,
+                            title: 'Age',
+                            value:
+                                '${AppHelpers.formatDate(pet.birthDate).toStringAsFixed(1)} Years',
+                          ),
+                          DetailCard(
+                            icon: Icons.transgender,
+                            title: 'Gender',
+                            value:
+                                pet.gender[0].toUpperCase() +
+                                pet.gender.substring(1),
+                          ),
+                          DetailCard(
+                            icon: Icons.monitor_weight,
+                            title: 'Weight',
+                            value: '${pet.weight} kg',
+                          ),
+                          if (pet.healthCondition != null &&
+                              pet.healthCondition!.isNotEmpty)
+                            DetailCard(
+                              icon: Icons.medical_services,
+                              title: 'Medical Conditions',
+                              value: pet.healthCondition!,
+                            ),
 
-                        SizedBox(height: verticalSpacing),
-                      ],
+                          SizedBox(height: verticalSpacing),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          };
-        },
+                  );
+                },
+              ),
+            };
+          },
+        ),
       ),
     );
   }
