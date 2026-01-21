@@ -14,53 +14,53 @@ String upiPaymentResponseModelToJson(UpiPaymentResponseModel data) =>
 
 class UpiPaymentResponseModel {
   final String message;
-  final int paymentid;
+  final int paymentId;
   final String amount;
   final PaymentFor paymentFor;
-  final int? appointmentid;
-  final int? orderid;
+  final int? appointmentId;
+  final int? orderId;
 
-  const UpiPaymentResponseModel({
+  UpiPaymentResponseModel({
     required this.message,
-    required this.paymentid,
+    required this.paymentId,
     required this.amount,
     required this.paymentFor,
-    required this.appointmentid,
-    required this.orderid,
+    this.appointmentId,
+    this.orderId,
   });
 
   UpiPaymentResponseModel copyWith({
     String? message,
-    int? paymentid,
+    int? paymentId,
     String? amount,
     PaymentFor? paymentFor,
-    int? appointmentid,
-    int? orderid,
+    int? appointmentId,
+    int? orderId,
   }) => UpiPaymentResponseModel(
     message: message ?? this.message,
-    paymentid: paymentid ?? this.paymentid,
+    paymentId: paymentId ?? this.paymentId,
     amount: amount ?? this.amount,
     paymentFor: paymentFor ?? this.paymentFor,
-    appointmentid: appointmentid ?? this.appointmentid,
-    orderid: orderid ?? this.orderid,
+    appointmentId: appointmentId ?? this.appointmentId,
+    orderId: orderId ?? this.orderId,
   );
 
   factory UpiPaymentResponseModel.fromJson(Map<String, dynamic> json) =>
       UpiPaymentResponseModel(
         message: json['message'],
-        paymentid: json['paymentid'],
+        paymentId: json['payment_id'],
         amount: json['amount'],
         paymentFor: PaymentFor.fromJson(json['for']),
-        appointmentid: json['appointmentid'],
-        orderid: json['orderid'],
+        appointmentId: json['appointment_id'],
+        orderId: json['order_id'],
       );
 
   Map<String, dynamic> toJson() => {
     'message': message,
-    'paymentid': paymentid,
+    'payment_id': paymentId,
     'amount': amount,
     'for': paymentFor.label,
-    'appointmentid': appointmentid,
-    'orderid': orderid,
+    'appointment_id': appointmentId,
+    'order_id': orderId,
   };
 }

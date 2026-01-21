@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:petcure_user_app/modules/appointment_details_module/cubit/appointment_details_cubit.dart';
+import 'package:petcure_user_app/core/exports/bloc_exports.dart';
+import 'package:petcure_user_app/widgets/app_widget_export.dart';
 
 class AppointmentDetailsHelper {
   final BuildContext context;
@@ -36,5 +37,19 @@ class AppointmentDetailsHelper {
     final weekday = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
     return '${weekday[date.weekday - 1]}, ${date.day} ${months[date.month - 1]} ${date.year}';
+  }
+
+  void showCancelAppointmentDialog() {
+    CustomDialogBox.showCustomDialog(
+      context: context,
+      title: 'Cancel Appointment',
+      message: 'Are you sure you want to cancel this appointment?',
+      onSubmit: _cancelAppointment,
+    );
+  }
+
+  void _cancelAppointment() {
+    final CancelAppointmentBloc bloc = context.read<CancelAppointmentBloc>();
+    bloc.add(CancelAppointmentEvent.cancelAppointment(bookingId: bookingId));
   }
 }

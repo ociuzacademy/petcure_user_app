@@ -19,12 +19,7 @@ class DoctorsListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<DoctorBookingProvider>();
 
-    return BlocConsumer<NearbyDoctorsCubit, NearbyDoctorsState>(
-      listener: (context, state) {
-        if (state is NearbyDoctorsSuccess) {
-          provider.showDoctors = true;
-        }
-      },
+    return BlocBuilder<NearbyDoctorsCubit, NearbyDoctorsState>(
       builder: (context, state) {
         if (!provider.showDoctors) {
           return const SliverToBoxAdapter(child: SizedBox.shrink());

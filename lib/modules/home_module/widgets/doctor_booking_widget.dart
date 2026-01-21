@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
-import 'package:petcure_user_app/core/models/location.dart';
 import 'package:petcure_user_app/modules/home_module/providers/doctor_booking_providers.dart';
 import 'package:petcure_user_app/modules/home_module/utils/doctor_booking_widget_helper.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/doctors_list_widget.dart';
@@ -57,7 +56,6 @@ class _DoctorBookingWidgetState extends State<DoctorBookingWidget> {
               switch (state) {
                 case NearbyDoctorsSuccess(:final nearbyDoctors):
                   provider.initializeData(nearbyDoctors);
-                  provider.showDoctors = true;
                   break;
                 default:
               }
@@ -92,16 +90,10 @@ class _DoctorBookingWidgetState extends State<DoctorBookingWidget> {
                             context,
                             listen: false,
                           );
-                      final Location? location = provider
-                          .validateNearbyDoctorSearch();
-                      if (location != null) {
-                        _doctorBookingWidgetHelper.fetchNearbyDoctorsList(
-                          context,
-                          location,
-                        );
-                      } else {
-                        debugPrint('Nearby doctors list empty');
-                      }
+                      _doctorBookingWidgetHelper.fetchNearbyDoctorsList(
+                        context,
+                        provider,
+                      );
                     },
                   ),
                   const SliverToBoxAdapter(child: SizedBox(height: 16)),
@@ -112,16 +104,10 @@ class _DoctorBookingWidgetState extends State<DoctorBookingWidget> {
                             context,
                             listen: false,
                           );
-                      final Location? location = provider
-                          .validateNearbyDoctorSearch();
-                      if (location != null) {
-                        _doctorBookingWidgetHelper.fetchNearbyDoctorsList(
-                          context,
-                          location,
-                        );
-                      } else {
-                        debugPrint('Nearby doctors list empty');
-                      }
+                      _doctorBookingWidgetHelper.fetchNearbyDoctorsList(
+                        context,
+                        provider,
+                      );
                     },
                   ),
                 ],

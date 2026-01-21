@@ -16,22 +16,6 @@ class FeedbackComplaintsButtons extends StatelessWidget {
     required this.appointmentData,
   });
 
-  bool get _shouldShowButtons {
-    // Check if the booking date has passed
-    final now = DateTime.now();
-    final bookingDate = appointmentData.date;
-
-    // Compare only the date part (ignore time)
-    final today = DateTime(now.year, now.month, now.day);
-    final appointmentDay = DateTime(
-      bookingDate.year,
-      bookingDate.month,
-      bookingDate.day,
-    );
-
-    return today.isAfter(appointmentDay);
-  }
-
   void _onFeedbackPressed(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -62,10 +46,6 @@ class FeedbackComplaintsButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!_shouldShowButtons) {
-      return const SizedBox.shrink();
-    }
-
     return Card(
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

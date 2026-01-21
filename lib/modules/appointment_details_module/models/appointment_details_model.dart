@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:petcure_user_app/core/enums/booking_option.dart';
 import 'package:petcure_user_app/core/enums/booking_reason.dart';
+import 'package:petcure_user_app/core/enums/booking_status.dart';
 
 AppointmentDetailsModel appointmentDetailsModelFromJson(String str) =>
     AppointmentDetailsModel.fromJson(json.decode(str));
@@ -62,7 +63,9 @@ class Data {
   final String slotStart;
   final String slotEnd;
   final BookingReason? reason;
+  final int? vaccine;
   final String? symptoms;
+  final BookingStatus status;
   final String? diagnosisAndVerdict;
   final String? notes;
   final bool hasFeedback;
@@ -82,7 +85,9 @@ class Data {
     required this.slotStart,
     required this.slotEnd,
     this.reason,
+    this.vaccine,
     this.symptoms,
+    required this.status,
     this.diagnosisAndVerdict,
     this.notes,
     required this.hasFeedback,
@@ -103,7 +108,9 @@ class Data {
     String? slotStart,
     String? slotEnd,
     BookingReason? reason,
+    int? vaccine,
     String? symptoms,
+    BookingStatus? status,
     String? diagnosisAndVerdict,
     String? notes,
     bool? hasFeedback,
@@ -122,7 +129,9 @@ class Data {
     slotStart: slotStart ?? this.slotStart,
     slotEnd: slotEnd ?? this.slotEnd,
     reason: reason ?? this.reason,
+    vaccine: vaccine ?? this.vaccine,
     symptoms: symptoms ?? this.symptoms,
+    status: status ?? this.status,
     diagnosisAndVerdict: diagnosisAndVerdict ?? this.diagnosisAndVerdict,
     notes: notes ?? this.notes,
     hasFeedback: hasFeedback ?? this.hasFeedback,
@@ -145,7 +154,9 @@ class Data {
     reason: json['reason'] != null
         ? BookingReason.fromString(json['reason'])
         : null,
+    vaccine: json['vaccine'],
     symptoms: json['symptoms'],
+    status: BookingStatus.fromString(json['status']),
     diagnosisAndVerdict: json['diagnosis_and_verdict'],
     notes: json['notes'],
     hasFeedback: json['has_feedback'],
@@ -167,7 +178,9 @@ class Data {
     'slot_start': slotStart,
     'slot_end': slotEnd,
     'reason': reason?.label,
+    'vaccine': vaccine,
     'symptoms': symptoms,
+    'status': status.label,
     'diagnosis_and_verdict': diagnosisAndVerdict,
     'notes': notes,
     'has_feedback': hasFeedback,

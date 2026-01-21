@@ -22,13 +22,13 @@ class PaymentServices {
       Map<String, dynamic> params = {
         'amount': upiData.orderData.amount,
         'user': userId,
-        'upiid': upiData.upiId,
+        'upi_id': upiData.upiId,
       };
 
       if (upiData.orderData.paymentPurpose == PaymentPurpose.order) {
-        params['orderid'] = upiData.orderData.orderId;
+        params['order_id'] = upiData.orderData.orderId;
       } else {
-        params['appointmentid'] = upiData.orderData.appointmentId;
+        params['appointment_id'] = upiData.orderData.appointmentId;
       }
 
       final resp = await http
@@ -83,16 +83,16 @@ class PaymentServices {
       Map<String, dynamic> params = {
         'user': userId,
         'amount': cardData.orderData.amount,
-        'cardholdername': cardData.cardHolderName,
-        'cardnumber': cardData.cardNumber,
-        'expirydate': cardData.expiryDate,
-        'cvvnumber': cardData.cvvNumber,
+        'cardholder_name': cardData.cardHolderName,
+        'card_number': cardData.cardNumber,
+        'expiry_date': cardData.expiryDate,
+        'cvv_number': cardData.cvvNumber,
       };
 
       if (cardData.orderData.paymentPurpose == PaymentPurpose.order) {
-        params['orderid'] = cardData.orderData.orderId;
+        params['order_id'] = cardData.orderData.orderId;
       } else {
-        params['appointmentid'] = cardData.orderData.appointmentId;
+        params['appointment_id'] = cardData.orderData.appointmentId;
       }
 
       final resp = await http

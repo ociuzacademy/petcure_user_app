@@ -14,77 +14,78 @@ String cardPaymentResponseModelToJson(CardPaymentResponseModel data) =>
 
 class CardPaymentResponseModel {
   final String message;
-  final int paymentid;
+  final int paymentId;
   final String amount;
   final PaymentFor paymentFor;
-  final String paymentmethod;
-  final String lastfourdigits;
-  final String cardholdername;
-  final DateTime transactiondate;
-  final int? appointmentid;
-  final int? orderid;
+  final String paymentMethod;
+  final String lastFourDigits;
+  final String cardholderName;
+  final DateTime transactionDate;
+  final int? orderId;
+  final int? appointmentId;
 
   CardPaymentResponseModel({
     required this.message,
-    required this.paymentid,
+    required this.paymentId,
     required this.amount,
     required this.paymentFor,
-    required this.paymentmethod,
-    required this.lastfourdigits,
-    required this.cardholdername,
-    required this.transactiondate,
-    this.appointmentid,
-    this.orderid,
+    required this.paymentMethod,
+    required this.lastFourDigits,
+    required this.cardholderName,
+    required this.transactionDate,
+    this.orderId,
+    this.appointmentId,
   });
 
   CardPaymentResponseModel copyWith({
     String? message,
-    int? paymentid,
+    int? paymentId,
     String? amount,
     PaymentFor? paymentFor,
-    String? paymentmethod,
-    String? lastfourdigits,
-    String? cardholdername,
-    DateTime? transactiondate,
-    int? appointmentid,
-    int? orderid,
+    String? paymentMethod,
+    String? lastFourDigits,
+    String? cardholderName,
+    DateTime? transactionDate,
+    int? orderId,
+    int? appointmentId,
   }) => CardPaymentResponseModel(
     message: message ?? this.message,
-    paymentid: paymentid ?? this.paymentid,
+    paymentId: paymentId ?? this.paymentId,
     amount: amount ?? this.amount,
     paymentFor: paymentFor ?? this.paymentFor,
-    paymentmethod: paymentmethod ?? this.paymentmethod,
-    lastfourdigits: lastfourdigits ?? this.lastfourdigits,
-    cardholdername: cardholdername ?? this.cardholdername,
-    transactiondate: transactiondate ?? this.transactiondate,
-    appointmentid: appointmentid ?? this.appointmentid,
-    orderid: orderid ?? this.orderid,
+    paymentMethod: paymentMethod ?? this.paymentMethod,
+    lastFourDigits: lastFourDigits ?? this.lastFourDigits,
+    cardholderName: cardholderName ?? this.cardholderName,
+    transactionDate: transactionDate ?? this.transactionDate,
+    orderId: orderId ?? this.orderId,
+    appointmentId: appointmentId ?? this.appointmentId,
   );
 
   factory CardPaymentResponseModel.fromJson(Map<String, dynamic> json) =>
       CardPaymentResponseModel(
         message: json['message'],
-        paymentid: json['paymentid'],
+        paymentId: json['payment_id'],
         amount: json['amount'],
-        paymentFor: PaymentFor.fromJson(json['for']),
-        paymentmethod: json['paymentmethod'],
-        lastfourdigits: json['lastfourdigits'],
-        cardholdername: json['cardholdername'],
-        transactiondate: DateTime.parse(json['transactiondate']),
-        appointmentid: json['appointmentid'],
-        orderid: json['orderid'],
+        paymentFor: PaymentFor.fromLabel(json['for']),
+        paymentMethod: json['payment_method'],
+        lastFourDigits: json['last_four_digits'],
+        cardholderName: json['cardholder_name'],
+        transactionDate: DateTime.parse(json['transaction_date']),
+        orderId: json['order_id'],
+        appointmentId: json['appointment_id'],
       );
 
   Map<String, dynamic> toJson() => {
     'message': message,
-    'paymentid': paymentid,
+    'payment_id': paymentId,
     'amount': amount,
     'for': paymentFor.label,
-    'paymentmethod': paymentmethod,
-    'lastfourdigits': lastfourdigits,
-    'cardholdername': cardholdername,
-    'transactiondate': transactiondate.toIso8601String(),
-    'appointmentid': appointmentid,
-    'orderid': orderid,
+    'payment_method': paymentMethod,
+    'last_four_digits': lastFourDigits,
+    'cardholder_name': cardholderName,
+    'transaction_date':
+        "${transactionDate.year.toString().padLeft(4, '0')}-${transactionDate.month.toString().padLeft(2, '0')}-${transactionDate.day.toString().padLeft(2, '0')}",
+    'order_id': orderId,
+    'appointment_id': appointmentId,
   };
 }

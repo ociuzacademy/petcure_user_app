@@ -16,6 +16,7 @@ class AppointmentBookingHelper {
     BuildContext context,
     AppointmentBookingProvider provider,
   ) {
+    FocusScope.of(context).unfocus();
     if (provider.selectedBookingOption == BookingOption.audioCall &&
         provider.symptomsController.text.isEmpty) {
       CustomSnackBar.showError(context, message: 'Please enter symptoms');

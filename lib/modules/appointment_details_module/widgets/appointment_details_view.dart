@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:petcure_user_app/core/enums/booking_status.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/models/appointment_details_model.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/widgets/appointment_additional_info_section.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/widgets/appointment_details_section.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/widgets/appointment_header_card.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/widgets/appointment_status_chip.dart';
+import 'package:petcure_user_app/modules/appointment_details_module/widgets/cancel_appointment_button.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/widgets/doctor_info_card.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/widgets/feedback_complaints_buttons.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/widgets/pet_info_card.dart';
@@ -11,11 +13,13 @@ import 'package:petcure_user_app/modules/appointment_details_module/widgets/pet_
 class AppointmentDetailsView extends StatelessWidget {
   final int bookingId;
   final Data appointmentData;
+  final VoidCallback onCancel;
 
   const AppointmentDetailsView({
     super.key,
     required this.bookingId,
     required this.appointmentData,
+    required this.onCancel,
   });
 
   @override
@@ -52,12 +56,25 @@ class AppointmentDetailsView extends StatelessWidget {
               const SizedBox(height: 20),
             ],
 
+            // Cancel Appointment Button (if applicable)
+            if (appointmentData.status == BookingStatus.booked ||
+                appointmentData.status == BookingStatus.paymentCompleted) ...[
+              CancelAppointmentButton(
+                bookingId: bookingId,
+                appointmentData: appointmentData,
+                onCancel: onCancel,
+              ),
+              const SizedBox(height: 20),
+            ],
+
             // Feedback and Complaints Buttons (conditional)
-            FeedbackComplaintsButtons(
-              bookingId: bookingId,
-              appointmentData: appointmentData,
-            ),
-            const SizedBox(height: 20),
+            if (appointmentData.status == BookingStatus.completed) ...[
+              FeedbackComplaintsButtons(
+                bookingId: bookingId,
+                appointmentData: appointmentData,
+              ),
+              const SizedBox(height: 20),
+            ],
 
             // Status Chip
             AppointmentStatusChip(appointmentData: appointmentData),

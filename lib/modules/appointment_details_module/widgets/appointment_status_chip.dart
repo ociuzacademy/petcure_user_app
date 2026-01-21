@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petcure_user_app/core/enums/booking_status.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/models/appointment_details_model.dart';
 
 class AppointmentStatusChip extends StatelessWidget {
@@ -8,9 +9,34 @@ class AppointmentStatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
-    final appointmentDate = appointmentData.date;
-    final isUpcoming = appointmentDate.isAfter(now);
+    final BookingStatus status = appointmentData.status;
+
+    final (color, bgColor, icon, label) = switch (status) {
+      BookingStatus.booked => (
+        Colors.blue,
+        Colors.blue[50],
+        Icons.upcoming,
+        'Upcoming Appointment',
+      ),
+      BookingStatus.paymentCompleted => (
+        Colors.orange,
+        Colors.orange[50],
+        Icons.payment,
+        'Payment Completed',
+      ),
+      BookingStatus.completed => (
+        Colors.green,
+        Colors.green[50],
+        Icons.check_circle,
+        'Completed',
+      ),
+      BookingStatus.cancelled => (
+        Colors.red,
+        Colors.red[50],
+        Icons.cancel,
+        'Cancelled',
+      ),
+    };
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -18,27 +44,17 @@ class AppointmentStatusChip extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: BoxDecoration(
-            color: isUpcoming ? Colors.blue[50] : Colors.green[50],
+            color: bgColor,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: isUpcoming ? Colors.blue : Colors.green,
-              width: 1,
-            ),
+            border: Border.all(color: color, width: 1),
           ),
           child: Row(
             children: [
-              Icon(
-                isUpcoming ? Icons.upcoming : Icons.check_circle,
-                color: isUpcoming ? Colors.blue : Colors.green,
-                size: 18,
-              ),
+              Icon(icon, color: color, size: 18),
               const SizedBox(width: 8),
               Text(
-                isUpcoming ? 'Upcoming Appointment' : 'Completed',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: isUpcoming ? Colors.blue : Colors.green,
-                ),
+                label,
+                style: TextStyle(fontWeight: FontWeight.bold, color: color),
               ),
             ],
           ),

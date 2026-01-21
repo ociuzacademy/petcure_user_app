@@ -4,6 +4,8 @@ import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/utils/appointment_detils_helper.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/widgets/appointment_details_view.dart';
+import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
+import 'package:petcure_user_app/widgets/app_widget_export.dart';
 import 'package:petcure_user_app/widgets/custom_error_widget.dart';
 import 'package:petcure_user_app/widgets/loaders/custom_loading_widget.dart';
 
@@ -43,23 +45,49 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
         backgroundColor: AppPalette.firstColor,
         foregroundColor: Colors.white,
       ),
-      body: BlocBuilder<AppointmentDetailsCubit, AppointmentDetailsState>(
-        builder: (context, state) {
-          return switch (state) {
-            AppointmentDetailsLoading _ => const CustomLoadingWidget.centered(
-              message: 'Loading appointment details...',
-            ),
-            AppointmentDetailsSuccess(:final data) => AppointmentDetailsView(
-              bookingId: widget.bookingId,
-              appointmentData: data.data,
-            ),
-            AppointmentDetailsError(:final message) => CustomErrorWidget(
-              onRetry: _appointmentDetailsHelper.appointmentDetailsInit,
-              errorMessage: message,
-            ),
-            _ => const SizedBox.shrink(),
-          };
+      body: BlocListener<CancelAppointmentBloc, CancelAppointmentState>(
+        listener: (context, state) {
+          switch (state) {
+            case CancelAppointmentLoading():
+              OverlayLoader.show(context, message: 'Canceling appointment...');
+              break;
+            case CancelAppointmentSuccess(:final response):
+              OverlayLoader.hide();
+              CustomSnackBar.showError(context, message: response.message);
+              Navigator.pushAndRemoveUntil(
+                context,
+                HomePage.route(),
+                (route) => false,
+              );
+              break;
+            case CancelAppointmentError(:final message):
+              OverlayLoader.hide();
+              CustomSnackBar.showError(context, message: message);
+              break;
+            default:
+              OverlayLoader.hide();
+              break;
+          }
         },
+        child: BlocBuilder<AppointmentDetailsCubit, AppointmentDetailsState>(
+          builder: (context, state) {
+            return switch (state) {
+              AppointmentDetailsLoading _ => const CustomLoadingWidget.centered(
+                message: 'Loading appointment details...',
+              ),
+              AppointmentDetailsSuccess(:final data) => AppointmentDetailsView(
+                bookingId: widget.bookingId,
+                appointmentData: data.data,
+                onCancel: _appointmentDetailsHelper.showCancelAppointmentDialog,
+              ),
+              AppointmentDetailsError(:final message) => CustomErrorWidget(
+                onRetry: _appointmentDetailsHelper.appointmentDetailsInit,
+                errorMessage: message,
+              ),
+              _ => const SizedBox.shrink(),
+            };
+          },
+        ),
       ),
     );
   }

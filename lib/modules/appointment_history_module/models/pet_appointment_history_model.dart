@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:petcure_user_app/core/enums/booking_option.dart';
 import 'package:petcure_user_app/core/enums/booking_reason.dart';
+import 'package:petcure_user_app/core/enums/booking_status.dart';
 
 PetAppointmentHistoryModel petAppointmentHistoryModelFromJson(String str) =>
     PetAppointmentHistoryModel.fromJson(json.decode(str));
@@ -64,6 +65,8 @@ class Booking {
   final String slotStart;
   final String slotEnd;
   final BookingReason? reason;
+  final int? vaccine;
+  final BookingStatus status;
   final String? symptoms;
   final String? diagnosisAndVerdict;
   final String? notes;
@@ -82,6 +85,8 @@ class Booking {
     required this.slotStart,
     required this.slotEnd,
     this.reason,
+    this.vaccine,
+    required this.status,
     this.symptoms,
     this.diagnosisAndVerdict,
     this.notes,
@@ -101,6 +106,8 @@ class Booking {
     String? slotStart,
     String? slotEnd,
     BookingReason? reason,
+    int? vaccine,
+    BookingStatus? status,
     String? symptoms,
     String? diagnosisAndVerdict,
     String? notes,
@@ -118,6 +125,8 @@ class Booking {
     slotStart: slotStart ?? this.slotStart,
     slotEnd: slotEnd ?? this.slotEnd,
     reason: reason ?? this.reason,
+    vaccine: vaccine ?? this.vaccine,
+    status: status ?? this.status,
     symptoms: symptoms ?? this.symptoms,
     diagnosisAndVerdict: diagnosisAndVerdict ?? this.diagnosisAndVerdict,
     notes: notes ?? this.notes,
@@ -139,6 +148,8 @@ class Booking {
     reason: json['reason'] != null
         ? BookingReason.fromString(json['reason'])
         : null,
+    vaccine: json['vaccine'],
+    status: BookingStatus.fromString(json['status']),
     symptoms: json['symptoms'],
     diagnosisAndVerdict: json['diagnosis_and_verdict'],
     notes: json['notes'],
@@ -159,6 +170,8 @@ class Booking {
     'slot_start': slotStart,
     'slot_end': slotEnd,
     'reason': reason?.label,
+    'vaccine': vaccine,
+    'status': status.label,
     'symptoms': symptoms,
     'diagnosis_and_verdict': diagnosisAndVerdict,
     'notes': notes,
