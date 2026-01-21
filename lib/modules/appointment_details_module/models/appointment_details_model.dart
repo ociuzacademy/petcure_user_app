@@ -68,6 +68,7 @@ class Data {
   final BookingStatus status;
   final String? diagnosisAndVerdict;
   final String? notes;
+  final String feeAmount;
   final bool hasFeedback;
   final bool hasComplaint;
 
@@ -90,6 +91,7 @@ class Data {
     required this.status,
     this.diagnosisAndVerdict,
     this.notes,
+    required this.feeAmount,
     required this.hasFeedback,
     required this.hasComplaint,
   });
@@ -113,6 +115,7 @@ class Data {
     BookingStatus? status,
     String? diagnosisAndVerdict,
     String? notes,
+    String? feeAmount,
     bool? hasFeedback,
     bool? hasComplaint,
   }) => Data(
@@ -134,6 +137,7 @@ class Data {
     status: status ?? this.status,
     diagnosisAndVerdict: diagnosisAndVerdict ?? this.diagnosisAndVerdict,
     notes: notes ?? this.notes,
+    feeAmount: feeAmount ?? this.feeAmount,
     hasFeedback: hasFeedback ?? this.hasFeedback,
     hasComplaint: hasComplaint ?? this.hasComplaint,
   );
@@ -159,6 +163,7 @@ class Data {
     status: BookingStatus.fromString(json['status']),
     diagnosisAndVerdict: json['diagnosis_and_verdict'],
     notes: json['notes'],
+    feeAmount: json['fee_amount'],
     hasFeedback: json['has_feedback'],
     hasComplaint: json['has_complaint'],
   );
@@ -183,6 +188,7 @@ class Data {
     'status': status.label,
     'diagnosis_and_verdict': diagnosisAndVerdict,
     'notes': notes,
+    'fee_amount': feeAmount,
     'has_feedback': hasFeedback,
     'has_complaint': hasComplaint,
   };
