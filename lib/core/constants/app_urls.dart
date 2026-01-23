@@ -54,4 +54,5 @@ class AppUrls {
   static const String recommendationUrl = '$userUrl/recommendation/';
 
   static const String cancelAppointmentUrl = '$userUrl/cancel_appointment/';
+  static const String nextVaccineUrl = '$userUrl/next_vaccine/';
 }

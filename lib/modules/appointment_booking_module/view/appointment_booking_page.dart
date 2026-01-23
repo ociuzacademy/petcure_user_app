@@ -6,6 +6,7 @@ import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 
 import 'package:petcure_user_app/core/models/api_models/user_pets_model.dart';
 import 'package:petcure_user_app/modules/appointment_booking_module/utils/appointment_booking_helper.dart';
+import 'package:petcure_user_app/modules/appointment_booking_module/widgets/next_vaccine_widget.dart';
 import 'package:petcure_user_app/modules/home_module/models/nearby_doctors_model.dart';
 import 'package:petcure_user_app/modules/payment_module/view/payment_page.dart';
 import 'package:petcure_user_app/widgets/app_widget_export.dart';
@@ -60,34 +61,61 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
             ..selectDate(DateTime.now()),
       child: Scaffold(
         appBar: AppBar(title: Text(widget.doctor.fullName)),
-        body: BlocListener<AppointmentBookingBloc, AppointmentBookingState>(
-          listener: (context, state) {
-            switch (state) {
-              case AppointmentBookingLoading():
-                OverlayLoader.show(context, message: 'Booking Appointment...');
-                break;
-              case AppointmentBookingSuccess(:final response):
-                OverlayLoader.hide();
-                CustomSnackBar.showSuccess(context, message: response.message);
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  PaymentPage.route(
-                    appointmentId: response.data.id,
-                    paymentPurpose: PaymentPurpose.appointment,
-                    totalRate: '100.00',
-                  ),
-                  (route) => false,
-                );
-                break;
-              case AppointmentBookingError(:final error):
-                OverlayLoader.hide();
-                CustomSnackBar.showError(context, message: error);
-                break;
-              default:
-                OverlayLoader.hide();
-                break;
-            }
-          },
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<AppointmentBookingBloc, AppointmentBookingState>(
+              listener: (context, state) {
+                switch (state) {
+                  case AppointmentBookingLoading():
+                    OverlayLoader.show(
+                      context,
+                      message: 'Booking Appointment...',
+                    );
+                    break;
+                  case AppointmentBookingSuccess(:final response):
+                    OverlayLoader.hide();
+                    CustomSnackBar.showSuccess(
+                      context,
+                      message: response.message,
+                    );
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      PaymentPage.route(
+                        appointmentId: response.data.id,
+                        paymentPurpose: PaymentPurpose.appointment,
+                        totalRate: '100.00',
+                      ),
+                      (route) => false,
+                    );
+                    break;
+                  case AppointmentBookingError(:final error):
+                    OverlayLoader.hide();
+                    CustomSnackBar.showError(context, message: error);
+                    break;
+                  default:
+                    OverlayLoader.hide();
+                    break;
+                }
+              },
+            ),
+            BlocListener<NextVaccineCubit, NextVaccineState>(
+              listener: (context, state) {
+                switch (state) {
+                  case NextVaccineSuccess(:final vaccineData):
+                    if (vaccineData.nextVaccine != null) {
+                      final AppointmentBookingProvider provider =
+                          Provider.of<AppointmentBookingProvider>(
+                            context,
+                            listen: false,
+                          );
+                      provider.setVaccineId(vaccineData.nextVaccine!.vaccineId);
+                    }
+                    break;
+                  default:
+                }
+              },
+            ),
+          ],
           child: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -245,6 +273,12 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                                   onSelectingReason: (value) {
                                     if (value != null) {
                                       provider.selectReason(value);
+                                      if (value != BookingReason.vaccine) {
+                                        provider.setVaccineId(null);
+                                        AppointmentBookingHelper.resetNextVaccineState(
+                                          context,
+                                        );
+                                      }
                                     }
                                   },
                                 ),
@@ -277,7 +311,8 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                             ),
                             IconButton(
                               onPressed: () async {
-                                final url = 'tel:${widget.doctor.phoneNumber}';
+                                final url =
+                                    'tel://${widget.doctor.phoneNumber}';
                                 if (await canLaunchUrlString(url)) {
                                   await launchUrlString(url);
                                 } else {
@@ -297,6 +332,11 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                           ],
                         ),
                         SizedBox(height: screenSize.height * 0.02),
+                        if (provider.selectedReason ==
+                            BookingReason.vaccine) ...[
+                          NextVaccineWidget(petId: widget.pet.id),
+                          SizedBox(height: screenSize.height * 0.02),
+                        ],
                         Text(
                           'Select Time Slot:',
                           style: TextStyle(

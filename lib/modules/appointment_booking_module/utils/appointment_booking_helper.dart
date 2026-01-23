@@ -12,6 +12,11 @@ class AppointmentBookingHelper {
     slotsCubit.getSlots(doctorId: doctorId, date: date);
   }
 
+  static void resetNextVaccineState(BuildContext context) {
+    final NextVaccineCubit nextVaccineCubit = context.read<NextVaccineCubit>();
+    nextVaccineCubit.resetState();
+  }
+
   static void showBookAppointmentDialogueBox(
     BuildContext context,
     AppointmentBookingProvider provider,

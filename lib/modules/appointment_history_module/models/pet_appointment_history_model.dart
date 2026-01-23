@@ -18,13 +18,13 @@ class PetAppointmentHistoryModel {
   final String petName;
   final int totalBookings;
   final List<Booking> bookings;
-  final NextVaccine nextVaccine;
+  final NextVaccine? nextVaccine;
 
   const PetAppointmentHistoryModel({
     required this.petName,
     required this.totalBookings,
     required this.bookings,
-    required this.nextVaccine,
+    this.nextVaccine,
   });
 
   PetAppointmentHistoryModel copyWith({
@@ -46,14 +46,16 @@ class PetAppointmentHistoryModel {
         bookings: List<Booking>.from(
           json['bookings'].map((x) => Booking.fromJson(x)),
         ),
-        nextVaccine: NextVaccine.fromJson(json['next_vaccine']),
+        nextVaccine: json['next_vaccine'] != null
+            ? NextVaccine.fromJson(json['next_vaccine'])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
     'pet_name': petName,
     'total_bookings': totalBookings,
     'bookings': List<dynamic>.from(bookings.map((x) => x.toJson())),
-    'next_vaccine': nextVaccine.toJson(),
+    'next_vaccine': nextVaccine?.toJson(),
   };
 }
 

@@ -17,12 +17,14 @@ class AppointmentBookingProvider extends ChangeNotifier {
   Slot? _selectedTimeSlot;
   BookingReason? _selectedReason;
   BookingOption _selectedBookingOption = BookingOption.clinicalAppointment;
+  int? _vaccineId;
   final TextEditingController symptomsController = TextEditingController();
 
   DateTime? get selectedDate => _selectedDate;
   Slot? get selectedTimeSlot => _selectedTimeSlot;
   BookingReason? get selectedReason => _selectedReason;
   BookingOption get selectedBookingOption => _selectedBookingOption;
+  int? get vaccineId => _vaccineId;
 
   void selectDate(DateTime date) {
     _selectedDate = date;
@@ -45,6 +47,11 @@ class AppointmentBookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setVaccineId(int? id) {
+    _vaccineId = id;
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     symptomsController.dispose();
@@ -60,6 +67,11 @@ class AppointmentBookingProvider extends ChangeNotifier {
         symptomsController.text.isEmpty) {
       return null;
     }
+
+    if (_selectedReason == BookingReason.vaccine && _vaccineId == null) {
+      return null;
+    }
+
     return AppointmentBookingData(
       bookingOption: _selectedBookingOption,
       petId: pet.id,
@@ -68,6 +80,7 @@ class AppointmentBookingProvider extends ChangeNotifier {
       slotId: _selectedTimeSlot!.slotId,
       symptoms: symptomsController.text,
       reason: _selectedReason,
+      vaccineId: _vaccineId,
     );
   }
 }

@@ -18,7 +18,7 @@ export 'package:petcure_user_app/modules/orders_list_module/cubit/orders_list_cu
 export 'package:petcure_user_app/modules/order_details_module/cubit/order_details_cubit.dart';
 export 'package:petcure_user_app/modules/order_details_module/bloc/reorder/reorder_bloc.dart';
 export 'package:petcure_user_app/modules/order_details_module/bloc/cancel_order/cancel_order_bloc.dart';
-export 'package:petcure_user_app/modules/appointment_booking_module/cubit/slots_cubit.dart';
+export 'package:petcure_user_app/modules/appointment_booking_module/cubit/slots/slots_cubit.dart';
 export 'package:petcure_user_app/modules/appointment_booking_module/bloc/appointment_booking_bloc.dart';
 export 'package:petcure_user_app/modules/appointment_history_module/cubit/appointment_history_cubit.dart';
 export 'package:petcure_user_app/modules/appointment_details_module/cubit/appointment_details_cubit.dart';
@@ -28,3 +28,4 @@ export 'package:petcure_user_app/modules/chat_module/bloc/chat_bloc.dart';
 export 'package:petcure_user_app/modules/nutrition_planner_module/bloc/nutrition_plan_bloc.dart';
 export 'package:petcure_user_app/modules/pet_details_module/bloc/delete_pet_bloc.dart';
 export 'package:petcure_user_app/modules/appointment_details_module/bloc/cancel_appointment/cancel_appointment_bloc.dart';
+export 'package:petcure_user_app/modules/appointment_booking_module/cubit/next_vaccine/next_vaccine_cubit.dart';

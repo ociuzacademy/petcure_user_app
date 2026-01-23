@@ -9,6 +9,7 @@ class AppointmentBookingData {
   final int slotId;
   final BookingReason? reason;
   final String? symptoms;
+  final int? vaccineId;
 
   const AppointmentBookingData({
     required this.bookingOption,
@@ -18,6 +19,7 @@ class AppointmentBookingData {
     required this.slotId,
     this.reason,
     this.symptoms,
+    this.vaccineId,
   });
 
   Map<String, dynamic> toJson() {
@@ -30,6 +32,7 @@ class AppointmentBookingData {
       'slot': slotId,
       'reason': reason?.label,
       'symptoms': symptomsLabel,
+      'vaccine': reason == BookingReason.vaccine ? vaccineId : null,
     };
   }
 
