@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:petcure_user_app/modules/nutrition_planner_module/classes/nutrition_planner_data.dart';
 import 'package:petcure_user_app/modules/nutrition_planner_module/models/nutrition_planner_response_model.dart';
 import 'package:petcure_user_app/modules/nutrition_planner_module/services/nutrition_planner_services.dart';
 
@@ -20,7 +19,7 @@ class NutritionPlanBloc extends Bloc<NutritionPlanEvent, NutritionPlanState> {
     emit(const NutritionPlanState.loading());
     try {
       final response = await NutritionPlannerServices.getNutritionPlan(
-        nutritionPlannerData: event.nutritionPlannerData,
+        petId: event.petId,
       );
       emit(NutritionPlanState.success(response: response));
     } catch (e) {

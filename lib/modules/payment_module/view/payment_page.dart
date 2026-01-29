@@ -94,32 +94,49 @@ class _PaymentPageState extends State<PaymentPage> {
           listener: (context, state) {
             switch (state) {
               case PaymentLoading _:
-                OverlayLoader.show(context, message: 'Submitting payment...');
+                LottieOverlayLoader.show(
+                  context,
+                  state: LottieLoaderState.loading,
+                  message: 'Submitting payment...',
+                );
                 break;
               case PaymentError(:final errorMessage):
-                OverlayLoader.hide();
-                CustomSnackBar.showError(context, message: errorMessage);
+                LottieOverlayLoader.show(
+                  context,
+                  state: LottieLoaderState.failure,
+                  message: errorMessage,
+                );
                 break;
               case UpiPaymentSuccess(:final response):
-                OverlayLoader.hide();
-                CustomSnackBar.showSuccess(context, message: response.message);
-                Navigator.pushAndRemoveUntil(
+                LottieOverlayLoader.show(
                   context,
-                  HomePage.route(),
-                  (_) => false,
+                  state: LottieLoaderState.success,
+                  message: response.message,
+                  onDismiss: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      HomePage.route(),
+                      (_) => false,
+                    );
+                  },
                 );
                 break;
               case CardPaymentSuccess(:final response):
-                OverlayLoader.hide();
-                CustomSnackBar.showSuccess(context, message: response.message);
-                Navigator.pushAndRemoveUntil(
+                LottieOverlayLoader.show(
                   context,
-                  HomePage.route(),
-                  (_) => false,
+                  state: LottieLoaderState.success,
+                  message: response.message,
+                  onDismiss: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      HomePage.route(),
+                      (_) => false,
+                    );
+                  },
                 );
                 break;
               default:
-                OverlayLoader.hide();
+                LottieOverlayLoader.hide();
                 break;
             }
           },

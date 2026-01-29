@@ -119,11 +119,11 @@ return gettingNutritionPlan(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( NutritionPlannerData nutritionPlannerData)?  gettingNutritionPlan,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( int petId)?  gettingNutritionPlan,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _GettingNutritionPlan() when gettingNutritionPlan != null:
-return gettingNutritionPlan(_that.nutritionPlannerData);case _:
+return gettingNutritionPlan(_that.petId);case _:
   return orElse();
 
 }
@@ -141,11 +141,11 @@ return gettingNutritionPlan(_that.nutritionPlannerData);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( NutritionPlannerData nutritionPlannerData)  gettingNutritionPlan,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( int petId)  gettingNutritionPlan,}) {final _that = this;
 switch (_that) {
 case _Started():
 return started();case _GettingNutritionPlan():
-return gettingNutritionPlan(_that.nutritionPlannerData);}
+return gettingNutritionPlan(_that.petId);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -159,11 +159,11 @@ return gettingNutritionPlan(_that.nutritionPlannerData);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( NutritionPlannerData nutritionPlannerData)?  gettingNutritionPlan,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( int petId)?  gettingNutritionPlan,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _GettingNutritionPlan() when gettingNutritionPlan != null:
-return gettingNutritionPlan(_that.nutritionPlannerData);case _:
+return gettingNutritionPlan(_that.petId);case _:
   return null;
 
 }
@@ -207,10 +207,10 @@ String toString() {
 
 
 class _GettingNutritionPlan implements NutritionPlanEvent {
-  const _GettingNutritionPlan({required this.nutritionPlannerData});
+  const _GettingNutritionPlan({required this.petId});
   
 
- final  NutritionPlannerData nutritionPlannerData;
+ final  int petId;
 
 /// Create a copy of NutritionPlanEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -222,16 +222,16 @@ _$GettingNutritionPlanCopyWith<_GettingNutritionPlan> get copyWith => __$Getting
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GettingNutritionPlan&&(identical(other.nutritionPlannerData, nutritionPlannerData) || other.nutritionPlannerData == nutritionPlannerData));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GettingNutritionPlan&&(identical(other.petId, petId) || other.petId == petId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,nutritionPlannerData);
+int get hashCode => Object.hash(runtimeType,petId);
 
 @override
 String toString() {
-  return 'NutritionPlanEvent.gettingNutritionPlan(nutritionPlannerData: $nutritionPlannerData)';
+  return 'NutritionPlanEvent.gettingNutritionPlan(petId: $petId)';
 }
 
 
@@ -242,7 +242,7 @@ abstract mixin class _$GettingNutritionPlanCopyWith<$Res> implements $NutritionP
   factory _$GettingNutritionPlanCopyWith(_GettingNutritionPlan value, $Res Function(_GettingNutritionPlan) _then) = __$GettingNutritionPlanCopyWithImpl;
 @useResult
 $Res call({
- NutritionPlannerData nutritionPlannerData
+ int petId
 });
 
 
@@ -259,10 +259,10 @@ class __$GettingNutritionPlanCopyWithImpl<$Res>
 
 /// Create a copy of NutritionPlanEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? nutritionPlannerData = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? petId = null,}) {
   return _then(_GettingNutritionPlan(
-nutritionPlannerData: null == nutritionPlannerData ? _self.nutritionPlannerData : nutritionPlannerData // ignore: cast_nullable_to_non_nullable
-as NutritionPlannerData,
+petId: null == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

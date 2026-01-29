@@ -6,15 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:petcure_user_app/core/constants/app_constants.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
-import 'package:petcure_user_app/modules/nutrition_planner_module/classes/nutrition_planner_data.dart';
 import 'package:petcure_user_app/modules/nutrition_planner_module/models/nutrition_planner_response_model.dart';
 
 class NutritionPlannerServices {
   static Future<NutritionPlannerResponseModel> getNutritionPlan({
-    required NutritionPlannerData nutritionPlannerData,
+    required int petId,
   }) async {
     try {
-      Map<String, dynamic> params = nutritionPlannerData.toJson();
+      Map<String, dynamic> params = {'pet_id': petId};
 
       final resp = await http
           .post(
