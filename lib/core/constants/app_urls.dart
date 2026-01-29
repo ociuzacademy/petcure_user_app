@@ -55,4 +55,7 @@ class AppUrls {
 
   static const String cancelAppointmentUrl = '$userUrl/cancel_appointment/';
   static const String nextVaccineUrl = '$userUrl/next_vaccine/';
+
+  static const String viewFeedbacksUrl = '$userUrl/view_feedbacks/';
+  static const String viewComplaintsUrl = '$userUrl/view_complaints/';
 }

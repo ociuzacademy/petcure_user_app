@@ -29,3 +29,5 @@ export 'package:petcure_user_app/modules/nutrition_planner_module/bloc/nutrition
 export 'package:petcure_user_app/modules/pet_details_module/bloc/delete_pet_bloc.dart';
 export 'package:petcure_user_app/modules/appointment_details_module/bloc/cancel_appointment/cancel_appointment_bloc.dart';
 export 'package:petcure_user_app/modules/appointment_booking_module/cubit/next_vaccine/next_vaccine_cubit.dart';
+export 'package:petcure_user_app/modules/feedbacks_and_complaints_module/cubit/feedbacks/feedbacks_cubit.dart';
+export 'package:petcure_user_app/modules/feedbacks_and_complaints_module/cubit/complaints/complaints_cubit.dart';

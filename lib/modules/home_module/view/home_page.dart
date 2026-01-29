@@ -6,6 +6,7 @@ import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/appointment_history_module/view/appointment_history_page.dart';
 import 'package:petcure_user_app/modules/cart_module/view/cart_page.dart';
 import 'package:petcure_user_app/modules/chat_module/view/chat_page.dart';
+import 'package:petcure_user_app/modules/feedbacks_and_complaints_module/view/feedbacks_and_complaints_page.dart';
 import 'package:petcure_user_app/modules/home_module/utils/home_page_helper.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/doctor_booking_widget.dart';
 import 'package:petcure_user_app/modules/home_module/widgets/pet_products_widget.dart';
@@ -191,6 +192,20 @@ class _HomePageState extends State<HomePage> {
               ),
               onTap: () {
                 pushWithoutNavBar(context, NutritionPlannerPage.route());
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.feedback, color: AppPalette.firstColor),
+              title: const Text(
+                'Feedbacks & Complaints',
+                style: TextStyle(
+                  color: AppPalette.firstColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+              onTap: () {
+                pushWithoutNavBar(context, FeedbacksAndComplaintsPage.route());
               },
             ),
             ListTile(
