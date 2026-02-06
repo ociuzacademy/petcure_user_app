@@ -309,26 +309,6 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                                 ),
                               ),
                             ),
-                            IconButton(
-                              onPressed: () async {
-                                final url =
-                                    'tel://${widget.doctor.phoneNumber}';
-                                if (await canLaunchUrlString(url)) {
-                                  await launchUrlString(url);
-                                } else {
-                                  if (context.mounted) {
-                                    CustomSnackBar.showError(
-                                      context,
-                                      message: 'Could not launch phone dialer',
-                                    );
-                                  }
-                                }
-                              },
-                              icon: const Icon(
-                                Icons.phone,
-                                color: AppPalette.firstColor,
-                              ),
-                            ),
                           ],
                         ),
                         SizedBox(height: screenSize.height * 0.02),
@@ -425,6 +405,24 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
               ),
             ),
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            final url = 'tel://${widget.doctor.phoneNumber}';
+            if (await canLaunchUrlString(url)) {
+              await launchUrlString(url);
+            } else {
+              if (context.mounted) {
+                CustomSnackBar.showError(
+                  context,
+                  message: 'Could not launch phone dialer',
+                );
+              }
+            }
+          },
+          backgroundColor: AppPalette.firstColor,
+          foregroundColor: AppPalette.whiteColor,
+          child: const Icon(Icons.phone),
         ),
       ),
     );
