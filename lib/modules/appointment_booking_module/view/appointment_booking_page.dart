@@ -408,7 +408,19 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            final url = 'tel://${widget.doctor.phoneNumber}';
+            final raw = widget.doctor.phoneNumber;
+            final normalized = raw.replaceAll(RegExp(r'[^0-9+]+'), '');
+            final isValid = RegExp(r'^\\+?[0-9]{6,15}$').hasMatch(normalized);
+            if (normalized.isEmpty || !isValid) {
+              if (context.mounted) {
+                CustomSnackBar.showError(
+                  context,
+                  message: 'Invalid phone number',
+                );
+              }
+              return;
+            }
+            final url = 'tel:$normalized';
             if (await canLaunchUrlString(url)) {
               await launchUrlString(url);
             } else {
