@@ -18,13 +18,26 @@ class PrescriptionDetailsDoctorCard extends StatelessWidget {
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.all(12),
-        leading: CircleAvatar(
-          radius: 28,
-          backgroundImage: CachedNetworkImageProvider(
-            '${AppUrls.baseUrl}${doctor.image}',
+        leading: Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.blue[50],
           ),
-          backgroundColor: Colors.blue[50],
-          child: doctor.image.isEmpty ? const Icon(Icons.person) : null,
+          child: doctor.image != null && doctor.image!.isNotEmpty
+              ? ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl: '${AppUrls.baseUrl}${doctor.image}',
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.person),
+                  ),
+                )
+              : const Icon(Icons.person),
         ),
         title: Text(
           doctor.name,

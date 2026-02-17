@@ -5,6 +5,8 @@ import 'package:petcure_user_app/modules/prescription_details_module/helper/pres
 import 'package:petcure_user_app/modules/prescription_details_module/widgets/prescription_details_content.dart';
 import 'package:petcure_user_app/widgets/custom_error_widget.dart';
 import 'package:petcure_user_app/widgets/loaders/custom_loading_widget.dart';
+import 'package:petcure_user_app/widgets/loaders/overlay_loader.dart';
+import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 
 class PrescriptionDetailsPage extends StatefulWidget {
   final int prescriptionId;
@@ -42,37 +44,61 @@ class _PrescriptionDetailsPageState extends State<PrescriptionDetailsPage> {
         title: const Text('Prescription Details'),
         actions: [
           IconButton(
-            onPressed: () {
-              // Empty function as requested
-            },
+            onPressed: _helper.sharePrescription,
             icon: const Icon(Icons.download),
             tooltip: 'Download',
           ),
         ],
       ),
-      body: BlocBuilder<PrescriptionDetailsCubit, PrescriptionDetailsState>(
-        builder: (context, state) {
+      body: BlocListener<SharePrescriptionBloc, SharePrescriptionState>(
+        listener: (context, state) {
           switch (state) {
-            case PrescriptionDetailsInitial():
-              return const SizedBox.shrink();
+            case SharePrescriptionLoading():
+              OverlayLoader.show(context, message: 'Downloading...');
+              break;
 
-            case PrescriptionDetailsLoading():
-              return const CustomLoadingWidget(
-                message: 'Loading prescription details...',
+            case SharePrescriptionSuccess():
+              OverlayLoader.hide();
+              CustomSnackBar.showSuccess(
+                context,
+                message: 'Prescription downloaded successfully',
               );
+              break;
 
-            case PrescriptionDetailsLoaded(prescriptions: final data):
-              return PrescriptionDetailsContent(
-                prescription: data.prescription,
-              );
-
-            case PrescriptionDetailsError(error: final error):
-              return CustomErrorWidget(
-                onRetry: _helper.getPrescriptionDetails,
-                errorMessage: error,
-              );
+            case SharePrescriptionFailure(error: final error):
+              OverlayLoader.hide();
+              CustomSnackBar.showError(context, message: error);
+              break;
+            default:
+              OverlayLoader.hide();
+              break;
           }
         },
+        child: BlocBuilder<PrescriptionDetailsCubit, PrescriptionDetailsState>(
+          builder: (context, state) {
+            switch (state) {
+              case PrescriptionDetailsInitial():
+                return const SizedBox.shrink();
+
+              case PrescriptionDetailsLoading():
+                return const CustomLoadingWidget(
+                  message: 'Loading prescription details...',
+                );
+
+              case PrescriptionDetailsLoaded(prescriptions: final data):
+                return PrescriptionDetailsContent(
+                  prescription: data.prescription,
+                  onSharePrescription: _helper.sharePrescription,
+                );
+
+              case PrescriptionDetailsError(error: final error):
+                return CustomErrorWidget(
+                  onRetry: _helper.getPrescriptionDetails,
+                  errorMessage: error,
+                );
+            }
+          },
+        ),
       ),
     );
   }

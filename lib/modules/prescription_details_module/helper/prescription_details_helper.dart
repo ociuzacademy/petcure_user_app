@@ -15,4 +15,13 @@ class PrescriptionDetailsHelper {
     final cubit = context.read<PrescriptionDetailsCubit>();
     cubit.getPrescriptionDetails(prescriptionId: prescriptionId);
   }
+
+  void sharePrescription() {
+    final bloc = context.read<SharePrescriptionBloc>();
+    bloc.add(
+      SharePrescriptionEvent.sharePrescriptionDocument(
+        prescriptionId: prescriptionId,
+      ),
+    );
+  }
 }

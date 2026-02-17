@@ -62,6 +62,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ComplaintsCubit()),
         BlocProvider(create: (context) => PrescriptionsCubit()),
         BlocProvider(create: (context) => PrescriptionDetailsCubit()),
+        BlocProvider(create: (context) => SharePrescriptionBloc()),
       ],
       child: MaterialApp(
         title: 'PetCure User',

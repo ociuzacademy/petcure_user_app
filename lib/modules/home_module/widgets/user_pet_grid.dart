@@ -28,7 +28,7 @@ class UserPetGrid extends StatelessWidget {
         category: apiPet.categoryName,
         subCategoryId: apiPet.subCategory,
         subCategory: apiPet.subCategoryName,
-        photoUrl: '${AppUrls.baseUrl}/${apiPet.petImage}',
+        photoUrl: '${AppUrls.baseUrl}${apiPet.petImage}',
         weight: apiPet.weight,
         gender: apiPet.gender,
         healthConditions: apiPet.healthCondition,

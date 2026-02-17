@@ -1,6 +1,6 @@
 enum MedicineTime {
   morning('morning'),
-  afternoon('afternoon'),
+  noon('noon'),
   evening('evening'),
   night('night');
 

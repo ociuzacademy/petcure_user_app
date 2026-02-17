@@ -9,9 +9,14 @@ import 'package:petcure_user_app/modules/prescription_details_module/widgets/pre
 import 'package:petcure_user_app/modules/prescription_details_module/widgets/prescription_notes_box.dart';
 
 class PrescriptionDetailsContent extends StatelessWidget {
-  const PrescriptionDetailsContent({super.key, required this.prescription});
+  const PrescriptionDetailsContent({
+    super.key,
+    required this.prescription,
+    required this.onSharePrescription,
+  });
 
   final Prescription prescription;
+  final VoidCallback onSharePrescription;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +46,7 @@ class PrescriptionDetailsContent extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
-              onPressed: () {
-                // Empty for now
-              },
+              onPressed: onSharePrescription,
               icon: const Icon(Icons.download),
               label: const Text('Download Prescription'),
             ),

@@ -196,7 +196,7 @@ class DoctorDetails {
   final String email;
   final String phone;
   final String address;
-  final String image;
+  final String? image;
 
   const DoctorDetails({
     required this.id,
@@ -204,7 +204,7 @@ class DoctorDetails {
     required this.email,
     required this.phone,
     required this.address,
-    required this.image,
+    this.image,
   });
 
   DoctorDetails copyWith({
