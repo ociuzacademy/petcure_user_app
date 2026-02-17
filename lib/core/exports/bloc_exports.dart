@@ -31,3 +31,5 @@ export 'package:petcure_user_app/modules/appointment_details_module/bloc/cancel_
 export 'package:petcure_user_app/modules/appointment_booking_module/cubit/next_vaccine/next_vaccine_cubit.dart';
 export 'package:petcure_user_app/modules/feedbacks_and_complaints_module/cubit/feedbacks/feedbacks_cubit.dart';
 export 'package:petcure_user_app/modules/feedbacks_and_complaints_module/cubit/complaints/complaints_cubit.dart';
+export 'package:petcure_user_app/modules/prescriptions_module/cubit/prescriptions_cubit.dart';
+export 'package:petcure_user_app/modules/prescription_details_module/cubit/prescription_details_cubit.dart';

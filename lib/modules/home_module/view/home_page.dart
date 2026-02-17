@@ -15,6 +15,7 @@ import 'package:petcure_user_app/modules/home_module/widgets/user_profile_widget
 import 'package:petcure_user_app/modules/login_module/view/login_page.dart';
 import 'package:petcure_user_app/modules/nutrition_planner_module/view/nutrition_planner_page.dart';
 import 'package:petcure_user_app/modules/orders_list_module/view/orders_list_page.dart';
+import 'package:petcure_user_app/modules/prescriptions_module/view/prescriptions_page.dart';
 import 'package:petcure_user_app/widgets/loaders/overlay_loader.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 
@@ -206,6 +207,23 @@ class _HomePageState extends State<HomePage> {
               ),
               onTap: () {
                 pushWithoutNavBar(context, FeedbacksAndComplaintsPage.route());
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.medication,
+                color: AppPalette.firstColor,
+              ),
+              title: const Text(
+                'Prescription List',
+                style: TextStyle(
+                  color: AppPalette.firstColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+              onTap: () {
+                pushWithoutNavBar(context, PrescriptionsPage.route());
               },
             ),
             ListTile(

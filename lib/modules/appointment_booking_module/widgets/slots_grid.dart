@@ -47,13 +47,19 @@ class _SlotsGridState extends State<SlotsGrid> {
       itemBuilder: (context, index) {
         Slot slot = _slots[index];
         bool isSelected = widget.selectedSlot == slot;
+        bool availability = slot.cancelledByDoctor ? false : slot.availability;
+        debugPrint('Slot: ${slot.startTime} - ${slot.endTime}');
+        debugPrint('Cancelled by doctor: ${slot.cancelledByDoctor}');
+        debugPrint('Availability: ${slot.availability}');
+        debugPrint('Availability: $availability');
+        debugPrint('Selected: $isSelected');
+        debugPrint('--------------------------------------------------');
 
         return SlotWidget(
           slot: slot,
-          availability: slot.availability,
+          availability: availability,
           isSelected: isSelected,
-          onSelect: () =>
-              slot.availability ? provider.selectTimeSlot(slot) : null,
+          onSelect: () => availability ? provider.selectTimeSlot(slot) : null,
         );
       },
     );

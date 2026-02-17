@@ -58,4 +58,7 @@ class AppUrls {
 
   static const String viewFeedbacksUrl = '$userUrl/view_feedbacks/';
   static const String viewComplaintsUrl = '$userUrl/view_complaints/';
+
+  static const String prescriptionsUrl = '$userUrl/prescriptions/';
+  static const String prescriptionViewUrl = '$userUrl/prescription-view/';
 }

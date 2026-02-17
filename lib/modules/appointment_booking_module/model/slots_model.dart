@@ -46,6 +46,8 @@ class Slot {
   final String startTime;
   final String endTime;
   final bool availability;
+  final int bookedCount;
+  final bool cancelledByDoctor;
   final String remarks;
 
   const Slot({
@@ -53,6 +55,8 @@ class Slot {
     required this.startTime,
     required this.endTime,
     required this.availability,
+    required this.bookedCount,
+    required this.cancelledByDoctor,
     required this.remarks,
   });
 
@@ -61,12 +65,16 @@ class Slot {
     String? startTime,
     String? endTime,
     bool? availability,
+    int? bookedCount,
+    bool? cancelledByDoctor,
     String? remarks,
   }) => Slot(
     slotId: slotId ?? this.slotId,
     startTime: startTime ?? this.startTime,
     endTime: endTime ?? this.endTime,
     availability: availability ?? this.availability,
+    bookedCount: bookedCount ?? this.bookedCount,
+    cancelledByDoctor: cancelledByDoctor ?? this.cancelledByDoctor,
     remarks: remarks ?? this.remarks,
   );
 
@@ -75,6 +83,8 @@ class Slot {
     startTime: json['start_time'],
     endTime: json['end_time'],
     availability: json['availability'],
+    bookedCount: json['booked_count'],
+    cancelledByDoctor: json['cancelled_by_doctor'],
     remarks: json['remarks'],
   );
 
@@ -83,6 +93,8 @@ class Slot {
     'start_time': startTime,
     'end_time': endTime,
     'availability': availability,
+    'booked_count': bookedCount,
+    'cancelled_by_doctor': cancelledByDoctor,
     'remarks': remarks,
   };
 }
