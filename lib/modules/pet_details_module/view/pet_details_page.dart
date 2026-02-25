@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
 
-import 'package:petcure_user_app/core/helpers/app_helpers.dart';
+import 'package:petcure_user_app/core/utils/app_utils.dart';
 import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
 import 'package:petcure_user_app/modules/pet_details_module/utils/pet_details_helper.dart';
 import 'package:petcure_user_app/modules/pet_details_module/widgets/detail_card.dart';
@@ -164,7 +164,7 @@ class _PetDetailsPageState extends State<PetDetailsPage> {
                             icon: Icons.cake,
                             title: 'Age',
                             value:
-                                '${AppHelpers.formatDate(pet.birthDate).toStringAsFixed(1)} Years',
+                                '${AppUtils.formatDate(pet.birthDate).toStringAsFixed(1)} Years',
                           ),
                           DetailCard(
                             icon: Icons.transgender,

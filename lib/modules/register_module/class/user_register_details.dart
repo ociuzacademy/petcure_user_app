@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:petcure_user_app/core/models/location.dart';
+import 'package:petcure_user_app/core/models/place_model.dart';
 
 class UserRegisterDetails {
   final String username;
@@ -11,6 +12,7 @@ class UserRegisterDetails {
   final Location location;
   final String password;
   final File? image;
+  final PlaceModel place;
   const UserRegisterDetails({
     required this.username,
     required this.email,
@@ -19,5 +21,6 @@ class UserRegisterDetails {
     required this.location,
     required this.password,
     this.image,
+    required this.place,
   });
 }

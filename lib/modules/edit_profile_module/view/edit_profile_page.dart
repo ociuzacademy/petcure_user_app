@@ -4,16 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'package:petcure_user_app/core/exports/bloc_exports.dart';
+import 'package:petcure_user_app/core/models/place_model.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/edit_profile_module/providers/edit_profile_provider.dart';
 import 'package:petcure_user_app/modules/edit_profile_module/utils/edit_profile_helper.dart';
 import 'package:petcure_user_app/modules/home_module/view/home_page.dart';
-import 'package:petcure_user_app/widgets/buttons/custom_button.dart';
+import 'package:petcure_user_app/widgets/app_widget_export.dart';
 import 'package:petcure_user_app/widgets/custom_error_widget.dart';
 import 'package:petcure_user_app/widgets/loaders/custom_loading_widget.dart';
-import 'package:petcure_user_app/widgets/loaders/overlay_loader.dart';
-import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
-import 'package:petcure_user_app/widgets/text_fields/normal_text_field.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -203,6 +201,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       isMultiline: true,
                                       focusNode: provider.addressFocusNode,
                                       nextFocusNode: provider.passwordFocusNode,
+                                    ),
+                                    SizedBox(height: screenSize.height * 0.025),
+
+                                    // Place Field
+                                    LabelledDropdown<PlaceModel>(
+                                      value: provider.place,
+                                      items: provider.places,
+                                      labelText: 'Place',
+                                      hintText: 'Select your place',
+                                      prefixIcon: const Icon(
+                                        Icons.place_outlined,
+                                      ),
+                                      itemLabelBuilder: (place) =>
+                                          place.displayName,
+                                      onChanged: (newValue) =>
+                                          provider.place = newValue,
+                                      validator: provider.validatePlace,
                                     ),
                                     SizedBox(height: screenSize.height * 0.025),
 

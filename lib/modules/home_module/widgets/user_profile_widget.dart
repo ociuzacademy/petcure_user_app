@@ -93,6 +93,11 @@ class _UserProfileWidgetState extends State<UserProfileWidget> {
                       title: 'Address',
                       value: userProfileData.address,
                     ),
+                    ProfileItem(
+                      icon: Icons.location_on,
+                      title: 'Place',
+                      value: userProfileData.place,
+                    ),
 
                     const SizedBox(height: 20),
 

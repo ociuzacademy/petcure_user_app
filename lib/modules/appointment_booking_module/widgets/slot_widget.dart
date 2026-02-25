@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:petcure_user_app/core/helpers/app_helpers.dart';
+import 'package:petcure_user_app/core/utils/app_utils.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/appointment_booking_module/model/slots_model.dart';
 
@@ -20,7 +20,7 @@ class SlotWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String slotTimeRange =
-        '${AppHelpers.formatTimeOfDayTo12Hour(AppHelpers.parseTimeString(slot.startTime))} - ${AppHelpers.formatTimeOfDayTo12Hour(AppHelpers.parseTimeString(slot.endTime))}';
+        '${AppUtils.formatTimeOfDayTo12Hour(AppUtils.parseTimeString(slot.startTime))} - ${AppUtils.formatTimeOfDayTo12Hour(AppUtils.parseTimeString(slot.endTime))}';
     return GestureDetector(
       onTap: availability ? onSelect : null,
       child: Container(

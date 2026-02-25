@@ -4,11 +4,15 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:petcure_user_app/core/constants/app_urls.dart';
 import 'package:petcure_user_app/core/models/api_models/user_profile_model.dart';
+import 'package:petcure_user_app/core/models/place_model.dart';
+import 'package:petcure_user_app/core/utils/app_utils.dart';
 import 'package:petcure_user_app/modules/edit_profile_module/classes/edit_profile_data.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 
 class EditProfileProvider with ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  final List<PlaceModel> places = AppUtils.getPlaces();
 
   // Text Editing Controllers
   final TextEditingController usernameController = TextEditingController();
@@ -30,6 +34,7 @@ class EditProfileProvider with ChangeNotifier {
   UserProfileModel? _currentUserProfileData;
   File? _profileImage;
   String? _initialProfileImageUrl;
+  PlaceModel? _place;
   bool _isLoadingImage = false;
   bool _isUpdatingProfile = false;
   bool _isLoadingLocation = false;
@@ -38,6 +43,7 @@ class EditProfileProvider with ChangeNotifier {
   UserProfileModel? get currentUserProfileData => _currentUserProfileData;
   File? get profileImage => _profileImage;
   String? get initialProfileImageUrl => _initialProfileImageUrl;
+  PlaceModel? get place => _place;
   bool get isLoadingImage => _isLoadingImage;
   bool get isUpdatingProfile => _isUpdatingProfile;
   bool get isLoadingLocation => _isLoadingLocation;
@@ -63,6 +69,11 @@ class EditProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  set place(PlaceModel? value) {
+    _place = value;
+    notifyListeners();
+  }
+
   // Load initial user data (replace with actual API call)
   Future<void> loadUserData(UserProfileModel userProfileData) async {
     await Future.delayed(const Duration(milliseconds: 500));
@@ -79,6 +90,10 @@ class EditProfileProvider with ChangeNotifier {
     _initialProfileImageUrl = userProfileData.image != null
         ? '${AppUrls.baseUrl}${userProfileData.image}'
         : null;
+    place = places.firstWhere(
+      (place) => place.placeValue == userProfileData.place,
+      orElse: () => places.first,
+    );
 
     notifyListeners();
   }
@@ -249,6 +264,13 @@ class EditProfileProvider with ChangeNotifier {
     return null;
   }
 
+  String? validatePlace(PlaceModel? value) {
+    if (value == null) {
+      return 'Please select your place';
+    }
+    return null;
+  }
+
   // Check if form is valid and prepare data for registration
   EditProfileData? validateForm(BuildContext context) {
     FocusScope.of(context).unfocus();
@@ -294,6 +316,9 @@ class EditProfileProvider with ChangeNotifier {
       ),
       password: _currentUserProfileData!.password != password ? password : null,
       image: profileImage,
+      place: _currentUserProfileData!.place != _place!.placeValue
+          ? _place
+          : null,
     );
   }
 

@@ -54,6 +54,10 @@ class EditProfileServices {
             .toString();
       }
 
+      if (updatedProfileData.place != null) {
+        request.fields['place'] = updatedProfileData.place!.placeValue;
+      }
+
       if (updatedProfileData.image != null) {
         var imageStream = http.ByteStream(updatedProfileData.image!.openRead());
         var imageLength = await updatedProfileData.image!.length();

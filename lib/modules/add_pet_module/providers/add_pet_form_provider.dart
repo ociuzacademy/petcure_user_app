@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:petcure_user_app/core/cubit/pet_category/pet_category_cubit.dart';
-import 'package:petcure_user_app/core/helpers/app_helpers.dart';
+import 'package:petcure_user_app/core/utils/app_utils.dart';
 import 'package:petcure_user_app/core/models/age.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_category_model.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_sub_category_model.dart';
@@ -125,7 +125,7 @@ class AddPetFormProvider with ChangeNotifier {
 
     if (picked != null) {
       birthDate = picked;
-      final Age age = AppHelpers.calculateAge(picked);
+      final Age age = AppUtils.calculateAge(picked);
       ageYearsController.text = age.ageInYears.toString();
       ageMonthsController.text = age.ageInMonths.toString();
       notifyListeners();

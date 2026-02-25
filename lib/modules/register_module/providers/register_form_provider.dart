@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:petcure_user_app/core/models/location.dart';
+import 'package:petcure_user_app/core/models/place_model.dart';
+import 'package:petcure_user_app/core/utils/app_utils.dart';
 import 'package:petcure_user_app/modules/register_module/class/user_register_details.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
 
 class RegisterFormProvider with ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  final List<PlaceModel> places = AppUtils.getPlaces();
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -26,10 +30,12 @@ class RegisterFormProvider with ChangeNotifier {
 
   File? _profileImage;
   bool _isLoadingLocation = false;
+  PlaceModel? _selectedPlace;
 
   // Getters
   File? get profileImage => _profileImage;
   bool get isLoadingLocation => _isLoadingLocation;
+  PlaceModel? get selectedPlace => _selectedPlace;
 
   // Setters with notifyListeners
   set profileImage(File? value) {
@@ -39,6 +45,11 @@ class RegisterFormProvider with ChangeNotifier {
 
   set isLoadingLocation(bool value) {
     _isLoadingLocation = value;
+    notifyListeners();
+  }
+
+  set selectedPlace(PlaceModel? value) {
+    _selectedPlace = value;
     notifyListeners();
   }
 
@@ -204,6 +215,13 @@ class RegisterFormProvider with ChangeNotifier {
     return null;
   }
 
+  String? validatePlace(PlaceModel? value) {
+    if (value == null) {
+      return 'Please select your place';
+    }
+    return null;
+  }
+
   // Check if form is valid and prepare data for registration
   UserRegisterDetails? validateForm(BuildContext context) {
     FocusScope.of(context).unfocus();
@@ -213,6 +231,11 @@ class RegisterFormProvider with ChangeNotifier {
         context,
         message: 'Please fill all the fields correctly',
       );
+      return null;
+    }
+
+    if (selectedPlace == null) {
+      CustomSnackBar.showError(context, message: 'Please select your place');
       return null;
     }
 
@@ -235,6 +258,7 @@ class RegisterFormProvider with ChangeNotifier {
       ),
       password: passwordController.text.trim(),
       image: profileImage,
+      place: selectedPlace!,
     );
   }
 
@@ -248,6 +272,7 @@ class RegisterFormProvider with ChangeNotifier {
     latitudeController.clear();
     longitudeController.clear();
     profileImage = null;
+    selectedPlace = null;
     notifyListeners();
   }
 

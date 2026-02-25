@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_user_app/core/models/place_model.dart';
 import 'package:petcure_user_app/modules/register_module/typedefs/register_method.dart';
 import 'package:provider/provider.dart';
 
@@ -214,6 +215,17 @@ class RegisterPageContent extends StatelessWidget {
                           isMultiline: true,
                           focusNode: registerProvider.addressFocusNode,
                           nextFocusNode: registerProvider.passwordFocusNode,
+                        ),
+                        LabelledDropdown<PlaceModel>(
+                          value: registerProvider.selectedPlace,
+                          items: registerProvider.places,
+                          labelText: 'Place',
+                          hintText: 'Select your place',
+                          prefixIcon: const Icon(Icons.place_outlined),
+                          itemLabelBuilder: (place) => place.displayName,
+                          onChanged: (newValue) =>
+                              registerProvider.selectedPlace = newValue,
+                          validator: registerProvider.validatePlace,
                         ),
                         const SizedBox(height: 24),
 

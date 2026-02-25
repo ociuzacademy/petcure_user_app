@@ -53,6 +53,7 @@ class Data {
   final String latitude;
   final String longitude;
   final int numberOfPets;
+  final String place;
 
   const Data({
     required this.id,
@@ -65,6 +66,7 @@ class Data {
     required this.latitude,
     required this.longitude,
     required this.numberOfPets,
+    required this.place,
   });
 
   Data copyWith({
@@ -78,6 +80,7 @@ class Data {
     String? latitude,
     String? longitude,
     int? numberOfPets,
+    String? place,
   }) => Data(
     id: id ?? this.id,
     username: username ?? this.username,
@@ -89,6 +92,7 @@ class Data {
     latitude: latitude ?? this.latitude,
     longitude: longitude ?? this.longitude,
     numberOfPets: numberOfPets ?? this.numberOfPets,
+    place: place ?? this.place,
   );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -102,6 +106,7 @@ class Data {
     latitude: json['latitude'],
     longitude: json['longitude'],
     numberOfPets: json['number_of_pets'],
+    place: json['place'],
   );
 
   Map<String, dynamic> toJson() => {
@@ -115,5 +120,6 @@ class Data {
     'latitude': latitude,
     'longitude': longitude,
     'number_of_pets': numberOfPets,
+    'place': place,
   };
 }

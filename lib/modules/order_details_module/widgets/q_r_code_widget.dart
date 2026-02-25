@@ -72,91 +72,93 @@ class QRCodeWidget extends StatelessWidget {
           ),
 
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // QR Code
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withValues(alpha: 0.3),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: 250,
-                        height: 250,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // QR Code
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withValues(alpha: 0.3),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: AppPalette.blackColor,
-                            width: 2,
+                        child: Container(
+                          width: 250,
+                          height: 250,
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppPalette.blackColor,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: PrettyQrView(
-                          qrImage: QrImage(qrCode),
-                          decoration: const PrettyQrDecoration(
-                            shape: PrettyQrSmoothSymbol(),
-                            background: Colors.white,
-                            // color: Colors.black,
+                          child: PrettyQrView(
+                            qrImage: QrImage(qrCode),
+                            decoration: const PrettyQrDecoration(
+                              shape: PrettyQrSmoothSymbol(),
+                              background: Colors.white,
+                              // color: Colors.black,
+                            ),
+                            // size: 250,
                           ),
-                          // size: 250,
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 24),
+                    const SizedBox(height: 24),
 
-                  // Order Info
-                  Text(
-                    'Order ID: #$orderId',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                    // Order Info
+                    Text(
+                      'Order ID: #$orderId',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
+                    const SizedBox(height: 8),
 
-                  Text(
-                    'Scan this QR code for completing the order.',
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
+                    Text(
+                      'Scan this QR code for completing the order.',
+                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
 
-                  // Additional Info
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[50],
-                      borderRadius: BorderRadius.circular(12),
+                    // Additional Info
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[50],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        children: [
+                          InfoRow(label: 'Items', value: '${items.length}'),
+                          const SizedBox(height: 8),
+                          InfoRow(label: 'Total', value: '\u{20B9}$totalRate'),
+                          const SizedBox(height: 8),
+                          InfoRow(
+                            label: 'Est. Delivery',
+                            value: formatDeliveryDate(estimatedDeliveryDate),
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        InfoRow(label: 'Items', value: '${items.length}'),
-                        const SizedBox(height: 8),
-                        InfoRow(label: 'Total', value: '\u{20B9}$totalRate'),
-                        const SizedBox(height: 8),
-                        InfoRow(
-                          label: 'Est. Delivery',
-                          value: formatDeliveryDate(estimatedDeliveryDate),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

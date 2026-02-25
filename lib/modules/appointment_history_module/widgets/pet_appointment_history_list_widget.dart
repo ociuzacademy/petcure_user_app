@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:petcure_user_app/core/enums/booking_option.dart';
-import 'package:petcure_user_app/core/helpers/app_helpers.dart';
+import 'package:petcure_user_app/core/utils/app_utils.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/view/appointment_details_page.dart';
 import 'package:petcure_user_app/modules/appointment_history_module/cubit/appointment_history_cubit.dart';
 import 'package:petcure_user_app/modules/appointment_history_module/utils/appointment_history_helper.dart';
@@ -47,11 +47,11 @@ class PetAppointmentHistoryListWidget extends StatelessWidget {
               itemCount: petAppointmentHistory.totalBookings,
               itemBuilder: (context, index) {
                 final booking = petAppointmentHistory.bookings[index];
-                final String startTime = AppHelpers.formatTimeOfDayTo12Hour(
-                  AppHelpers.parseTimeString(booking.slotStart),
+                final String startTime = AppUtils.formatTimeOfDayTo12Hour(
+                  AppUtils.parseTimeString(booking.slotStart),
                 );
-                final String endTime = AppHelpers.formatTimeOfDayTo12Hour(
-                  AppHelpers.parseTimeString(booking.slotEnd),
+                final String endTime = AppUtils.formatTimeOfDayTo12Hour(
+                  AppUtils.parseTimeString(booking.slotEnd),
                 );
                 return Card(
                   child: ListTile(

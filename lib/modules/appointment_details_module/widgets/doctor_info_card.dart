@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petcure_user_app/core/enums/booking_option.dart';
-import 'package:petcure_user_app/core/helpers/app_helpers.dart';
+import 'package:petcure_user_app/core/utils/app_utils.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
 import 'package:petcure_user_app/modules/appointment_details_module/models/appointment_details_model.dart';
 import 'package:petcure_user_app/widgets/snackbars/custom_snack_bar.dart';
@@ -37,7 +37,7 @@ class DoctorInfoCard extends StatelessWidget {
     // Check if phone number should be shown
     final bool shouldShowPhone =
         appointmentData.appointmentType == BookingOption.audioCall &&
-        AppHelpers.isWithinAppointmentSlot(
+        AppUtils.isWithinAppointmentSlot(
           appointmentDate: appointmentData.date,
           slotStart: appointmentData.slotStart,
           slotEnd: appointmentData.slotEnd,

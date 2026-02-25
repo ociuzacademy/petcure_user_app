@@ -2,7 +2,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
-import 'package:petcure_user_app/core/helpers/app_helpers.dart';
+import 'package:petcure_user_app/core/utils/app_utils.dart';
 
 import 'package:petcure_user_app/core/models/pet.dart';
 import 'package:petcure_user_app/core/theme/app_palette.dart';
@@ -82,7 +82,7 @@ class PetCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'AGE: ${AppHelpers.formatDate(pet.birthDate).toStringAsFixed(1)} years',
+                      'AGE: ${AppUtils.formatDate(pet.birthDate).toStringAsFixed(1)} years',
                       style: TextStyle(fontSize: 15, color: Colors.grey[600]),
                     ),
                     const SizedBox(height: 4),

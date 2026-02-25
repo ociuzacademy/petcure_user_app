@@ -2,7 +2,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:petcure_user_app/core/helpers/app_helpers.dart';
+import 'package:petcure_user_app/core/utils/app_utils.dart';
 import 'package:petcure_user_app/core/models/api_models/pet_details_model.dart';
 import 'package:petcure_user_app/modules/update_pet_module/class/update_pet_details.dart';
 
@@ -54,7 +54,7 @@ class UpdatePetProvider with ChangeNotifier {
     _selectedGender = gender[0].toUpperCase() + gender.substring(1);
 
     // Calculate age from birth date if available
-    final age = AppHelpers.calculateAge(petDetails.pet.birthDate);
+    final age = AppUtils.calculateAge(petDetails.pet.birthDate);
     _ageYearsController.text = age.ageInYears.toString();
     _ageMonthsController.text = age.ageInMonths.toString();
     _birthDate = petDetails.pet.birthDate;
@@ -80,7 +80,7 @@ class UpdatePetProvider with ChangeNotifier {
   void setBirthDate(DateTime? date) {
     _birthDate = date;
     if (date != null) {
-      final age = AppHelpers.calculateAge(date);
+      final age = AppUtils.calculateAge(date);
       _ageYearsController.text = age.ageInYears.toString();
       _ageMonthsController.text = age.ageInMonths.toString();
     }

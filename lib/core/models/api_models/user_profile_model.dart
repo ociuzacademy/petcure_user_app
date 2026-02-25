@@ -15,6 +15,7 @@ class UserProfileModel {
   final String username;
   final String email;
   final String address;
+  final String place;
   final String password;
   final String phone;
   final String? image;
@@ -27,6 +28,7 @@ class UserProfileModel {
     required this.username,
     required this.email,
     required this.address,
+    required this.place,
     required this.password,
     required this.phone,
     this.image,
@@ -40,6 +42,7 @@ class UserProfileModel {
     String? username,
     String? email,
     String? address,
+    String? place,
     String? password,
     String? phone,
     String? image,
@@ -51,6 +54,7 @@ class UserProfileModel {
     username: username ?? this.username,
     email: email ?? this.email,
     address: address ?? this.address,
+    place: place ?? this.place,
     password: password ?? this.password,
     phone: phone ?? this.phone,
     image: image ?? this.image,
@@ -65,6 +69,7 @@ class UserProfileModel {
         username: json['username'],
         email: json['email'],
         address: json['address'],
+        place: json['place'],
         password: json['password'],
         phone: json['phone'],
         image: json['image'],
@@ -78,6 +83,7 @@ class UserProfileModel {
     'username': username,
     'email': email,
     'address': address,
+    'place': place,
     'password': password,
     'phone': phone,
     'image': image,

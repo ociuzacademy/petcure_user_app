@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:petcure_user_app/core/models/place_model.dart';
+
 class EditProfileData {
   final String? username;
   final String? email;
@@ -9,6 +11,7 @@ class EditProfileData {
   final UpdatedLocation location;
   final String? password;
   final File? image;
+  final PlaceModel? place;
   const EditProfileData({
     this.username,
     this.email,
@@ -17,6 +20,7 @@ class EditProfileData {
     required this.location,
     this.password,
     this.image,
+    this.place,
   });
 }
 

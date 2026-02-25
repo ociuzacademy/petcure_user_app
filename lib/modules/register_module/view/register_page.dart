@@ -1,6 +1,6 @@
 // register_page.dart
 import 'package:flutter/material.dart';
-import 'package:petcure_user_app/modules/register_module/utils/register_helper.dart';
+import 'package:petcure_user_app/modules/register_module/helper/register_helper.dart';
 import 'package:petcure_user_app/modules/register_module/widgets/register_page_content.dart';
 import 'package:provider/provider.dart';
 import 'package:petcure_user_app/modules/register_module/providers/register_form_provider.dart';

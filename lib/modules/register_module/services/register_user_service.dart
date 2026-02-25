@@ -28,6 +28,7 @@ class RegisterUserService {
           .toString();
       request.fields['longitude'] = userRegisterDetails.location.longitude
           .toString();
+      request.fields['place'] = userRegisterDetails.place.placeValue;
 
       if (userRegisterDetails.image != null) {
         var imageStream = http.ByteStream(
