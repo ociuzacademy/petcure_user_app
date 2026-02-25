@@ -12,7 +12,7 @@ class NutritionPlannerPage extends StatefulWidget {
   @override
   State<NutritionPlannerPage> createState() => _NutritionPlannerPageState();
 
-  static route() =>
+  static MaterialPageRoute route() =>
       MaterialPageRoute(builder: (context) => const NutritionPlannerPage());
 }
 

@@ -31,9 +31,10 @@ class AppointmentBookingPage extends StatefulWidget {
     required this.doctor,
   });
 
-  static route({required Pet pet, required Doctor doctor}) => MaterialPageRoute(
-    builder: (context) => AppointmentBookingPage(pet: pet, doctor: doctor),
-  );
+  static MaterialPageRoute route({required Pet pet, required Doctor doctor}) =>
+      MaterialPageRoute(
+        builder: (context) => AppointmentBookingPage(pet: pet, doctor: doctor),
+      );
 
   @override
   State<AppointmentBookingPage> createState() => _AppointmentBookingPageState();

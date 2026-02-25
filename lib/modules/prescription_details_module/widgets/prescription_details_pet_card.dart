@@ -23,7 +23,7 @@ class PrescriptionDetailsPetCard extends StatelessWidget {
             width: 56,
             height: 56,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Container(
+            errorBuilder: (_, _, _) => Container(
               color: Colors.grey[200],
               child: const Icon(Icons.pets),
             ),

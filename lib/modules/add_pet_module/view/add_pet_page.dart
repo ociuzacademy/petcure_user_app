@@ -12,9 +12,10 @@ class AddPetPage extends StatefulWidget {
   @override
   State<AddPetPage> createState() => _AddPetPageState();
 
-  static route({required bool isLoggedIn, String? userId}) => MaterialPageRoute(
-    builder: (_) => AddPetPage(isLoggedIn: isLoggedIn, userId: userId),
-  );
+  static MaterialPageRoute route({required bool isLoggedIn, String? userId}) =>
+      MaterialPageRoute(
+        builder: (_) => AddPetPage(isLoggedIn: isLoggedIn, userId: userId),
+      );
 }
 
 class _AddPetPageState extends State<AddPetPage> {

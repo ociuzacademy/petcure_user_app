@@ -12,7 +12,7 @@ class AppointmentHistoryPage extends StatefulWidget {
   @override
   State<AppointmentHistoryPage> createState() => _AppointmentHistoryPageState();
 
-  static route() =>
+  static MaterialPageRoute route() =>
       MaterialPageRoute(builder: (context) => const AppointmentHistoryPage());
 }
 

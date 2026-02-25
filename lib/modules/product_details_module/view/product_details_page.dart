@@ -15,7 +15,7 @@ class ProductDetailsPage extends StatefulWidget {
   final int productId;
   const ProductDetailsPage({super.key, required this.productId});
 
-  static route({required int productId}) => MaterialPageRoute(
+  static MaterialPageRoute route({required int productId}) => MaterialPageRoute(
     builder: (context) => ProductDetailsPage(productId: productId),
   );
 

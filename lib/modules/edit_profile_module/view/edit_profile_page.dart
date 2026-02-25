@@ -21,7 +21,7 @@ class EditProfilePage extends StatefulWidget {
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 
-  static route() =>
+  static MaterialPageRoute route() =>
       MaterialPageRoute(builder: (context) => const EditProfilePage());
 }
 

@@ -19,7 +19,7 @@ class PetDetailsPage extends StatefulWidget {
   final int petId;
   const PetDetailsPage({super.key, required this.petId});
 
-  static route({required int petId}) =>
+  static MaterialPageRoute route({required int petId}) =>
       MaterialPageRoute(builder: (context) => PetDetailsPage(petId: petId));
 
   @override

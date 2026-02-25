@@ -13,7 +13,8 @@ class ChatPage extends StatefulWidget {
   @override
   State<ChatPage> createState() => _ChatPageState();
 
-  static route() => MaterialPageRoute(builder: (context) => const ChatPage());
+  static MaterialPageRoute route() =>
+      MaterialPageRoute(builder: (context) => const ChatPage());
 }
 
 class _ChatPageState extends State<ChatPage> {

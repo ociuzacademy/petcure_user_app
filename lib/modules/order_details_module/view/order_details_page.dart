@@ -23,7 +23,7 @@ class OrderDetailsPage extends StatefulWidget {
   final int orderId;
   const OrderDetailsPage({super.key, required this.orderId});
 
-  static route({required int orderId}) => MaterialPageRoute(
+  static MaterialPageRoute route({required int orderId}) => MaterialPageRoute(
     builder: (context) => OrderDetailsPage(orderId: orderId),
   );
 

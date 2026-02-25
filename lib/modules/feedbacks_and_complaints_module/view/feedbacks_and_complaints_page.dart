@@ -10,7 +10,7 @@ class FeedbacksAndComplaintsPage extends StatefulWidget {
   State<FeedbacksAndComplaintsPage> createState() =>
       _FeedbacksAndComplaintsPageState();
 
-  static route() => MaterialPageRoute(
+  static MaterialPageRoute route() => MaterialPageRoute(
     builder: (context) => const FeedbacksAndComplaintsPage(),
   );
 }

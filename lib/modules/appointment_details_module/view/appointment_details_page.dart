@@ -13,7 +13,7 @@ class AppointmentDetailsPage extends StatefulWidget {
   final int bookingId;
   const AppointmentDetailsPage({super.key, required this.bookingId});
 
-  static route({required int bookingId}) => MaterialPageRoute(
+  static MaterialPageRoute route({required int bookingId}) => MaterialPageRoute(
     builder: (context) => AppointmentDetailsPage(bookingId: bookingId),
   );
 

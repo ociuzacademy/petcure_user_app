@@ -16,10 +16,11 @@ class PrescriptionDetailsPage extends StatefulWidget {
   State<PrescriptionDetailsPage> createState() =>
       _PrescriptionDetailsPageState();
 
-  static route({required int prescriptionId}) => MaterialPageRoute(
-    builder: (context) =>
-        PrescriptionDetailsPage(prescriptionId: prescriptionId),
-  );
+  static MaterialPageRoute route({required int prescriptionId}) =>
+      MaterialPageRoute(
+        builder: (context) =>
+            PrescriptionDetailsPage(prescriptionId: prescriptionId),
+      );
 }
 
 class _PrescriptionDetailsPageState extends State<PrescriptionDetailsPage> {

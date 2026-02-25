@@ -22,7 +22,7 @@ class UpdatePetPage extends StatefulWidget {
   @override
   State<UpdatePetPage> createState() => _UpdatePetPageState();
 
-  static route({required int petId}) =>
+  static MaterialPageRoute route({required int petId}) =>
       MaterialPageRoute(builder: (context) => UpdatePetPage(petId: petId));
 }
 
